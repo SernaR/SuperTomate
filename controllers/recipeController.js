@@ -219,7 +219,8 @@ exports.getRecipe = (req, res, next) => {
                 order: [['id', 'ASC']]
             },{
                 model: models.Comment,
-                //where: { isChecked: { [Op.ne]: [0] }, isBlocked: { [Op.ne]: [1] } },
+                required: false,
+                where: { isChecked: 1, isBlocked: 0 },
                 attributes:[ 'content', 'createdAt' ],
                 include: [
                     { 
@@ -227,7 +228,8 @@ exports.getRecipe = (req, res, next) => {
                         attributes: ['name']
                     },{
                         model: models.SubComment,
-                        //where: { isChecked: 1, isBlocked: 0 },
+                        required: false,
+                        where: { isChecked: 1, isBlocked: 0 },
                         attributes:[ 'content', 'createdAt' ],
                         include: [
                             { 
