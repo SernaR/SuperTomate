@@ -4,7 +4,7 @@ const adminUtils = require('../utils/adminUtils')
 const COMMENT_REGEX = /<(|\/|[^\/>][^>]+|\/[^>][^>]+)>/
 
 
-exports.newComment = (req, res, next) => {
+exports.newComment = (req, res) => {
     const recipeId = req.params.recipeId
     const { content } = req.body
     const userId = jwt.getUserId(req.headers['authorization'])
@@ -28,11 +28,12 @@ exports.newComment = (req, res, next) => {
             res.status(500).json({ 'error': 'cannot add comment' })
         }
     })
-    .catch ( err => {
-        res.status(500).json({ 'error': 'unable to add comment' })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     })
 }
-exports.getNewComments = (req, res, next) => {
+
+exports.getNewComments = (req, res) => {
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
         return res.status(400).json({ 'error': 'wrong token'})
@@ -58,8 +59,8 @@ exports.getNewComments = (req, res, next) => {
             .then( comments => {
                 res.status(201).json({ 'comments': comments})
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comments' })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -69,7 +70,7 @@ exports.getNewComments = (req, res, next) => {
     })       
 }
 
-exports.addComment = (req, res, next) => {
+exports.addComment = (req, res) => {
     const id = req.params.commentId
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -83,16 +84,13 @@ exports.addComment = (req, res, next) => {
                 where: { id, isChecked: 0 }
             })
             .then( commentFound => {
-                commentFound.update({ isChecked: 1 })
-                .then( validatedComment => {
-                    res.status(201).json({ 'success': 'comment validated' })
-                })
-                .catch ( err => {
-                    res.status(500).json({ 'error': 'unable to validate comment' })
-                })
+                return commentFound.update({ isChecked: 1 })   
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comment' })
+            .then( () => {
+                res.status(201).json({ 'success': 'comment validated' })
+            })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -102,7 +100,7 @@ exports.addComment = (req, res, next) => {
     })          
 }
 
-exports.removeComment = (req, res, next) => {
+exports.removeComment = (req, res) => {
     const id = req.params.commentId
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -116,16 +114,13 @@ exports.removeComment = (req, res, next) => {
                 where: { id , isChecked: 0 }
             })
             .then( commentFound => {
-                commentFound.update({ isChecked: 1, isBlocked: 1 })
-                .then( blockedComment => {
-                    res.status(201).json({ 'success': 'comment blocked' })
-                })
-                .catch ( err => {
-                    res.status(500).json({ 'error': 'unable to block comment' })
-                })
+                return commentFound.update({ isChecked: 1, isBlocked: 1 })   
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comment' })
+            .then( () => {
+                res.status(201).json({ 'success': 'comment blocked' })
+            })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -135,7 +130,7 @@ exports.removeComment = (req, res, next) => {
     })          
 }
 
-exports.newSubComment = (req, res, next) => {
+exports.newSubComment = (req, res) => {
     const commentId = req.params.commentId
     const { content } = req.body
     const userId = jwt.getUserId(req.headers['authorization'])
@@ -159,11 +154,12 @@ exports.newSubComment = (req, res, next) => {
             res.status(500).json({ 'error': 'cannot add comment' })
         }
     })
-    .catch ( err => {
-        res.status(500).json({ 'error': 'unable to add comment' })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     })
 }
-exports.getNewSubComments = (req, res, next) => {
+
+exports.getNewSubComments = (req, res) => {
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
         return res.status(400).json({ 'error': 'wrong token'})
@@ -186,8 +182,8 @@ exports.getNewSubComments = (req, res, next) => {
             .then( comments => {
                 res.status(201).json({ 'comments': comments})
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comments' })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -197,7 +193,7 @@ exports.getNewSubComments = (req, res, next) => {
     })     
 }
 
-exports.addSubComment = (req, res, next) => {
+exports.addSubComment = (req, res) => {
     const id = req.params.commentId
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -211,16 +207,13 @@ exports.addSubComment = (req, res, next) => {
                 where: { id, isChecked: 0 }
             })
             .then( commentFound => {
-                commentFound.update({ isChecked: 1 })
-                .then( validatedComment => {
-                    res.status(201).json({ 'success': 'comment validated' })
-                })
-                .catch ( err => {
-                    res.status(500).json({ 'error': 'unable to validate comment' })
-                })
+                return commentFound.update({ isChecked: 1 })  
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comment' })
+            .then( () => {
+                res.status(201).json({ 'success': 'comment validated' })
+            })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -230,7 +223,7 @@ exports.addSubComment = (req, res, next) => {
     })      
 }
 
-exports.removeSubComment = (req, res, next) => {
+exports.removeSubComment = (req, res) => {
     const id = req.params.commentId
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -244,16 +237,14 @@ exports.removeSubComment = (req, res, next) => {
                 where: { id , isChecked: 0 }
             })
             .then( commentFound => {
-                commentFound.update({ isChecked: 1, isBlocked: 1 })
-                .then( blockedComment => {
-                    res.status(201).json({ 'success': 'comment blocked' })
-                })
-                .catch ( err => {
-                    res.status(500).json({ 'error': 'unable to block comment' })
-                })
+                return commentFound.update({ isChecked: 1, isBlocked: 1 })
+                
             })
-            .catch ( err => {
-                res.status(500).json({ 'error': 'unable to get comment' })
+            .then( () => {
+                res.status(201).json({ 'success': 'comment blocked' })
+            })
+            .catch ( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({

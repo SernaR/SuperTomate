@@ -2,7 +2,7 @@ const models = require('../models')
 const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
 
-exports.addIngredient = (req, res, next) => {
+exports.addIngredient = (req, res) => {
     const name = req.body.ingredient
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
@@ -16,28 +16,20 @@ exports.addIngredient = (req, res, next) => {
 
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
-            models.Ingredient.findOne({
+            models.Ingredient.findOrCreate({
                 where: { name }
             })
-            .then( ingredientFound => {
-                if (!ingredientFound) {
-                    models.Ingredient.create({ name })
-                    .then( newIngredient => {
-                        res.status(201).json({
-                            'ingredient': newIngredient.name
-                        })
-                    })
-                    .catch( err => {
-                        res.status(500).json({
-                            'error': 'cannot add ingredient'
-                        })
-                    })    
+            .then( ([newIngredient, created]) => {
+                if (created) {
+                    res.status(201).json({
+                        'ingredient': newIngredient.name
+                    })   
                 } else {
                     res.status(409).json({ 'error': 'ingredient already exist' })
-                }
+                }    
             })
-            .catch( err => {
-                res.status(500).json({ 'error': 'unable to verify ingredient' })
+            .catch( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -46,7 +38,7 @@ exports.addIngredient = (req, res, next) => {
         }    
     })   
 }
-exports.addUnit = (req, res, next) => {
+exports.addUnit = (req, res) => {
     const name = req.body.unit
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
@@ -60,28 +52,20 @@ exports.addUnit = (req, res, next) => {
 
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
-            models.Unit.findOne({
+            models.Unit.findOrCreate({
                 where: { name }
             })
-            .then( unitFound => {
-                if (!unitFound) {
-                    models.Unit.create({ name })
-                    .then( newUnit => {
-                        res.status(201).json({
-                            'unit': newUnit.name
-                        })
+            .then( ([newUnit, created]) => {
+                if (created) {
+                    res.status(201).json({
+                        'unit': newUnit.name
                     })
-                    .catch( err => {
-                        res.status(500).json({
-                            'error': 'cannot add unit'
-                        })
-                    })    
                 } else {
                     res.status(409).json({ 'error': 'unit already exist' })
                 }
             })
-            .catch( err => {
-                res.status(500).json({ 'error': 'unable to verify unit' })
+            .catch( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({
@@ -90,7 +74,7 @@ exports.addUnit = (req, res, next) => {
         }    
     })   
 }
-exports.addCategory = (req, res, next) => {
+exports.addCategory = (req, res) => {
     const name = req.body.category
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
@@ -104,28 +88,20 @@ exports.addCategory = (req, res, next) => {
         
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
-            models.Category.findOne({
+            models.Category.findOrCreate({
                 where: { name }
             })
-            .then( categoryFound => {
-                if (!categoryFound) {
-                    models.Category.create({ name })
-                    .then( newCategory => {
-                        res.status(201).json({
-                            'category': newCategory.name
-                        })
-                    })
-                    .catch( err => {
-                        res.status(500).json({
-                            'error': 'cannot add category'
-                        })
-                    })    
+            .then( ([newCategory, created]) => {
+                if (created) {
+                    res.status(201).json({
+                        'category': newCategory.name
+                    }) 
                 } else {
                     res.status(409).json({ 'error': 'category already exist' })
                 }
             })
-            .catch( err => {
-                res.status(500).json({ 'error': 'unable to verify category' })
+            .catch( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
             res.status(403).json({

@@ -7,8 +7,7 @@ const commentController = require('../controllers/commentController')
 
 // Users routes
 router.get('/user', userController.getAllUsers)
-router.get('/user/admin/:id', userController.setAdmin)
-router.get('/user/remove/:id', userController.removeUser)
+router.get('/user/:id', userController.setUserPamams)//?action=promote ou ?action=remove
 
 //params routes
 router.post('/ingredient', params.addIngredient)
