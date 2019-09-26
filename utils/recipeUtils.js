@@ -1,36 +1,32 @@
 const models = require('../models')
 
-exports.checkIngredients = (ingredients) => {
+exports.checkIngredients = (ingredients) => { 
     const promises = []
     return new Promise( (resolve, reject) => {
         models.Ingredient.findAll()
         .then( ingredientList => {
             ingredients.forEach( ingredient => {
-                const existingIngredient = ingredientList.find( i => i.id === ingredient.ingredientId)
+                const existingIngredient = ingredientList.find( i => i.id === ingredient.ingredientId || i.name === ingredient.name)
                 if (!existingIngredient) {
                     const promise = models.Ingredient.create({ name: ingredient.name })
                     promises.push(promise)
                 }
+                else if (ingredient.ingredientId === null) {
+                    ingredient.ingredientId = existingIngredient.id
+                }
             })
-            
             Promise.all(promises)
             .then( result => {
-                result.forEach( r => {
-                    const ingredientIndex = ingredients.findIndex( i => i.name === r.name)
-                    if (ingredientIndex) {
+                if (result.length > 0) {
+                    result.forEach( r => {
+                        const ingredientIndex = ingredients.findIndex( i => i.name === r.name)
                         ingredients[ingredientIndex].ingredientId = r.id
-                    } 
-                })
-                return resolve(ingredients)      
-            })
-            .catch( err => {
-                return reject( Error('cannot display ingredients') )
+                    })
+                }
+                resolve(ingredients)  
             })
         })
-        .catch( err => {
-            return reject (Error('unable to  display ingredients') )
-        })
-    })    
+    })   
 }
 
 exports.updateStepsAndIngredients = (steps, ingredients, recipeId)  => {
@@ -66,9 +62,6 @@ exports.updateStepsAndIngredients = (steps, ingredients, recipeId)  => {
                 } 
             })
         })
-        .catch( err => {
-            return reject( Error('unable to update steps') )
-        })
         
         models.RecipeIngredient.findAll({
             where: { recipeId }
@@ -102,16 +95,13 @@ exports.updateStepsAndIngredients = (steps, ingredients, recipeId)  => {
                 }
             })
         })
-        .catch( err => {
-            return reject( Error('unable to update ingredients') )
-        })
-
+        
         Promise.all(promises)
         .then( result => {
             return resolve(result)     
         })
         .catch( err => {
-            return reject( Error('unable to update ingredients and steps') )
+            return reject( Error('sorry, an error has occured') )
         })
     })    
 }

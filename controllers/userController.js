@@ -140,10 +140,10 @@ exports.getAllUsers = (req, res) => {
     })   
 }
 
-exports.updateUserProfile = (req, res) => {
+exports.updateUserProfile = async (req, res) => {
     const { name, email, password } = req.body
     const userId = jwt.getUserId(req.headers['authorization'])
-   
+    
     if (userId < 0)
         return res.status(400).json({ 'error': 'wrong token'})
     if (!userId)
@@ -153,47 +153,41 @@ exports.updateUserProfile = (req, res) => {
     if (message)
         return res.status(400).json({ 'error': message })
 
-    models.User.findAll({
-    attributes: ['id', 'name', 'email'],
-        where: { 
-            [Op.or]: [ { id: userId }, {name}, {email} ],
-        }
-    })
-    .then( users => {
-        const usersAlert = users.filter( user =>  user.id !== userId )
-        if(usersAlert.lengh > 0) {
-            //afinner le message
-            usersAlert.forEach( userAlert => {
-                if (userAlert.name === name && userAlert.email === email) {
-                    messageAlert = 'pseudo and email are already used'
-                } else if (userAlert.name === name) {
-                    messageAlert = 'pseudo already used'
-                } else {
-                    messageAlert = 'email already used'
-                }
-            })
-        }
-        users[0].messageAlert = messageAlert    
-        return users[0]
-    })
-    .then( user => {
-        if(!user.message) {
-            return bcrypt.hash(password, 5)
-        } else {
-            return res.status(409).json({ 'error': user.message })
-        }
-    })
-    .then( bcryptedpassword => {
-        return fetchedUser.update({ name, email, password: bcryptedpassword })
-    })                    
-    .then( user => {
-        res.status(201).json({
-            'userName': user.name
+    try {
+        const existingUsers = await models.User.findAll({
+        attributes: ['name', 'email'],
+            where: { 
+                [Op.or]: [ {name}, {email} ],
+                id: { [Op.ne]: userId }
+            }
         })
-    })
-    .catch ( () => {
+        
+        function getErrorMessage(users) {   
+            let msg = ''
+            users.forEach( user => {
+                if (msg !== '') { msg += 'and '}
+                if (name === user.name) { msg += 'name ' }
+                if (name === user.name && email === user.email) { msg += 'and '}
+                if (email === user.email) { msg += 'email ' }
+            })
+            return msg
+        }
+
+        const errorMessage = getErrorMessage(existingUsers)
+        if (errorMessage === '') {
+            const user = await models.User.findByPk(userId)
+            const bcryptedpassword = await bcrypt.hash(password, 5)
+            const updatedUser = await user.update({ name, email, password: bcryptedpassword })
+
+            res.status(201).json({
+                'userName': updatedUser.name
+            })
+        } else {
+            return res.status(409).json({ 'error': errorMessage + 'already used'})
+        }    
+    } catch (err) {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
-    })
+    }      
 }
 
 exports.setUserPamams = (req, res) => {

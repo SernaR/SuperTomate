@@ -1,9 +1,8 @@
 const models = require('../models')
-const Op = require('sequelize').Op
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
 
-exports.addRecipe = (req, res, next) => {
+exports.addRecipe = async (req, res) => {
     const { name, serve, making, cook, steps, ingredients, category } = req.body
     const promises = []
     //const { name, serve, making, cook, category } = req.body //pour le test
@@ -17,75 +16,49 @@ exports.addRecipe = (req, res, next) => {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
-    recipeUtils.checkIngredients(ingredients)
-    .then( ingredientsFound => {
-        if (ingredientsFound) {
-            models.Recipe.findOne({
-                attributes: ['name'],
-                where: { name, userId }
+    try {
+        const ingredientsFound = await recipeUtils.checkIngredients(ingredients)
+        const [newRecipe, created] = await models.Recipe.findOrCreate({
+            attributes: ['name'],
+            where: { name, userId },
+            defaults: { name, serve, making, cook, categoryId: category, userId }
+        })
+
+        if (created) {
+            steps.forEach( s => { 
+                const promise = models.Step.create({ 
+                    recipeId: newRecipe.id,
+                    step: s.step,
+                    content: s.content
+                })
+                promises.push(promise)
             })
-            .then ( recipeFound => {
-                if (!recipeFound) {
-                    models.Recipe.create({ name, serve, making, cook, categoryId: category, userId })
-                    .then( newRecipe => {
-                        if (newRecipe) {
-                            steps.forEach( s => { 
-                                const promise = models.Step.create({ 
-                                    recipeId: newRecipe.id,
-                                    step: s.step,
-                                    content: s.content
-                                })
-                                promises.push(promise)
-                            })
-        
-                            ingredientsFound.forEach( i => { 
-                                const promise = models.RecipeIngredient.create({ 
-                                    quantity: i.quantity,
-                                    unitId: i.unitId,
-                                    recipeId: newRecipe.id,
-                                    ingredientId: i.ingredientId
-                                })
-                                promises.push(promise)
-                            })
-        
-                            Promise.all(promises)
-                            .then( result => {
-                                if (result) {
-                                    res.status(201).json({
-                                        'recipeName': newRecipe.name
-                                    })
-                                } else {
-                                    res.status(500).json({ 'error': 'cannot add steps/ingredients' });
-                                }
-                            })
-                            .catch ( err => {
-                                res.status(500).json({ 'error': 'unable to add steps/ingredients' });
-                            }) 
-                        } else {
-                            res.status(500).json({ 'error': 'cannot add recipe' });
-                        } 
-                    })
-                    .catch( err => {
-                        res.status(500).json({
-                            'error': 'unable to add recipe'
-                        })
-                    })
-                } else {
-                    res.status(409).json({ 'error': 'recipe name already exist' })
-                }
+
+            ingredientsFound.forEach( i => { 
+                const promise = models.RecipeIngredient.create({ 
+                    quantity: i.quantity,
+                    unitId: i.unitId,
+                    recipeId: newRecipe.id,
+                    ingredientId: i.ingredientId
+                })
+                promises.push(promise)
             })
-            .catch( err => {
-                res.status(500).json({ 'error': 'unable to verify recipe' })
-            })
+
+            Promise.all(promises)
+            .then( () => {
+                res.status(201).json({
+                    'recipeName': newRecipe.name
+                })
+            })   
         } else {
-            res.status(500).json({ 'error': 'cannot verity ingredients' })
+            res.status(409).json({ 'error': 'recipe name already exist' })
         }
-    }).catch( err => {
-        res.status(500).json({ 'error': 'unable to verity ingredients' })
-    })
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }    
 }
 
-exports.updateRecipe = (req, res, next) => {
+exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
     const { name, serve, making, cook, steps, ingredients, category } = req.body
     //const { name, serve, making, cook, category } = req.body //pour le test
@@ -101,55 +74,29 @@ exports.updateRecipe = (req, res, next) => {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
-    models.Recipe.findOne({
-        where: { id: recipeId }
-    })
-    .then( recipeFound => {
+    try {
+         const recipeFound = await models.Recipe.findOne({
+            where: { id: recipeId }
+        })
         if (recipeFound.userId === userId || admin) {
-            recipeUtils.checkIngredients(ingredients).then( ingredientsFound => {
-                if (ingredientsFound) {
-                    recipeFound.update({ name, serve, making, cook, categoryId: category })
-                    .then( updatedRecipe => {
-                        if (updatedRecipe) {
-                            //code
-                            recipeUtils.updateStepsAndIngredients(steps, ingredients, recipeId)
-                            .then( result => {
-                                if (result) {
-                                    res.status(201).json({
-                                        'recipeName': updatedRecipe.name
-                                    })
-                                } else {
-                                    res.status(500).json({ 'error': 'cannot update ingredients and steps' })
-                                }
-                            })
-                            .catch( err => {
-                                res.status(500).json({ 'error': 'unable to update ingredients and steps' })
-                            })                            
-                        } else {
-                            res.status(500).json({ 'error': 'cannot update recipe' })
-                        }
-                    })
-                    .catch( err => {
-                        res.status(500).json({ 'error': 'unable to update recipe' })
-                    })
-                } else {
-                    res.status(500).json({ 'error': 'cannot test ingredients' });
-                }
-            }).catch( err => {
-                res.status(500).json({ 'error': 'unable to verity ingredients' })
-            })          
+            const ingredientsFound = await recipeUtils.checkIngredients(ingredients)
+            const updatedRecipe = await recipeFound.update({ name, serve, making, cook, categoryId: category })   
+            await recipeUtils.updateStepsAndIngredients(steps, ingredientsFound, recipeId)
+                            
+            res.status(201).json({
+                'recipeName': updatedRecipe.name
+            })             
         } else {
             res.status(403).json({
                 'error': 'not authorized path'
             })
         }  
-    })
-    .catch( err => {
-        res.status(500).json({ 'error': 'unable to verify recipe' })
-    })    
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }
 }
 
-exports.getAllRecipes = (req, res, next) => {
+exports.getAllRecipes = (req, res) => {
     models.Recipe.findAll({
         attributes: ['name', 'serve', 'making', 'cook'],
         include: [
@@ -183,14 +130,12 @@ exports.getAllRecipes = (req, res, next) => {
             'recipes': recipes
         })
     })
-    .catch( err => {
-        res.status(500).json({
-            'error': 'cannot find recipes'
-        })
+    .catch( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     })    
 }
 
-exports.getRecipe = (req, res, next) => {
+exports.getRecipe = (req, res) => {
     const id = req.params.recipeId
     models.Recipe.findOne({
         where: { id },
@@ -249,9 +194,7 @@ exports.getRecipe = (req, res, next) => {
             'recipes': recipes
         })
     })
-    .catch( err => {
-        res.status(500).json({
-            'error': 'cannot find recipes'
-        })
+    .catch( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     })    
 }

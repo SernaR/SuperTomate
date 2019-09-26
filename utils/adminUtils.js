@@ -12,4 +12,3 @@ exports.checkRoleAdmin = (id, cb) => {
         console.log(err)
     })    
 }
-
