@@ -91,12 +91,7 @@ exports.login = (req, res) => {
     })
 }
 exports.getUserProfile = (req, res) => {
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})    
-    
+    const userId = req.userId
     models.User.findOne({
         attributes: [ 'id', 'name', 'email' ],
         where: { id: userId }
@@ -111,11 +106,7 @@ exports.getUserProfile = (req, res) => {
     })    
 }
 exports.getAllUsers = (req, res) => {
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
 
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
@@ -142,13 +133,7 @@ exports.getAllUsers = (req, res) => {
 
 exports.updateUserProfile = async (req, res) => {
     const { name, email, password } = req.body
-    const userId = jwt.getUserId(req.headers['authorization'])
-    
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
-
+    const userId = req.userId
     const message = userConstraint( name, email, password )
     if (message)
         return res.status(400).json({ 'error': message })
@@ -193,12 +178,7 @@ exports.updateUserProfile = async (req, res) => {
 exports.setUserPamams = (req, res) => {
     const id = req.params.id
     const action = req.query.action
-
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})    
+    const userId = req.userId   
     
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {

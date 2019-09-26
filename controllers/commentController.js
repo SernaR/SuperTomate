@@ -7,12 +7,8 @@ const COMMENT_REGEX = /<(|\/|[^\/>][^>]+|\/[^>][^>]+)>/
 exports.newComment = (req, res) => {
     const recipeId = req.params.recipeId
     const { content } = req.body
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})    
-    
+    const userId = req.userId
+   
     if (!content) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
@@ -34,11 +30,7 @@ exports.newComment = (req, res) => {
 }
 
 exports.getNewComments = (req, res) => {
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
         
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
@@ -72,11 +64,7 @@ exports.getNewComments = (req, res) => {
 
 exports.addComment = (req, res) => {
     const id = req.params.commentId
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
     
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) { 
@@ -102,11 +90,7 @@ exports.addComment = (req, res) => {
 
 exports.removeComment = (req, res) => {
     const id = req.params.commentId
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
     
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) { 
@@ -133,11 +117,7 @@ exports.removeComment = (req, res) => {
 exports.newSubComment = (req, res) => {
     const commentId = req.params.commentId
     const { content } = req.body
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})    
+    const userId = req.userId
     
     if (!content) {
         return res.status(400).json({ 'error': 'missing parameters' })
@@ -160,11 +140,7 @@ exports.newSubComment = (req, res) => {
 }
 
 exports.getNewSubComments = (req, res) => {
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
         
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
@@ -195,11 +171,7 @@ exports.getNewSubComments = (req, res) => {
 
 exports.addSubComment = (req, res) => {
     const id = req.params.commentId
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
     
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) { 
@@ -225,11 +197,7 @@ exports.addSubComment = (req, res) => {
 
 exports.removeSubComment = (req, res) => {
     const id = req.params.commentId
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    const userId = req.userId
     
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) { 

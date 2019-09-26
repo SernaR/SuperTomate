@@ -3,16 +3,11 @@ const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
 
 exports.addIngredient = (req, res) => {
+    const userId = req.userId
     const name = req.body.ingredient
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
-
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
 
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
@@ -39,16 +34,11 @@ exports.addIngredient = (req, res) => {
     })   
 }
 exports.addUnit = (req, res) => {
+    const userId = req.userId
     const name = req.body.unit
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
-
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
 
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
@@ -75,17 +65,12 @@ exports.addUnit = (req, res) => {
     })   
 }
 exports.addCategory = (req, res) => {
+    const userId = req.userId
     const name = req.body.category
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
-
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
-        
+  
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
             models.Category.findOrCreate({

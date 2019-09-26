@@ -6,11 +6,7 @@ exports.addRecipe = async (req, res) => {
     const { name, serve, making, cook, steps, ingredients, category } = req.body
     const promises = []
     //const { name, serve, making, cook, category } = req.body //pour le test
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})        
+    const userId = req.userId        
 
     if ( !name || !serve || !making || !cook || !steps || !category || !ingredients) {
         return res.status(400).json({ 'error': 'missing parameters' })
@@ -62,12 +58,7 @@ exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
     const { name, serve, making, cook, steps, ingredients, category } = req.body
     //const { name, serve, making, cook, category } = req.body //pour le test
-    const userId = jwt.getUserId(req.headers['authorization'])
-    if (userId < 0)
-        return res.status(400).json({ 'error': 'wrong token'})
-    if (!userId)
-        return res.status(403).json({ 'error': 'forbibben, not authorized path'})   
-
+    const userId = req.userId
     const admin = jwt.checkAdmin(req.headers['authorization']) 
 
     if ( !name || !serve || !making || !cook || !steps || !category || !ingredients) {
