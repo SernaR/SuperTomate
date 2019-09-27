@@ -1,6 +1,7 @@
 const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
+const sequelize = require('sequelize')
 
 exports.addRecipe = async (req, res) => {
     const { name, serve, making, cook, steps, ingredients, category } = req.body
@@ -188,4 +189,36 @@ exports.getRecipe = (req, res) => {
     .catch( () => {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     })    
+}
+
+exports.getHomepage = async (req,res) => {
+    try {
+        const bestRecipes = await models.Recipe.findAll({ //findOne ?
+            attributes: ['name'],
+            include: [{
+                model: models.Like,
+                attributes: [
+                    'liked',
+                    //[sequelize.fn('max', sequelize.col('liked')),'best'],
+                    //[sequelize.fn('sum', sequelize.col('liked')),'max']  ,
+                    //[sequelize.fn('count', sequelize.col('liked')),'count']    
+                ]
+            }]
+        })
+
+        const newRecipes = await models.Recipe.findAll({
+            attributes: ['name'],
+            order: [
+                ['id', 'DESC']
+            ],
+            limit: 8
+        })
+
+        res.status(201).json({
+            'newRecipes': newRecipes,
+            'bestRecipe': bestRecipes
+        })
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }   
 }
