@@ -16,11 +16,9 @@ router.post('/category', params.addCategory)
 
 //comments routes
 router.get('/comment', commentController.getNewComments)
-router.get('/comment/validate/:commentId', commentController.addComment)
-router.get('/comment/remove/:commentId', commentController.removeComment)
+router.get('/comment/:commentId', commentController.setComment)//?action=add ou ?action=remove
 router.get('/subcomment', commentController.getNewSubComments)
-router.get('/subcomment/validate/:commentId', commentController.addSubComment)
-router.get('/subcomment/remove/:commentId', commentController.removeSubComment)
+router.get('/subcomment/:commentId', commentController.setSubComment)//?action=add ou ?action=remove
 
 module.exports = router
 

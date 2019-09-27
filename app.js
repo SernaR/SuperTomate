@@ -6,13 +6,17 @@ const jwt = require('./utils/jwt')
 const app = express()
 
 const adminRoutes = require('./routes/adminRoutes')
+const userRoutes = require('./routes/userRoutes')
 const apiRoutes = require('./routes/apiRoutes')
+const authRoutes = require('./routes/authRoutes')
 const errorController = require('./controllers/errorController')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 //app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(apiRoutes)
+app.use(authRoutes)
 app.use((req, res, next) => {
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -23,7 +27,7 @@ app.use((req, res, next) => {
     next()  
 })
 
-app.use(apiRoutes)
+app.use('/user', userRoutes)
 app.use('/admin', adminRoutes)
 app.use(errorController.pageNotFound)
 
