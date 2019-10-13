@@ -10,11 +10,13 @@ const userRoutes = require('./routes/userRoutes')
 const apiRoutes = require('./routes/apiRoutes')
 const authRoutes = require('./routes/authRoutes')
 const errorController = require('./controllers/errorController')
+const cors = require('cors')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 //app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(cors())
 app.use(apiRoutes)
 app.use(authRoutes)
 app.use((req, res, next) => {
@@ -31,6 +33,6 @@ app.use('/user', userRoutes)
 app.use('/admin', adminRoutes)
 app.use(errorController.pageNotFound)
 
-app.listen(3000, () => {
-    console.log('serveur en écoute sur le port 3000')
+app.listen(8080, () => {
+    console.log('serveur en écoute sur le port 8080')
 })
