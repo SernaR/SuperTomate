@@ -4,6 +4,17 @@ const bcrypt = require('bcrypt')
 const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
 
+function passwordConstraint( password ) {
+    const PASSWORD_REGEX  = /^(?=.*\d).{8,20}$/
+    if (!password) {
+        return 'missing parameters'
+    }
+    if (!PASSWORD_REGEX.test(password)) {
+        return 'password invalid (must length 8 - 20 and include 1 number at least)'
+    }
+    return false
+}
+
 function userConstraint( name, email, password ) {
     const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const PASSWORD_REGEX  = /^(?=.*\d).{8,20}$/;
@@ -94,7 +105,8 @@ exports.getUserProfile = (req, res) => {
     const userId = req.userId
     models.User.findOne({
         attributes: [ 'id', 'name', 'email' ],
-        where: { id: userId }
+        where: { id: userId },
+        include: [{ all: true }]
     })
     .then( user => {
         if (user) {
@@ -173,6 +185,28 @@ exports.updateUserProfile = async (req, res) => {
     } catch (err) {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     }      
+}
+
+exports.updatePassword = async (req,res) => {
+    const userId = req.userId
+    const { password } = req.body
+    
+    const message = passwordConstraint( password )
+    if (message)
+        return res.status(400).json({ 'error': message })
+
+    try {
+        const user = await models.User.findByPk(userId)
+        const bcryptedpassword = await bcrypt.hash(password, 5)
+        await user.update({ password: bcryptedpassword })  
+        
+        res.status(201).json({
+            'success': 'password Updated'
+        })
+
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }     
 }
 
 exports.setUserPamams = (req, res) => {

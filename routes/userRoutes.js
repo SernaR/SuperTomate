@@ -9,6 +9,7 @@ const likeController = require('../controllers/likeController')
 // Users routes
 router.get('/profile', userController.getUserProfile)
 router.put('/profile', userController.updateUserProfile)
+router.put('/password', userController.updatePassword)
 
 //Recipes routes
 router.post('/recipe', recipeController.addRecipe)

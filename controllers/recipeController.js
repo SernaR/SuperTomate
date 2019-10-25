@@ -193,21 +193,19 @@ exports.getRecipe = (req, res) => {
 
 exports.getHomepage = async (req,res) => {
     try {
-        const bestRecipes = await models.Recipe.findAll({ //findOne ?
+        const bestRecipes = await models.Recipe.findAll({
             attributes: ['name'],
             include: [{
                 model: models.Like,
                 attributes: [
-                    'liked',
-                    //[sequelize.fn('max', sequelize.col('liked')),'best'],
-                    //[sequelize.fn('sum', sequelize.col('liked')),'max']  ,
-                    //[sequelize.fn('count', sequelize.col('liked')),'count']    
+                    [sequelize.fn('AVG', sequelize.col('liked')), 'Avg'],   
                 ]
-            }]
+            }],
+            group: ['name'],
         })
 
         const newRecipes = await models.Recipe.findAll({
-            attributes: ['name'],
+            attributes: ['id','name'],
             order: [
                 ['id', 'DESC']
             ],
