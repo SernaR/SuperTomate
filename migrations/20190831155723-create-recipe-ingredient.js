@@ -15,7 +15,7 @@ module.exports = {
           model: 'Recipes',
           key: 'id'
         }
-      },
+      },/*
       ingredientId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -31,10 +31,14 @@ module.exports = {
           model: 'Units',
           key: 'id'
         }
-      },
-      quantity: {
+      },*/
+      rank: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      content: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

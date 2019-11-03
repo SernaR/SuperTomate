@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Step = sequelize.define('Step', {
-    step: DataTypes.INTEGER,
+    rank: DataTypes.INTEGER,
     content: DataTypes.TEXT
   }, {});
   Step.associate = function(models) {

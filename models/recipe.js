@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     serve: DataTypes.INTEGER,
     making: DataTypes.INTEGER,
-    cook: DataTypes.INTEGER
+    cook: DataTypes.INTEGER,
+    difficulty: DataTypes.INTEGER,
+    isDraft: DataTypes.BOOLEAN
   }, {});
   Recipe.associate = function(models) {
     // associations can be defined here
@@ -17,10 +19,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
       
     }),
-    models.Recipe.hasMany(models.Comment)
-    models.Recipe.hasMany(models.Step)
-    models.Recipe.hasMany(models.Like)
-    models.Recipe.hasMany(models.RecipeIngredient)
+    models.Recipe.belongsTo(models.Difficulty, {
+      foreignKey: 'difficultyId',
+      allowNull: false
+      
+    }),
+    models.Recipe.hasMany(models.Comment, {as: 'Comments'})
+    models.Recipe.hasMany(models.Step, {as: 'Steps'})
+    models.Recipe.hasMany(models.Like,{as: 'Likes'})
+    models.Recipe.hasMany(models.RecipeIngredient, {as: 'RecipeIngredients'})
+    models.Recipe.hasMany(models.RecipeTag, {as: 'RecipeTags'})
   };
   return Recipe;
 };

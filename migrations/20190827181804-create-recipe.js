@@ -24,6 +24,14 @@ module.exports = {
           key: 'id'
         }
       },
+      difficultyId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Difficulties',
+          key: 'id'
+        }
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
@@ -40,9 +48,17 @@ module.exports = {
         allowNull: true,
         type: Sequelize.INTEGER
       },
+      difficulty: {
+        allowNull: true,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      isDraft: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       },
       updatedAt: {
         allowNull: false,

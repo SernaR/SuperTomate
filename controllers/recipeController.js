@@ -4,49 +4,30 @@ const recipeUtils = require('../utils/recipeUtils')
 const sequelize = require('sequelize')
 
 exports.addRecipe = async (req, res) => {
-    const { name, serve, making, cook, steps, ingredients, category } = req.body
-    const promises = []
-    //const { name, serve, making, cook, category } = req.body //pour le test
+    const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId        
 
-    if ( !name || !serve || !making || !cook || !steps || !category || !ingredients) {
+    if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
     try {
-        const ingredientsFound = await recipeUtils.checkIngredients(ingredients)
         const [newRecipe, created] = await models.Recipe.findOrCreate({
             attributes: ['name'],
             where: { name, userId },
-            defaults: { name, serve, making, cook, categoryId: category, userId }
+            defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, isDraft}  
         })
-
         if (created) {
-            steps.forEach( s => { 
-                const promise = models.Step.create({ 
-                    recipeId: newRecipe.id,
-                    step: s.step,
-                    content: s.content
-                })
-                promises.push(promise)
-            })
-
-            ingredientsFound.forEach( i => { 
-                const promise = models.RecipeIngredient.create({ 
-                    quantity: i.quantity,
-                    unitId: i.unitId,
-                    recipeId: newRecipe.id,
-                    ingredientId: i.ingredientId
-                })
-                promises.push(promise)
-            })
-
-            Promise.all(promises)
-            .then( () => {
-                res.status(201).json({
-                    'recipeName': newRecipe.name
-                })
-            })   
+            const newSteps = steps.map( step => { return {...step, recipeId : newRecipe.id} })
+            const newIngredients = ingredients.map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
+            const newTags = tags.map( tag => { return {...tag, recipeId : newRecipe.id} })
+            
+            await models.Step.bulkCreate(newSteps)
+            await models.RecipeIngredient.bulkCreate(newIngredients)
+            await models.RecipeTag.bulkCreate(newTags)
+                
+            res.status(201).json({ 'recipeName': newRecipe.name })
+            
         } else {
             res.status(409).json({ 'error': 'recipe name already exist' })
         }
@@ -194,14 +175,14 @@ exports.getRecipe = (req, res) => {
 exports.getHomepage = async (req,res) => {
     try {
         const bestRecipes = await models.Recipe.findAll({
-            attributes: ['name'],
-            include: [{
+            attributes: ['name']//,
+            /*include: [{
                 model: models.Like,
                 attributes: [
                     [sequelize.fn('AVG', sequelize.col('liked')), 'Avg'],   
                 ]
             }],
-            group: ['name'],
+            group: ['name'],*/
         })
 
         const newRecipes = await models.Recipe.findAll({
@@ -220,3 +201,4 @@ exports.getHomepage = async (req,res) => {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     }   
 }
+
