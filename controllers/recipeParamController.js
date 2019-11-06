@@ -2,6 +2,19 @@ const models = require('../models')
 const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
 
+exports.getRecipeParams = async (req, res) => {
+    try {
+        const tags = await models.Tag.findAll({ attributes: ['id', 'name'] })
+        const difficulties = await models.Difficulty.findAll({ attributes: ['id', 'name'] })
+        const categories = await models.Category.findAll({ attributes: ['id', 'name'] })
+
+        res.status(200).json({ tags, difficulties, categories })
+
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }         
+}
+
 exports.addIngredient = (req, res) => {
     const userId = req.userId
     const name = req.body.ingredient

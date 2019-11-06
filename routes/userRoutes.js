@@ -5,6 +5,7 @@ const userController = require('../controllers/userController')
 const recipeController = require('../controllers/recipeController')
 const commentController = require('../controllers/commentController')
 const likeController = require('../controllers/likeController')
+const recipeParamController = require('../controllers/recipeParamController')
 
 // Users routes
 router.get('/profile', userController.getUserProfile)
@@ -12,6 +13,7 @@ router.put('/profile', userController.updateUserProfile)
 router.put('/password', userController.updatePassword)
 
 //Recipes routes
+router.get('/recipe-params', recipeParamController.getRecipeParams)
 router.post('/recipe', recipeController.addRecipe)
 router.put('/recipe/:recipeId', recipeController.updateRecipe)
 

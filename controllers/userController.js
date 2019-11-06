@@ -110,7 +110,7 @@ exports.getUserProfile = (req, res) => {
     })
     .then( user => {
         if (user) {
-            res.status(201).json(user)
+            res.status(200).json(user)
         }
     })
     .catch( () => {
@@ -126,7 +126,7 @@ exports.getAllUsers = (req, res) => {
                 order: [['name', 'ASC']]
             })
             .then( users => {
-                res.status(201).json({
+                res.status(200).json({
                     'users': users
                 })
             })

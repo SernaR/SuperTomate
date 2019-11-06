@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     serve: DataTypes.INTEGER,
     making: DataTypes.INTEGER,
     cook: DataTypes.INTEGER,
-    difficulty: DataTypes.INTEGER,
     isDraft: DataTypes.BOOLEAN
   }, {});
   Recipe.associate = function(models) {
@@ -28,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     models.Recipe.hasMany(models.Step, {as: 'Steps'})
     models.Recipe.hasMany(models.Like,{as: 'Likes'})
     models.Recipe.hasMany(models.RecipeIngredient, {as: 'RecipeIngredients'})
-    models.Recipe.hasMany(models.RecipeTag, {as: 'RecipeTags'})
+    //models.Recipe.hasMany(models.RecipeTag, {as: 'RecipeTags'})
+    models.Recipe.belongsToMany(models.Tag, { as: 'tags', through: 'RecipeTag', foreignKey: 'recipeId' });
   };
   return Recipe;
 };

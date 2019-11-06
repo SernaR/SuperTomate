@@ -20,11 +20,10 @@ exports.addRecipe = async (req, res) => {
         if (created) {
             const newSteps = steps.map( step => { return {...step, recipeId : newRecipe.id} })
             const newIngredients = ingredients.map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
-            const newTags = tags.map( tag => { return {...tag, recipeId : newRecipe.id} })
             
             await models.Step.bulkCreate(newSteps)
             await models.RecipeIngredient.bulkCreate(newIngredients)
-            await models.RecipeTag.bulkCreate(newTags)
+            await newRecipe.addTags(tags)
                 
             res.status(201).json({ 'recipeName': newRecipe.name })
             
@@ -39,7 +38,6 @@ exports.addRecipe = async (req, res) => {
 exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
     const { name, serve, making, cook, steps, ingredients, category } = req.body
-    //const { name, serve, making, cook, category } = req.body //pour le test
     const userId = req.userId
     const admin = jwt.checkAdmin(req.headers['authorization']) 
 
@@ -99,7 +97,7 @@ exports.getAllRecipes = (req, res) => {
         order: [['name', 'ASC']]
     })
     .then( recipes => {
-        res.status(201).json({
+        res.status(200).json({
             'recipes': recipes
         })
     })
@@ -163,7 +161,7 @@ exports.getRecipe = (req, res) => {
         ]
     })
     .then( recipes => {
-        res.status(201).json({
+        res.status(200).json({
             'recipes': recipes
         })
     })
@@ -187,13 +185,20 @@ exports.getHomepage = async (req,res) => {
 
         const newRecipes = await models.Recipe.findAll({
             attributes: ['id','name'],
+            include: [{
+                model: models.Tag,
+                as: 'tags',
+                required: false,
+                attributes: ['name'],
+                through: { attributes: [] }
+            }],
             order: [
                 ['id', 'DESC']
             ],
             limit: 8
         })
-
-        res.status(201).json({
+        
+        res.status(200).json({
             'newRecipes': newRecipes,
             'bestRecipe': bestRecipes
         })

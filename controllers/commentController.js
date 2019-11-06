@@ -49,7 +49,7 @@ exports.getNewComments = (req, res) => {
                 order: [['createdAt', 'ASC']]
             })
             .then( comments => {
-                res.status(201).json({ 'comments': comments})
+                res.status(200).json({ 'comments': comments})
             })
             .catch ( () => {
                 res.status(500).json({ 'error': 'sorry, an error has occured' })
@@ -140,7 +140,7 @@ exports.getNewSubComments = (req, res) => {
                 order: [['createdAt', 'ASC']]
             })
             .then( comments => {
-                res.status(201).json({ 'comments': comments})
+                res.status(200).json({ 'comments': comments})
             })
             .catch ( () => {
                 res.status(500).json({ 'error': 'sorry, an error has occured' })

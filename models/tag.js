@@ -5,7 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Tag.associate = function(models) {
     // associations can be defined here
-    models.Tag.hasMany(models.RecipeTag)
+    //models.Tag.hasMany(models.RecipeTag)
+    models.Tag.belongsToMany(models.Recipe, { as: 'recipes', through: 'RecipeTag', foreignKey: 'tagId' });
+    
   };
   return Tag;
 };
