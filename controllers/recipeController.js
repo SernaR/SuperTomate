@@ -5,19 +5,24 @@ const sequelize = require('sequelize')
 
 exports.addRecipe = async (req, res) => {
     const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
-    const userId = req.userId        
-
+    const userId = req.userId 
+    const image = req.file
+        
     if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
-
+    if(!image) {
+        res.status(422).json({ 'error': 'attached file is not an image' }) 
+    }
+    
+    const picture = image.path
     try {
         const [newRecipe, created] = await models.Recipe.findOrCreate({
             attributes: ['name'],
             where: { name, userId },
-            defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, isDraft}  
+            defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture, isDraft}  
         })
-        if (created) {
+        if (created) { 
             const newSteps = steps.map( step => { return {...step, recipeId : newRecipe.id} })
             const newIngredients = ingredients.map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
             
@@ -25,7 +30,7 @@ exports.addRecipe = async (req, res) => {
             await models.RecipeIngredient.bulkCreate(newIngredients)
             await newRecipe.addTags(tags)
                 
-            res.status(201).json({ 'recipeName': newRecipe.name })
+            res.status(201).json({ 'recipeName': newRecipe.name, 'steps': steps })
             
         } else {
             res.status(409).json({ 'error': 'recipe name already exist' })

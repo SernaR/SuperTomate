@@ -37,16 +37,20 @@ module.exports = {
         type: Sequelize.STRING
       },
       serve: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       making: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       cook: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.INTEGER
+      },
+      picture: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

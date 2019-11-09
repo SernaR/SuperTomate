@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     serve: DataTypes.INTEGER,
     making: DataTypes.INTEGER,
     cook: DataTypes.INTEGER,
+    picture: DataTypes.STRING,
     isDraft: DataTypes.BOOLEAN
   }, {});
   Recipe.associate = function(models) {
