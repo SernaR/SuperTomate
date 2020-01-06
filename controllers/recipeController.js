@@ -23,14 +23,14 @@ exports.addRecipe = async (req, res) => {
             defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture, isDraft}  
         })
         if (created) { 
-            const newSteps = steps.map( step => { return {...step, recipeId : newRecipe.id} })
-            const newIngredients = ingredients.map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
+            const newSteps = JSON.parse(steps).map( step => { return {...step, recipeId : newRecipe.id} })
+            const newIngredients =JSON.parse(ingredients).map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
             
             await models.Step.bulkCreate(newSteps)
             await models.RecipeIngredient.bulkCreate(newIngredients)
-            await newRecipe.addTags(tags)
+            await newRecipe.addTags(JSON.parse(tags))
                 
-            res.status(201).json({ 'recipeName': newRecipe.name, 'steps': steps })
+            res.status(201).json({ 'recipeName': newRecipe.name })
             
         } else {
             res.status(409).json({ 'error': 'recipe name already exist' })
