@@ -2,8 +2,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const jwt = require('./utils/jwt')
+const path = require('path')
 
 const app = express()
+const DIST_DIR = path.join(__dirname, '/dist')
+const HTML_FILE = path.join(DIST_DIR, 'index.html')
+
+
 
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
@@ -14,12 +19,12 @@ const cors = require('cors')
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-//app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(DIST_DIR)))
 
 app.use(cors())
-app.use(apiRoutes)
-app.use(authRoutes)
-app.use((req, res, next) => {
+app.use("/api", apiRoutes)
+app.use("/api",authRoutes)
+app.use("/api",(req, res, next) => {
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
         return res.status(400).json({ 'error': 'wrong token'})
@@ -29,10 +34,14 @@ app.use((req, res, next) => {
     next()  
 })
 
-app.use('/user', userRoutes)
-app.use('/admin', adminRoutes)
-app.use(errorController.pageNotFound)
+app.use('/api/user', userRoutes)
+app.use('/api/admin', adminRoutes)
+app.use("/api", errorController.pageNotFound)
 
-app.listen(8080, () => {
-    console.log('serveur en écoute sur le port 8080')
+app.get('/', (req, res) => {
+    res.sendFile(HTML_FILE); // EDIT
+})
+
+app.listen(3000, () => {
+    console.log('serveur en écoute sur le port 3000')
 })
