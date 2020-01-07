@@ -4,21 +4,19 @@ import authContext from '../contexts/AuthContext';
 import Field from '../components/forms/Field.jsx';
 
 const LoginPage = ({ history }) => {
-    const { setIsAuthenticated } = useContext(authContext);
+    const { IsAuthenticated, setIsAuthenticated } = useContext(authContext);
     
     const [credentials, setCredentials] = useState({
-        username: "henri43@orange.fr",
-        password: "password"
+        email: "sblack@gmail.fr",
+        password: "password0"
     });
     const [error, setError] = useState("");
 
-    //gestion des champs du formulaire
     const handleChange = ({ currentTarget }) => {
         const {value, name} = currentTarget;
         setCredentials({ ...credentials, [name]: value })
     };
 
-    //gestion du submit
     const handleSubmit = async event => {
         event.preventDefault();
 
@@ -37,9 +35,9 @@ const LoginPage = ({ history }) => {
         <h1>Connexion à l'application</h1> 
         <form onSubmit={handleSubmit}>
             <Field 
-                name="username" 
+                name="email" 
                 label="Adresse email" 
-                value={credentials.username} 
+                value={credentials.email} 
                 onChange={handleChange}
                 placeholder="Adresse email de connexion"
                 type="email" 

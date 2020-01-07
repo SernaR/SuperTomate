@@ -11,15 +11,17 @@ import PrivateRoute from './js/components/PrivateRoute.jsx';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+authAPI.setup();
+
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authAPI.isAuthenticated());
   const NavbarWithRouter = withRouter(Navbar);
 
   return (
-    <AuthContext.Provider value={
+    <AuthContext.Provider value={{
       isAuthenticated,
       setIsAuthenticated
-    }>
+    }}>
       <HashRouter>
         <NavbarWithRouter />
         <main className="container pt-5">

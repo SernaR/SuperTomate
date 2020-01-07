@@ -18,7 +18,7 @@ const Navbar = ({ history }) => {
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
-
+            
             <div className="collapse navbar-collapse" id="navbarColor02">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
@@ -26,7 +26,7 @@ const Navbar = ({ history }) => {
                     </li>
                     <li className="nav-item">
                         <NavLink className="nav-link" to="/">Factures</NavLink>
-                    </li>      
+                    </li> 
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     { !isAuthenticated &&
@@ -39,7 +39,10 @@ const Navbar = ({ history }) => {
                             </li>
                         </> ||
                         <li className="nav-item">
-                            <button className="btn btn-danger">Déconnexion</button>
+                            <button 
+                                onClick={handleLogout}
+                                className="btn btn-danger"
+                            >Déconnexion</button>
                         </li>
                     }
                 </ul>
