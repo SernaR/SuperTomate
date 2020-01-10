@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import authAPI from '../services/authAPI';
 import authContext from '../contexts/AuthContext';
-import Field from '../components/forms/Field.jsx';
+import Field from '../components/forms/Field';
 
 const LoginPage = ({ history }) => {
-    const { IsAuthenticated, setIsAuthenticated } = useContext(authContext);
+    const { setIsAuthenticated } = useContext(authContext);
     
     const [credentials, setCredentials] = useState({
         email: "sblack@gmail.fr",

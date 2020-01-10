@@ -1,13 +1,13 @@
-import axios from 'axios';
+import api from './api'
 import jwtDecode from 'jwt-decode';
 
 function logout() {
     window.localStorage.removeItem("authToken");
-    delete axios.defaults.headers["Authorization"];
+    delete api.defaults.headers["Authorization"];
 }
 
 function authenticate(credentials) {
-    return axios
+    return api
         .post("http://localhost:3000/api/login", credentials)
         .then(response => response.data.token)
         .then(token => {
@@ -17,7 +17,7 @@ function authenticate(credentials) {
 }
 
 function setAxiosToken(token) {
-    axios.defaults.headers["Authorization"] = "Bearer " + token;
+    api.defaults.headers["Authorization"] = "Bearer " + token;
 }
 
 function setup() {

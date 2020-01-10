@@ -12,6 +12,9 @@ module.exports = {
     filename: "[name].js"
   }, 
   plugins: [htmlPlugin],
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {
