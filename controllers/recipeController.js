@@ -1,7 +1,9 @@
 const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
-const sequelize = require('sequelize')
+//const sequelize = require('sequelize')
+
+//TODO : revoir update, manque l'image
 
 exports.addRecipe = async (req, res) => {
     const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
@@ -189,7 +191,7 @@ exports.getHomepage = async (req,res) => {
         })
 
         const newRecipes = await models.Recipe.findAll({
-            attributes: ['id','name'],
+            attributes: ['id','name','picture'],
             include: [{
                 model: models.Tag,
                 as: 'tags',

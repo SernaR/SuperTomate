@@ -1,4 +1,3 @@
-//const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const jwt = require('./utils/jwt')
@@ -8,8 +7,6 @@ const app = express()
 const DIST_DIR = path.join(__dirname, '/dist')
 const HTML_FILE = path.join(DIST_DIR, 'index.html')
 
-
-
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
 const apiRoutes = require('./routes/apiRoutes')
@@ -17,9 +14,10 @@ const authRoutes = require('./routes/authRoutes')
 const errorController = require('./controllers/errorController')
 const cors = require('cors')
 
-app.use(bodyParser.urlencoded({extended: true}))
+//app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(express.static(path.join(DIST_DIR)))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use(cors())
 app.use("/api", apiRoutes)
