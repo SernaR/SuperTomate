@@ -1,6 +1,7 @@
 import React from 'react'
 import HomepageRecipeCard from './HomepageRecipeCard'
 
+
 function HomepageNewRecipes({recipes}) {
         return(
             <div className="card-group">

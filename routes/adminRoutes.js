@@ -10,9 +10,11 @@ router.get('/user', userController.getAllUsers)
 router.get('/user/:id', userController.setUserPamams)//?action=promote ou ?action=remove
 
 //params routes
-router.post('/ingredient', params.addIngredient)
-router.post('/unit', params.addUnit)
+//router.post('/ingredient', params.addIngredient) // a supprimer
+//router.post('/unit', params.addUnit) // a supprimer
 router.post('/category', params.addCategory)
+router.post('/tag', params.addTag)
+router.post('/difficulty', params.addDifficulty)
 
 //comments routes
 router.get('/comment', commentController.getNewComments)

@@ -6,6 +6,7 @@ exports.checkRoleAdmin = (id, cb) => {
         where: { id }
     })
     .then( user => {
+        console.log('admin !')
         return cb(user.isAdmin)  
     })
     .catch( err => {

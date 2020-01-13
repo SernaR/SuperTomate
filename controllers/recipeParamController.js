@@ -1,6 +1,9 @@
 const models = require('../models')
-const jwt = require('../utils/jwt')
+//const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
+
+//TODO : suppression methode obsolete
+//TODO : refacto add
 
 exports.getRecipeParams = async (req, res) => {
     try {
@@ -15,6 +18,7 @@ exports.getRecipeParams = async (req, res) => {
     }         
 }
 
+//a supprimer
 exports.addIngredient = (req, res) => {
     const userId = req.userId
     const name = req.body.ingredient
@@ -46,6 +50,8 @@ exports.addIngredient = (req, res) => {
         }    
     })   
 }
+
+//a supprimer
 exports.addUnit = (req, res) => {
     const userId = req.userId
     const name = req.body.unit
@@ -92,10 +98,77 @@ exports.addCategory = (req, res) => {
             .then( ([newCategory, created]) => {
                 if (created) {
                     res.status(201).json({
-                        'category': newCategory.name
+                        'id': newCategory.id,
+                        'name': newCategory.name
                     }) 
                 } else {
                     res.status(409).json({ 'error': 'category already exist' })
+                }
+            })
+            .catch( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            })
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })   
+}
+
+exports.addTag = (req, res) => {
+    const userId = req.userId
+    const name = req.body.tag
+    if (!name) {
+        return res.status(400).json({ 'error': 'missing parameters' })
+    }
+  
+    adminUtils.checkRoleAdmin(userId, admin => {
+        if (admin) {
+            models.Tag.findOrCreate({
+                where: { name }
+            })
+            .then( ([newTag, created]) => {
+                if (created) {
+                    res.status(201).json({
+                        'id': newTag.id,
+                        "name": newTag.name
+                    }) 
+                } else {
+                    res.status(409).json({ 'error': 'tag already exist' })
+                }
+            })
+            .catch( () => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            })
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })   
+}
+
+exports.addDifficulty = (req, res) => {
+    const userId = req.userId
+    const name = req.body.difficulty
+    if (!name) {
+        return res.status(400).json({ 'error': 'missing parameters' })
+    }
+  
+    adminUtils.checkRoleAdmin(userId, admin => {
+        if (admin) {
+            models.Difficulty.findOrCreate({
+                where: { name }
+            })
+            .then( ([newDifficulty, created]) => {
+                if (created) {
+                    res.status(201).json({
+                        'id': newDifficulty.id,
+                        'name': newDifficulty.name
+                    }) 
+                } else {
+                    res.status(409).json({ 'error': 'difficulty already exist' })
                 }
             })
             .catch( () => {

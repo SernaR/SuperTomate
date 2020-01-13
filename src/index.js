@@ -11,6 +11,7 @@ import PrivateRoute from './js/components/PrivateRoute';
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import AddRecipe from './js/pages/recipes/addRecipe/AddRecipe.jsx';
+import AdminPage from './js/pages/AdminPage.jsx';
 
 authAPI.setup();
 
@@ -27,6 +28,7 @@ const Index = () => {
         <NavbarWithRouter />
           <Switch>
             <Route path="/login" component={LoginPage} />
+            <Route path="/admin" component={AdminPage} />
             <PrivateRoute path="/profile" component={Profile}/>$)$
             <PrivateRoute path="/addRecipe" component={AddRecipe}/>
             <Route path="/" component={HomePage} />

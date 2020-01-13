@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import authAPI from '../services/authAPI';
 import authContext from '../contexts/AuthContext';
 import Field from '../components/forms/Field';
+import Cockpit from '../components/Cockpit';
 
 const LoginPage = ({ history }) => {
     const { setIsAuthenticated } = useContext(authContext);
@@ -32,32 +33,35 @@ const LoginPage = ({ history }) => {
     }
 
     return ( <>
-        <h1>Connexion à l'application</h1> 
-        <form onSubmit={handleSubmit}>
-            <Field 
-                name="email" 
-                label="Adresse email" 
-                value={credentials.email} 
-                onChange={handleChange}
-                placeholder="Adresse email de connexion"
-                type="email" 
-                error ={error}
-            /> 
-            <Field 
-                name="password" 
-                label="Mot de passe" 
-                value={credentials.password}
-                onChange={handleChange}
-                type="password" 
-               
-            />        
-            <div className="form-group">
-                <button 
-                    type="submit" 
-                    className="btn btn-success"
-                >Je me connecte</button>
-            </div>
-        </form>
+        <div className="container">
+            <form onSubmit={handleSubmit}>
+                <Cockpit title="Connexion à l'application" />
+                <Field 
+                    name="email" 
+                    label="Adresse email" 
+                    value={credentials.email} 
+                    onChange={handleChange}
+                    placeholder="Adresse email de connexion"
+                    type="email" 
+                    error ={error}
+                /> 
+                <Field 
+                    name="password" 
+                    label="Mot de passe" 
+                    value={credentials.password}
+                    onChange={handleChange}
+                    type="password" 
+                
+                />        
+                <div className="form-group">
+                    <button 
+                        type="submit" 
+                        className="btn btn-success"
+                    >Je me connecte</button>
+                </div>
+            </form>
+        </div>
+        
     </>
     );
 }

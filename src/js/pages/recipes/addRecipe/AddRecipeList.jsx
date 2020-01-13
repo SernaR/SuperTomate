@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddRecipeList = ({aria, type = "text", items, onChange}) => {
+const AddRecipeList = ({aria, type, items = [], onChange}) => {
     const [list, setList] = useState({
         item: '',
         update: false,
@@ -9,9 +9,9 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
 
     const itemList = items.map( (item, index) => 
         <li key={index} className="mb-1">
-            <pre>{ item }</pre>
-            <button className="ml-3 outline-secondary" onClick={ () => updateItem(item) }>modifier</button>
-            <button className="ml-3 outline-secondary" onClick={ () => deleteItem(item) }>supprimer</button>
+            { item }
+            <button className="ml-3 btn btn-outline-secondary" onClick={ (event) => updateItem(event,item) }>modifier</button>
+            <button className="ml-3 btn btn-outline-danger" onClick={ (event) => deleteItem(event, item) }>supprimer</button>
         </li>
     )
 
@@ -19,7 +19,8 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
         setList({ ...list, item: currentTarget.value })
     }
 
-    const addItem = () => {
+    const addItem = event => {
+        event.preventDefault()
         const { item, update, updatedIndex} = list
         if(item) {
             if(update){
@@ -37,7 +38,8 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
         }   
     }
 
-    const deleteItem = item => {
+    const deleteItem = (event, item) => {
+        event.preventDefault()
         if ( !list.item ) {
             const index = items.indexOf(item)
             items.splice(index, 1)
@@ -45,7 +47,8 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
         }    
     } 
 
-    const updateItem = item => {
+    const updateItem = (event, item) => {
+        event.preventDefault()
         if ( !list.item ) {
             const index = items.indexOf(item)
             setList({
@@ -59,9 +62,9 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
     return ( 
         <>
             <div className="input-group mb-3">
-                <input 
-                    value={ list.item }
-                    type={ type } 
+                { type ?
+                <textarea
+                    value={ list.item } 
                     onChange={ handleItemChange }
                     placeholder={ aria }
                     aria-label={ aria }
@@ -69,6 +72,18 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
                     className="form-control" 
                     id={ aria }
                 />
+                :
+                <input 
+                    type = "text"
+                    value={ list.item }
+                    onChange={ handleItemChange }
+                    placeholder={ aria }
+                    aria-label={ aria }
+                    aria-describedby="basic-addon"
+                    className="form-control" 
+                    id={ aria }
+                />
+                }
                 <div className="input-group-append">
                     <button
                         className="input-group-text"
@@ -85,6 +100,3 @@ const AddRecipeList = ({aria, type = "text", items, onChange}) => {
  
 export default AddRecipeList;
 
-/**
- 
- */

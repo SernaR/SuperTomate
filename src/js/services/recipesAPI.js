@@ -1,20 +1,20 @@
-import api from './api'
+import axios from 'axios'
 
 function findAll() {
-    return api
-        .get("/")
+    return axios
+        .get("http://localhost:3000/api/")
         .then(response => response.data);
 };
 
 function getParams() {
-    return api
-        .get('/user/recipe-params')
+    return axios
+        .get('http://localhost:3000/api/user/recipe-params')
         .then(result => result.data )
 }
 
 function save(formData) {
-    return api
-        .post('/user/recipe', formData,
+    return axios
+        .post('http://localhost:3000/api/user/recipe', formData,
     )
 }
 
