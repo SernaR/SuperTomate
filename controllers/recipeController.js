@@ -3,6 +3,7 @@ const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
 //const sequelize = require('sequelize')
 
+//TODO :  revoir toutes les RQT - optimisation
 //TODO : revoir update, manque l'image
 
 exports.addRecipe = async (req, res) => {
@@ -117,30 +118,31 @@ exports.getRecipe = (req, res) => {
     const id = req.params.recipeId
     models.Recipe.findOne({
         where: { id },
-        attributes: ['name', 'serve', 'making', 'cook'],
+        attributes: ['name', 'serve', 'making', 'cook', 'picture'],
         include: [
             { 
                 model: models.Category,
+                as: 'category',
+                attributes: ['name']
+            },{ 
+                model: models.Difficulty,
+                as: 'difficulty',
                 attributes: ['name']
             },{ 
                 model: models.User,
+                as: 'user',
                 attributes: ['name']
             },{
                 model: models.Step,
-                attributes: ['step', 'content'],
+                as: 'steps',
+                attributes: ['rank', 'content'],
                 order: [['step', 'ASC']]
             },{
                 model: models.RecipeIngredient,
-                attributes: ['quantity'],
-                include: [{
-                    model: models.Ingredient,
-                    attributes: ['name']
-                },{
-                    model: models.Unit,
-                    attributes: ['name']
-                }],
-                order: [['id', 'ASC']]
-            },{
+                as: 'ingredients',
+                attributes: ['rank', 'content'],
+                order: [['rank', 'ASC']]
+            },/*{
                 model: models.Comment,
                 required: false,
                 where: { isChecked: 1, isBlocked: 0 },
@@ -161,18 +163,19 @@ exports.getRecipe = (req, res) => {
                             }
                         ],
                         order:[['createdAt', 'DESC']] 
-                    }
+                    
                 ],
                 order:[['createdAt', 'DESC']]
-            }
+            }}*/
         ]
     })
-    .then( recipes => {
+    .then( recipe => {
         res.status(200).json({
-            'recipes': recipes
+            'recipe': recipe
         })
     })
-    .catch( () => {
+    .catch( (err) => {
+        console.log(err)
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     })    
 }

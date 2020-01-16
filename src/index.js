@@ -12,8 +12,11 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import AddRecipe from './js/pages/recipes/addRecipe/AddRecipe.jsx';
 import AdminPage from './js/pages/AdminPage.jsx';
+import Recipe from './js/pages/recipes/recipe/Recipe.jsx';
 
 authAPI.setup();
+
+//TODO :  page d'erreur
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authAPI.isAuthenticated());
@@ -28,8 +31,9 @@ const Index = () => {
         <NavbarWithRouter />
           <Switch>
             <Route path="/login" component={LoginPage} />
+            <Route path="/recipe/:id" component={Recipe}/>
             <Route path="/admin" component={AdminPage} />
-            <PrivateRoute path="/profile" component={Profile}/>$)$
+            <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/addRecipe" component={AddRecipe}/>
             <Route path="/" component={HomePage} />
           </Switch>

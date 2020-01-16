@@ -1,21 +1,28 @@
 import axios from 'axios'
+import { path } from './apiConfig.json'
 
 function findAll() {
     return axios
-        .get("http://localhost:3000/api/")
+        .get(path + "/")
         .then(response => response.data);
 };
 
+function find(id) {
+    return axios
+        .get( path + '/recipe/' + id)
+        .then(result => result.data)
+}
+
 function getParams() {
     return axios
-        .get('http://localhost:3000/api/user/recipe-params')
+        .get( path + '/user/recipe-params')
         .then(result => result.data )
 }
 
 function save(formData) {
     return axios
-        .post('http://localhost:3000/api/user/recipe', formData,
+        .post( path + '/user/recipe', formData,
     )
 }
 
-export default { findAll, getParams, save }
+export default { findAll, find, getParams, save }

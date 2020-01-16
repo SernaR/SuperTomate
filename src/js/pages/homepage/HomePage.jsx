@@ -20,7 +20,6 @@ const HomePage = (props) => {
             const { newRecipes, bestRecipe } = await recipesAPI.findAll()
             setNewRecipes(newRecipes)
             setBestRecipe(bestRecipe)
-            console.log(newRecipes)
         } catch(err) {
             console.log(err.response)
         }

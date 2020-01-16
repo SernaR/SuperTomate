@@ -1,7 +1,8 @@
 import React from 'react' 
+import { Link } from 'react-router-dom'
 
 function HomepageRecipeCard({ recipe }) {
-    const { name, picture, tags } = recipe
+    const { id, name, picture, tags } = recipe
     
     return(    
         <div className="col-lg-3 col-md-6 col-sm-6">   
@@ -12,7 +13,7 @@ function HomepageRecipeCard({ recipe }) {
                     <p className="card-text">
                         {tags.map( (tag, index) => <span key={index} className="badge badge-primary ml-1">{tag.name}</span>)}
                     </p>
-                    <button className="btn btn-success">Go somewhere</button>
+                    <Link className="btn btn-success" to={"/recipe/" + id }>Visualiser</Link>
                 </div>
             </div>  
         </div>    

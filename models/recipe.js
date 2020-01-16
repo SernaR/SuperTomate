@@ -11,23 +11,26 @@ module.exports = (sequelize, DataTypes) => {
   Recipe.associate = function(models) {
     // associations can be defined here
     models.Recipe.belongsTo(models.User, {
+      as: 'user',
       foreignKey: 'userId',
       allowNull: false
     }),
     models.Recipe.belongsTo(models.Category, {
+      as: 'category',
       foreignKey: 'categoryId',
       allowNull: false
       
     }),
     models.Recipe.belongsTo(models.Difficulty, {
+      as: 'difficulty',
       foreignKey: 'difficultyId',
       allowNull: false
       
     }),
-    models.Recipe.hasMany(models.Comment, {as: 'Comments'})
-    models.Recipe.hasMany(models.Step, {as: 'Steps'})
-    models.Recipe.hasMany(models.Like,{as: 'Likes'})
-    models.Recipe.hasMany(models.RecipeIngredient, {as: 'RecipeIngredients'})
+    models.Recipe.hasMany(models.Comment, {as: 'comments'})
+    models.Recipe.hasMany(models.Step, {as: 'steps'})
+    models.Recipe.hasMany(models.Like,{as: 'likes'})
+    models.Recipe.hasMany(models.RecipeIngredient, {as: 'ingredients'})
     //models.Recipe.hasMany(models.RecipeTag, {as: 'RecipeTags'})
     models.Recipe.belongsToMany(models.Tag, { as: 'tags', through: 'RecipeTag', foreignKey: 'recipeId' });
   };
