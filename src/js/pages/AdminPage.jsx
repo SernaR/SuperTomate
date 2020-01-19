@@ -77,7 +77,7 @@ const AdminPage = (props) => {
     }
 
     return ( 
-        <> 
+        <main> 
             <div className="container">
                 <Cockpit title="Admin Page" />
                 <form >
@@ -125,7 +125,7 @@ const AdminPage = (props) => {
                 </form>
                 <ul>{ difficulties }</ul>
             </div>
-        </>
+        </main>
      );
 }
  

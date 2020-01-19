@@ -4,8 +4,8 @@ import Footer from '../../components/Footer';
 import Block from '../../components/Block';
 
 import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from './HomepageText.json'
-import HomepageNewRecipes from './HomepageNewRecipes';
 import recipesAPI from '../../services/recipesAPI';
+import RecipeCards from '../../components/RecipeCards';
 
 const HomePage = (props) => {
     useEffect( () => {
@@ -17,7 +17,7 @@ const HomePage = (props) => {
     
     const fetchRecipes = async() => {
         try {
-            const { newRecipes, bestRecipe } = await recipesAPI.findAll()
+            const { newRecipes, bestRecipe } = await recipesAPI.getHome()
             setNewRecipes(newRecipes)
             setBestRecipe(bestRecipe)
         } catch(err) {
@@ -26,7 +26,7 @@ const HomePage = (props) => {
     }
 
     return ( 
-        <>
+        <main className="mt-1">
             <Cockpit 
                 title="Super Tomate"
                 para="Le héros du potager"
@@ -36,7 +36,7 @@ const HomePage = (props) => {
                 text={les_mains_dans_la_tambouille.text} 
             />
             <Block title="Les jeunes pousses">
-                <HomepageNewRecipes recipes={ newRecipes }/>
+                <RecipeCards recipes={ newRecipes }/>
             </Block>
             
             <Block
@@ -44,7 +44,7 @@ const HomePage = (props) => {
                 text={devenir_cuisinier_vegetal.text} 
             />
             <Footer />
-        </>
+        </main>
     );
 }
  

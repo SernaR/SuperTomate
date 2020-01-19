@@ -2,6 +2,8 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { path } from './apiConfig.json'
 
+//todo factoriser methodes
+
 function logout() {
     window.localStorage.removeItem("authToken");
     delete axios.defaults.headers["Authorization"];
@@ -28,7 +30,6 @@ function setup() {
         const {exp: expiration} = jwtDecode(token);
         if(expiration * 1000 > new Date().getTime()) {
             setAxiosToken(token)
-            console.log("Connexion établie avec Axios");
         } else {
             logout();
         } 
@@ -47,9 +48,20 @@ function isAuthenticated() {
     return false
 }
 
+function isAdmin() {
+    const token = window.localStorage.getItem("authToken");
+
+    if(token) {
+        const { isAdmin: admin } = jwtDecode(token);
+        return admin
+    } 
+    return false
+}
+
 export default {
     authenticate,
     logout,
     setup,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }

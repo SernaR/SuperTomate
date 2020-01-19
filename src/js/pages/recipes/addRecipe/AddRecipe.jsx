@@ -137,100 +137,103 @@ const AddRecipe = () => {
     const difficulty = params.difficulties.map( (d, index) => <option key={index} value={d.id}>{ d.name }</option>)
     const category = params.categories.map( (c, index) => <option key={index} value={c.id}>{c.name}</option> )
     
-    return ( 
-    <div className="container">
-        <Cockpit title="Proposer une recette" />
-        <form>
-            <Field
-                label="Nom de la recette"
-                value={newRecipe.name}
-                onChange={handleChange}
-                name="name"
-            />
-            <Select
-                label="Difficulté"
-                value={newRecipe.difficulty}
-                onChange={handleChange}
-                name="difficulty"
-                options={ difficulty }
-            />
-            <hr></hr>
-            <div className="row mb-3">
-                <div className="col">
-                <Field 
-                    label="Temps de préparation (en mn)"
-                    type="number"
-                    value={newRecipe.making}
-                    onChange={handleChange}
-                    name="making"
-                />
-                </div>
-                <div className="col">
-                <Field 
-                    label="Temps de cuisson (en mn)"
-                    type="number"
-                    value={newRecipe.cook}
-                    onChange={handleChange}
-                    name="cook"
-                />
-                </div>
-                <div className="col">
-                <Field 
-                    label="Nombre de personnes"
-                    type="number"
-                    value={newRecipe.serve}
-                    onChange={handleChange}
-                    name="serve"
-                />
-                </div>
-            </div>
-            <hr></hr>
-            
-            <Select
-                label="Catégories"
-                value={newRecipe.category}
-                onChange={handleChange}
-                name="category"
-                options={ category }
-            />
-            <Block>
-                {tags}
-            </Block>
-            <hr></hr>
-            <Block label="Ingrédients">
-                <AddRecipeList
-                    items={ newRecipe.ingredients }
-                    aria="ingrédients"
-                    onChange={ handleIngredientsChange }/>
-            </Block> 
-            <Block label="Étapes">
-                <AddRecipeList
-                    items={ newRecipe.steps }
-                    aria="steps"
-                    type="textarea"
-                    onChange={ handleStepsChange }/>
-            </Block>   
-            <Block label="Ajouter une photo">
-                <div className="input-group mb-3">    
-                    <div className="custom-file">
-                        <input 
-                            type="file" 
-                            className="custom-file-input" 
-                            id="inputGroupFile" 
-                            aria-describedby="fileHelp" 
-                            onChange={ handleImageChange }
+    return (
+        <main>
+            <div className="container">
+                <Cockpit title="Proposer une recette" />
+                <form>
+                    <Field
+                        label="Nom de la recette"
+                        value={newRecipe.name}
+                        onChange={handleChange}
+                        name="name"
+                    />
+                    <Select
+                        label="Difficulté"
+                        value={newRecipe.difficulty}
+                        onChange={handleChange}
+                        name="difficulty"
+                        options={ difficulty }
+                    />
+                    <hr></hr>
+                    <div className="row mb-3">
+                        <div className="col">
+                        <Field 
+                            label="Temps de préparation (en mn)"
+                            type="number"
+                            value={newRecipe.making}
+                            onChange={handleChange}
+                            name="making"
                         />
-                        <label className="custom-file-label" htmlFor="inputGroupFile">{ (newRecipe.picture && newRecipe.picture.name) || "selectionner une image" }</label>
+                        </div>
+                        <div className="col">
+                        <Field 
+                            label="Temps de cuisson (en mn)"
+                            type="number"
+                            value={newRecipe.cook}
+                            onChange={handleChange}
+                            name="cook"
+                        />
+                        </div>
+                        <div className="col">
+                        <Field 
+                            label="Nombre de personnes"
+                            type="number"
+                            value={newRecipe.serve}
+                            onChange={handleChange}
+                            name="serve"
+                        />
+                        </div>
                     </div>
-                </div>
-            </Block>       
-            <hr></hr>
-            <div className="container text-center my-5">
-                <button type="submit" className="btn btn-outline-success mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
-                <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>
+                    <hr></hr>
+                    
+                    <Select
+                        label="Catégories"
+                        value={newRecipe.category}
+                        onChange={handleChange}
+                        name="category"
+                        options={ category }
+                    />
+                    <Block>
+                        {tags}
+                    </Block>
+                    <hr></hr>
+                    <Block label="Ingrédients">
+                        <AddRecipeList
+                            items={ newRecipe.ingredients }
+                            aria="ingrédients"
+                            onChange={ handleIngredientsChange }/>
+                    </Block> 
+                    <Block label="Étapes">
+                        <AddRecipeList
+                            items={ newRecipe.steps }
+                            aria="steps"
+                            type="textarea"
+                            onChange={ handleStepsChange }/>
+                    </Block>   
+                    <Block label="Ajouter une photo">
+                        <div className="input-group mb-3">    
+                            <div className="custom-file">
+                                <input 
+                                    type="file" 
+                                    className="custom-file-input" 
+                                    id="inputGroupFile" 
+                                    aria-describedby="fileHelp" 
+                                    onChange={ handleImageChange }
+                                />
+                                <label className="custom-file-label" htmlFor="inputGroupFile">{ (newRecipe.picture && newRecipe.picture.name) || "selectionner une image" }</label>
+                            </div>
+                        </div>
+                    </Block>       
+                    <hr></hr>
+                    <div className="container text-center my-5">
+                        <button type="submit" className="btn btn-outline-success mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
+                        <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div> );
+        </main>        
+    );
 }
  
 export default AddRecipe;

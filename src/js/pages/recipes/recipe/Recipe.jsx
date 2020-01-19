@@ -23,20 +23,21 @@ const Recipe = ({ match }) => {
         try {
             const {recipe} = await recipesAPI.find(id)
             setRecipe(recipe)
-            console.log(recipe)/////////////////////////////////////////////////
         } catch(err) {
             console.log(err.response)
         }
     }
 
     return ( 
-        <div className="container bg-white card p-3 mb-5">
-            <h1 className="display-2 text-center py-4">{ recipe.name }</h1>   
-            <Header recipe={recipe} />
-            <Ingredients ingredients={recipe.ingredients}/>
-            <Steps steps={recipe.steps}/>
-            
-        </div>
+        <main>
+            <div className="container bg-white card p-3 mb-5">
+                <h1 className="display-2 text-center py-4">{ recipe.name }</h1>   
+                <Header recipe={recipe} />
+                <Ingredients ingredients={recipe.ingredients}/>
+                <Steps steps={recipe.steps}/>
+            </div>
+        </main>
+        
     );
 }
  

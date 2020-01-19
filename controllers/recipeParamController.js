@@ -18,6 +18,24 @@ exports.getRecipeParams = async (req, res) => {
     }         
 }
 
+exports.getCategories = async (req, res) => {
+    try{
+        const categories = await models.Category.findAll({ attributes: ['id', 'name'] })
+        res.status(200).json({ categories })
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }  
+}
+
+exports.getTags = async (req, res) => {
+    try{
+        const tags = await models.Tag.findAll({ attributes: ['id', 'name'] })
+        res.status(200).json({ tags })
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    } 
+}
+
 //a supprimer
 exports.addIngredient = (req, res) => {
     const userId = req.userId
@@ -52,6 +70,7 @@ exports.addIngredient = (req, res) => {
 }
 
 //a supprimer
+/*
 exports.addUnit = (req, res) => {
     const userId = req.userId
     const name = req.body.unit
@@ -82,7 +101,8 @@ exports.addUnit = (req, res) => {
             })
         }    
     })   
-}
+}*/
+
 exports.addCategory = (req, res) => {
     const userId = req.userId
     const name = req.body.category

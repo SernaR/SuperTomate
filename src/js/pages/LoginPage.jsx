@@ -5,7 +5,7 @@ import Field from '../components/forms/Field';
 import Cockpit from '../components/Cockpit';
 
 const LoginPage = ({ history }) => {
-    const { setIsAuthenticated } = useContext(authContext);
+    const { setIsAuthenticated, setIsAdmin } = useContext(authContext);
     
     const [credentials, setCredentials] = useState({
         email: "sblack@gmail.fr",
@@ -23,7 +23,10 @@ const LoginPage = ({ history }) => {
 
         try{
             await authAPI.authenticate(credentials);
+            
             setIsAuthenticated(true);
+            setIsAdmin(authAPI.isAdmin())
+
             setError('');
             history.replace("/profile");
         } catch(error) {
@@ -32,37 +35,37 @@ const LoginPage = ({ history }) => {
         }
     }
 
-    return ( <>
-        <div className="container">
-            <form onSubmit={handleSubmit}>
-                <Cockpit title="Connexion à l'application" />
-                <Field 
-                    name="email" 
-                    label="Adresse email" 
-                    value={credentials.email} 
-                    onChange={handleChange}
-                    placeholder="Adresse email de connexion"
-                    type="email" 
-                    error ={error}
-                /> 
-                <Field 
-                    name="password" 
-                    label="Mot de passe" 
-                    value={credentials.password}
-                    onChange={handleChange}
-                    type="password" 
-                
-                />        
-                <div className="form-group">
-                    <button 
-                        type="submit" 
-                        className="btn btn-success"
-                    >Je me connecte</button>
-                </div>
-            </form>
-        </div>
-        
-    </>
+    return (
+        <main>
+            <div className="container">
+                <form onSubmit={handleSubmit}>
+                    <Cockpit title="Connexion à l'application" />
+                    <Field 
+                        name="email" 
+                        label="Adresse email" 
+                        value={credentials.email} 
+                        onChange={handleChange}
+                        placeholder="Adresse email de connexion"
+                        type="email" 
+                        error ={error}
+                    /> 
+                    <Field 
+                        name="password" 
+                        label="Mot de passe" 
+                        value={credentials.password}
+                        onChange={handleChange}
+                        type="password" 
+                    
+                    />        
+                    <div className="form-group">
+                        <button 
+                            type="submit" 
+                            className="btn btn-success"
+                        >Je me connecte</button>
+                    </div>
+                </form>
+            </div>  
+        </main>
     );
 }
  

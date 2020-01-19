@@ -76,32 +76,24 @@ exports.updateRecipe = async (req, res) => {
 }
 
 exports.getAllRecipes = (req, res) => {
+    const name = req.params.categoryId
     models.Recipe.findAll({
-        attributes: ['name', 'serve', 'making', 'cook'],
+        attributes: ['id','name','picture'],
         include: [
+            {
+                model: models.Tag,
+                as: 'tags',
+                required: false,
+                attributes: ['name'],
+                through: { attributes: [] }
+            },
             { 
                 model: models.Category,
-                attributes: ['name']
-            },{ 
-                model: models.User,
-                attributes: ['name']
-            },{
-                model: models.Step,
-                attributes: ['step', 'content'],
-                order: [['step', 'ASC']]
-            },{
-                model: models.RecipeIngredient,
-                attributes: ['quantity'],
-                include: [{
-                    model: models.Ingredient,
-                    attributes: ['name']
-                },{
-                    model: models.Unit,
-                    attributes: ['name']
-                }],
-                order: [['id', 'ASC']]
+                as: 'category',
+                where: { name },
+                attributes: ['name'],
             }
-        ],
+        ],    
         order: [['name', 'ASC']]
     })
     .then( recipes => {

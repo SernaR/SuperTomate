@@ -1,13 +1,12 @@
-import React from 'react' 
+import React from 'react';
 import { Link } from 'react-router-dom'
 
-function HomepageRecipeCard({ recipe }) {
+const recipecard = ({ recipe }) => {
     const { id, name, picture, tags } = recipe
-    
-    return(    
+    return ( 
         <div className="col-lg-3 col-md-6 col-sm-6">   
             <div className="card border-primary d-inline-block mr-3 mb-3">  
-                <img src={ picture } className="card-img-top" alt="..."></img>
+                <img src={ picture } className="card-img-top" alt={ name }></img>
                 <div className="card-body"> 
                     <h3 className="card-title">{ name }</h3>
                     <p className="card-text">
@@ -16,8 +15,8 @@ function HomepageRecipeCard({ recipe }) {
                     <Link className="btn btn-success" to={"/recipe/" + id }>Visualiser</Link>
                 </div>
             </div>  
-        </div>    
-    )
+        </div> 
+     );
 }
-
-export default HomepageRecipeCard
+ 
+export default recipecard;

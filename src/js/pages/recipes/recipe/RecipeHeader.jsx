@@ -1,6 +1,7 @@
 import React from 'react';
 
 //TODO : user ??
+//todo : notes -->  <p className="my-5 pt-3" id="note">Noter la recette: </p>
 
 const RecipeHeader = ({ recipe }) => {
     const { serve, making, cook, picture, difficulty } = recipe
@@ -14,10 +15,11 @@ const RecipeHeader = ({ recipe }) => {
                 <p>Nombre de personnes: { serve }</p>
                 <p>Préparation: { making }mn</p>
                 <p>Cuisson: { cook }mn</p>
-                <p className="my-5 pt-3" id="note">Noter la recette: </p>
+                
             </div>
         </div>
      );
 }
  
 export default RecipeHeader;
+
