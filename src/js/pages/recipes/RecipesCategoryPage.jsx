@@ -6,7 +6,6 @@ import RecipeCards from '../../components/RecipeCards';
 import Aside from '../../components/Aside'
 
 //todo pagination
-//todo cas avec un mauvais tag à finaliser
 //todo voir tous les cas
 //todo voir pour reinitialiser les filtres
 
@@ -18,35 +17,61 @@ const RecipesCategoryPage = ({ match }) => {
 
     useEffect( () => {
         fetchRecipes();
+        setSearchedName('')
+        setSelectedTags([])
     }, [category])
 
     const [recipes, setRecipes] = useState([])
     const [filteredRecipes, setFilteredRecipes] = useState([])
+    const [searchedName, setSearchedName] = useState('')
+    const [selectedTags, setSelectedTags] = useState([])
 
-    const filterByTag = (tags, recipesTags) => {
-        // à finaliser
-        let test = false
-        recipesTags.map( recipesTag => {
-            if(tags.some( tag => tag === recipesTag.name) ){
-                test = true
-                return
-            }
-        })  
-        return test
+    const handleTagChange = ({currentTarget}) => {
+        const {name} = currentTarget;
+
+        if(selectedTags.includes(name)) {
+            setSelectedTags(selectedTags.filter( tag => tag !== name ))
+           
+        } else {
+            setSelectedTags([...selectedTags, name])
+        }
     }
 
-    const handleTagChange = (tags) => {
-        setFilteredRecipes(filteredRecipes.filter( recipe => 
-            filterByTag(tags, recipe.tags) 
-        ))
-    }
-
-    const handleSearchChange = (searchedName) => {
-        setFilteredRecipes(filteredRecipes.filter( recipe => 
-            recipe.name.toLowerCase().includes(searchedName.toLowerCase() 
-        )))
-    }
+    const handleSubmit = event => {
+        event.preventDefault()
         
+        const recipesFilterByTag =  filterByTag(recipes)
+        const recipesFilterByName = filterByName(recipesFilterByTag)
+
+        setFilteredRecipes(recipesFilterByName)
+        
+    }
+
+    const handleSearchChange = ({ currentTarget }) => {
+        setSearchedName(currentTarget.value)
+    }
+
+    const handleUnfilter = () => {
+        setFilteredRecipes(recipes)
+        setSelectedTags([])
+        //setSearchedName('')
+    }
+
+    const filterByName = recipes => {
+        return recipes.filter( recipe => 
+            recipe.name.toLowerCase().includes(searchedName.toLowerCase() 
+        ))  
+    }
+
+    const filterByTag = recipes => {
+        if(selectedTags.length > 0) {  
+            return recipes.filter( recipe => 
+                checkTags(selectedTags, recipe.tags) 
+            )
+        } else {
+            return recipes
+        } 
+    }
 
     const fetchRecipes = async() => {
         try {
@@ -58,6 +83,17 @@ const RecipesCategoryPage = ({ match }) => {
         }
     }
 
+    const checkTags = (tags, recipesTags) => {
+        let test = false
+        recipesTags.map( recipesTag => {
+            if(tags.some( tag => tag === recipesTag.name) ){
+                test = true
+                return
+            }
+        })  
+        return test
+    }
+
     return ( 
         <main>
             <div className="container">
@@ -65,7 +101,14 @@ const RecipesCategoryPage = ({ match }) => {
                 <Breadcrumbs />
                 <div className="row">
                     <div className="col-sm-3">
-                        <Aside onTagChange={handleTagChange} onSearchChange={handleSearchChange}/>
+                        <Aside 
+                            selectedTags={ selectedTags }
+                            onTagChange={ handleTagChange }
+                            searchedName={ searchedName }
+                            onSearchChange={ handleSearchChange }
+                            onSubmit={ handleSubmit }
+                            onUnfilter={ handleUnfilter }
+                        />
                     </div>
                     <div className="col-sm-9"> 
                             { filteredRecipes.length > 0 ?  <RecipeCards recipes={filteredRecipes} /> :<h2 className="text-center">vide</h2>}
