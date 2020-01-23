@@ -6,11 +6,7 @@ import RecipeCards from '../../components/RecipeCards';
 import Aside from '../../components/Aside'
 
 //todo pagination
-//todo voir tous les cas
-//todo voir pour reinitialiser les filtres
-
 //todo enlever et recoder Breadcrumbs
-
 
 const RecipesCategoryPage = ({ match }) => {
     const category = match.params.category
@@ -44,7 +40,6 @@ const RecipesCategoryPage = ({ match }) => {
         const recipesFilterByName = filterByName(recipesFilterByTag)
 
         setFilteredRecipes(recipesFilterByName)
-        
     }
 
     const handleSearchChange = ({ currentTarget }) => {

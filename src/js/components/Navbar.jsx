@@ -64,6 +64,9 @@ const Navbar = ({ history }) => {
                                     </li>
                                 }
                                 <li className="nav-item">
+                                        <NavLink to="/profile" className="nav-link lead">Profil</NavLink>
+                                </li>
+                                <li className="nav-item">
                                         <NavLink to="/addRecipe" className="nav-link lead">Nouvelle recette</NavLink>
                                 </li>
                                 <li className="nav-item">

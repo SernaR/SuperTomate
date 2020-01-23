@@ -8,3 +8,4 @@ const PrivateRoute = ({ path, component }) => {
 }
  
 export default PrivateRoute;
+
