@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { path } from './apiConfig.json'
 
+//utiliser le cache pour les categories - navbar
+
 function getHome() {
     return axios
         .get(path + "/")

@@ -8,10 +8,10 @@ const AddRecipeList = ({aria, type, items = [], onChange}) => {
     })
 
     const itemList = items.map( (item, index) => 
-        <li key={index} className="mb-1">
+        <li key={index} className="lead mb-1">
             { item }
-            <button className="ml-3 btn btn-outline-secondary" onClick={ (event) => updateItem(event,item) }>modifier</button>
-            <button className="ml-3 btn btn-outline-danger" onClick={ (event) => deleteItem(event, item) }>supprimer</button>
+            <button className="ml-3 btn btn-outline-secondary btn-sm" onClick={ (event) => updateItem(event,item) }>modifier</button>
+            <button className="ml-3 btn btn-outline-danger btn-sm" onClick={ (event) => deleteItem(event, item) }>supprimer</button>
         </li>
     )
 

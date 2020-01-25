@@ -7,10 +7,10 @@ const RecipeHeader = ({ recipe }) => {
     const { serve, making, cook, picture, difficulty } = recipe
     return ( 
         <div className="row p-3">
-            <div id="recette-img" className="col-md-6 col-sm-12">
+            <div id="recette-img" className="col">
                 <img src={picture} className="img-fluid card" alt="Responsive image recette" />
             </div>
-            <div className="col-md-6 col-sm-12 card py-3"> 
+            <div className="col card py-3 lead"> 
                 <p>Difficulté: { difficulty.name }</p>
                 <p>Nombre de personnes: { serve }</p>
                 <p>Préparation: { making }mn</p>

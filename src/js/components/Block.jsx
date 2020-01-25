@@ -3,9 +3,9 @@ import React from 'react'
 function Block({title, text, children}) {
     return(
         <section className="pt-3">
-            <h2 className="display-4 text-center">{ title}</h2>
-            <div className="container">
-                <p className="lead" >{ text }</p>
+            <h2 className="display-4 text-center pt-3 mb-4">{ title}</h2>
+            <div className="container pt-3">
+                <p className="lead">{text}</p>
             <div>{ children }</div>
             </div>
         </section>    

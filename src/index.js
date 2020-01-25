@@ -16,6 +16,8 @@ import AdminPage from './js/pages/AdminPage.jsx';
 import Recipe from './js/pages/recipes/recipe/Recipe.jsx';
 import RecipesCategoryPage from './js/pages/recipes/RecipesCategoryPage';
 
+import './css/App.css'
+
 authAPI.setup();
 
 //TODO :  page d'erreur

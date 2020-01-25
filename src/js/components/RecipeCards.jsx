@@ -1,10 +1,10 @@
 import React from 'react';
 import Recipecard from './RecipeCard';
 
-const RecipeCards = ({ recipes }) => {
+const RecipeCards = ({ recipes,col }) => {
     return ( 
         <div className="card-group">
-            { recipes.map( (recipe, index) => <Recipecard className="row text-center py-3" key={ index } recipe={ recipe }/>)}
+            { recipes.map( (recipe, index) => <Recipecard className="row text-center" key={ index } recipe={ recipe } col={col}/>)}
         </div>
      );
 }

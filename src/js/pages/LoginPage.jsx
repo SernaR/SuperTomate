@@ -28,7 +28,7 @@ const LoginPage = ({ history }) => {
             setIsAdmin(authAPI.isAdmin())
 
             setError('');
-            history.replace("/profile");
+            history.replace("/addRecipe");
         } catch(error) {
             setError("Aucun compte ne possède cette adresse ou alors les informations ne correspondent pas")
             console.log(error.response)
@@ -38,32 +38,34 @@ const LoginPage = ({ history }) => {
     return (
         <main>
             <div className="container">
-                <form onSubmit={handleSubmit}>
-                    <Cockpit title="Connexion à l'application" />
-                    <Field 
-                        name="email" 
-                        label="Adresse email" 
-                        value={credentials.email} 
-                        onChange={handleChange}
-                        placeholder="Adresse email de connexion"
-                        type="email" 
-                        error ={error}
-                    /> 
-                    <Field 
-                        name="password" 
-                        label="Mot de passe" 
-                        value={credentials.password}
-                        onChange={handleChange}
-                        type="password" 
-                    
-                    />        
-                    <div className="form-group">
-                        <button 
-                            type="submit" 
-                            className="btn btn-success"
-                        >Je me connecte</button>
-                    </div>
-                </form>
+                <div className="card px-4"> 
+                    <form onSubmit={handleSubmit}>
+                        <Cockpit title="Connexion à l'application" />
+                        <Field 
+                            name="email" 
+                            label="Adresse email" 
+                            value={credentials.email} 
+                            onChange={handleChange}
+                            placeholder="Adresse email de connexion"
+                            type="email" 
+                            error ={error}
+                        /> 
+                        <Field 
+                            name="password" 
+                            label="Mot de passe" 
+                            value={credentials.password}
+                            onChange={handleChange}
+                            type="password" 
+                        
+                        />        
+                        <div className="form-group">
+                            <button 
+                                type="submit" 
+                                className="btn btn-primary"
+                            >Je me connecte</button>
+                        </div>
+                    </form>
+                </div>    
             </div>  
         </main>
     );

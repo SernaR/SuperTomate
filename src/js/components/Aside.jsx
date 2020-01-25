@@ -28,7 +28,7 @@ const Aside = ({selectedTags, onTagChange, searchedName, onSearchChange, onSubmi
                 </div>
             </form>
             <form onSubmit={onSubmit}>
-                <h2 className="mt-3">Filtrer par:</h2>
+                <h2 className="mt-4">Filtrer par:</h2>
                 {
                     tags.map( tag => 
                         <Check 
@@ -38,7 +38,7 @@ const Aside = ({selectedTags, onTagChange, searchedName, onSearchChange, onSubmi
                             onChange={onTagChange}
                         />)
                 }
-                <button type="submit" className="btn btn-secondary my-4">Filtrer</button>
+                <button type="submit" className="btn btn-primary my-4">Filtrer</button>
                 <button type="button" className="btn btn-link" onClick={onUnfilter}>Vider les filtres</button>
             </form>
         </aside>

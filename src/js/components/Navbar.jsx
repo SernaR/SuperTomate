@@ -3,14 +3,24 @@ import { NavLink } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 import authAPI from '../services/authAPI';
 import recipesAPI from '../services/recipesAPI';
+
+import axios from 'axios'
     
-//todo boucler sur les categories
+//utiliser le cache pour les categories
 
 const Navbar = ({ history }) => {
     const [categories, setCategories] = useState([])
-
+    
     useEffect( () => {
-        fetchCategories();
+        const fetchCategories = async() => {
+            try {
+                const { categories } = await recipesAPI.getCategories()
+                setCategories(categories)
+            } catch(err) {
+                console.log(err.response)
+            }
+        }  
+        fetchCategories()
     }, [])
 
     const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin } = useContext(AuthContext);
@@ -21,14 +31,7 @@ const Navbar = ({ history }) => {
         history.push("/login");
     } 
 
-    const fetchCategories = async() => {
-        try {
-            const { categories } = await recipesAPI.getCategories()
-            setCategories(categories)
-        } catch(err) {
-            console.log(err.response)
-        }
-    }
+    
 
     const categotyList = categories.map( category => 
         <li className="nav-item" key={ category.id }>
@@ -37,9 +40,9 @@ const Navbar = ({ history }) => {
     )
 
     return ( 
-        <header className="fixed-top">
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <NavLink className="navbar-brand" to="/">Super Tomate</NavLink>
+        <header>
+            <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+                <NavLink className="navbar-brand mr-4" to="/">Super Tomate</NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -67,7 +70,7 @@ const Navbar = ({ history }) => {
                                         <NavLink to="/profile" className="nav-link lead">Profil</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                        <NavLink to="/addRecipe" className="nav-link lead">Nouvelle recette</NavLink>
+                                        <NavLink to="/addRecipe" className="btn btn-outline-secondary mx-2">Nouvelle recette</NavLink>
                                 </li>
                                 <li className="nav-item">
                                     <button 

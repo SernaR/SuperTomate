@@ -1,0 +1,40 @@
+body{
+	background-color: rgba(100,107,79,0.8);
+}
+
+.jumbotron{background:rgba(100,107,79,0.8);color:#fff;}
+
+/*-----PRIMARY BUTTON-----*/
+.btn-primary, .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+	background:#a2b667;
+	border-color:#a2b667;
+}
+.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+	background:#8aa151;
+	border-color:#8aa151;
+}
+.btn-primary.focus, .btn-primary:focus{
+	box-shadow:0 0 0 0.2rem rgba(138,161,81,0.5);
+}
+
+/*-----BADGE-----*/
+.badge{
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+/*-----HOME-----*/
+.tomato{
+	background-image: url('C:/Users/Gours/Documents/GitHub/SuperTomate/src/img/super-tomato.jpg');
+	background-size: cover;
+	background-position: bottom;
+	height:400px;}
+
+.container.tomato{color:#fff;}	
+
+/*-----IMAGES-----*/
+img {
+	max-width: 100%;
+	height: auto;
+}
+
