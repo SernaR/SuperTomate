@@ -24,7 +24,7 @@ const Aside = ({selectedTags, onTagChange, searchedName, onSearchChange, onSubmi
                     <div className="input-group-prepend">
                         <span className="input-group-text"><i className="fas fa-search"></i></span>
                     </div>
-                    <input type="text" className="form-control mr-sm-2" placeholder="Rechercher" name="Rechercher" value={searchedName} onChange={onSearchChange} />
+                    <input type="text" className="form-control" placeholder="Rechercher" name="Rechercher" value={searchedName} onChange={onSearchChange}/>
                 </div>
             </form>
             <form onSubmit={onSubmit}>

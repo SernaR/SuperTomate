@@ -1,5 +1,5 @@
 import React from 'react';
-import Block from '../../../components/Block';
+import Block from '../../../components/blocks/Block';
 
 const RecipeIngredients = ({ ingredients }) => {
     return ( 

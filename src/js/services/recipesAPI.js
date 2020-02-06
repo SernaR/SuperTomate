@@ -1,47 +1,53 @@
 import axios from 'axios'
-import { path } from './apiConfig.json'
-
-//utiliser le cache pour les categories - navbar
+import cache from './cache.js';
+import { API_URL, RECIPE_API, USER_API, PARAMS_API } from '../config.js';
 
 function getHome() {
     return axios
-        .get(path + "/")
+        .get(API_URL)
         .then(response => response.data);
 };
 
 function find(id) {
     return axios
-        .get( path + '/recipe/' + id)
+        .get( RECIPE_API + '/' + id)
         .then(result => result.data)
 }
 
 function findAll(category){
     return axios
-        .get( path + '/recipe/category/' + category)
+        .get( RECIPE_API + '/category/' + category)
         .then(result => result.data)
 }
 
 function getParams() {
     return axios
-        .get( path + '/user/recipe-params')
+        .get( USER_API + '/recipe-params')
         .then(result => result.data )
 }
 
-function getCategories() {
+async function getCategories(cancelToken) {
+    //const cachedCategories = await cache.get('categories')
+    //if(cachedCategories) return cachedCategories
+
     return axios
-    .get( path+ '/params/categories')
-    .then(result => result.data )
+        .get( PARAMS_API + '/categories', {cancelToken})
+        .then(result => { 
+            const categories = result.data
+            //cache.set('categories', categories)
+            return categories
+        })
 }
 
 function getTags() {
     return axios
-    .get( path+ '/params/tags')
+    .get( PARAMS_API + '/tags')
     .then(result => result.data )
 }
 
 function save(formData) {
     return axios
-        .post( path + '/user/recipe', formData,
+        .post( USER_API + '/recipe', formData,
     )
 }
 

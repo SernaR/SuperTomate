@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext';
 import authAPI from '../services/authAPI';
 import recipesAPI from '../services/recipesAPI';
-
-import axios from 'axios'
+import Axios from 'axios';
+import { ReactSVG } from 'react-svg';
     
 //utiliser le cache pour les categories
 
@@ -12,15 +12,24 @@ const Navbar = ({ history }) => {
     const [categories, setCategories] = useState([])
     
     useEffect( () => {
+        const source = Axios.CancelToken.source()
         const fetchCategories = async() => {
             try {
-                const { categories } = await recipesAPI.getCategories()
+                const { categories } = await recipesAPI.getCategories(source.token)
                 setCategories(categories)
             } catch(err) {
-                console.log(err.response)
+                if (Axios.isCancel(err)) {
+                    // request cancelled
+                    console.log(err.response)
+                } else {
+                    throw err;
+                }  
             }
         }  
         fetchCategories()
+        return () => {
+            source.cancel();
+        }
     }, [])
 
     const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin } = useContext(AuthContext);
@@ -31,18 +40,16 @@ const Navbar = ({ history }) => {
         history.push("/login");
     } 
 
-    
-
     const categotyList = categories.map( category => 
         <li className="nav-item" key={ category.id }>
             <NavLink className="nav-link lead" to={ "/recipes/" + category.name }>{ category.name }</NavLink>
         </li>
     )
-
+    //<img src="/images/mascotte-super-tomate.svg"></img>
     return ( 
         <header>
             <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-                <NavLink className="navbar-brand mr-4" to="/">Super Tomate</NavLink>
+                <NavLink className="navbar-brand mr-4" to="/"><ReactSVG src="/images/mascotte-super-tomate.svg"/></NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -70,7 +77,7 @@ const Navbar = ({ history }) => {
                                         <NavLink to="/profile" className="nav-link lead">Profil</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                        <NavLink to="/addRecipe" className="btn btn-outline-secondary mx-2">Nouvelle recette</NavLink>
+                                        <NavLink to="/addRecipe" className="btn btn-outline-success mx-2">Nouvelle recette</NavLink>
                                 </li>
                                 <li className="nav-item">
                                     <button 

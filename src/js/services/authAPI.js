@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
-import { path } from './apiConfig.json'
+import { LOGIN_API } from '../config.js';
 
 //todo factoriser methodes
 
@@ -11,7 +11,7 @@ function logout() {
 
 function authenticate(credentials) {
     return axios
-        .post( path + "/login", credentials)
+        .post( LOGIN_API, credentials)
         .then(response => response.data.token)
         .then(token => {
             window.localStorage.setItem("authToken", token); 

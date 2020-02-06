@@ -11,10 +11,10 @@ const RecipeHeader = ({ recipe }) => {
                 <img src={picture} className="img-fluid card" alt="Responsive image recette" />
             </div>
             <div className="col card py-3 lead"> 
-                <p>Difficulté: { difficulty.name }</p>
-                <p>Nombre de personnes: { serve }</p>
-                <p>Préparation: { making }mn</p>
-                <p>Cuisson: { cook }mn</p>
+                <p>Difficulté : {difficulty.name }</p>
+                <p>Nombre de personnes : { serve }</p>
+                <p>Préparation : { making }mn</p>
+                <p>Cuisson : { cook }mn</p>
                 
             </div>
         </div>

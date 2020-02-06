@@ -2,7 +2,10 @@ body{
 	background-color: rgba(100,107,79,0.8);
 }
 
-.jumbotron{background:rgba(100,107,79,0.8);color:#fff;}
+.jumbotron{
+	background:rgba(100,107,79,0.8);
+	color:#fff;
+}
 
 /*-----PRIMARY BUTTON-----*/
 .btn-primary, .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
@@ -25,7 +28,7 @@ body{
 
 /*-----HOME-----*/
 .tomato{
-	background-image: url('C:/Users/Gours/Documents/GitHub/SuperTomate/src/img/super-tomato.jpg');
+	background-image: url('/images/super-tomato.jpg');
 	background-size: cover;
 	background-position: bottom;
 	height:400px;}
@@ -37,4 +40,7 @@ img {
 	max-width: 100%;
 	height: auto;
 }
-
+#tomate {
+	width: 3em;
+	height: auto;
+}

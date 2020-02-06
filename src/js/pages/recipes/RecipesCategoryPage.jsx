@@ -92,30 +92,31 @@ const RecipesCategoryPage = ({ match }) => {
     }
 
     return ( 
-        <main>
-           
-            <div className="container">
-                <div className="card px-4"> 
-                    <Cockpit title={category} />
-                    <div className="row">
-                        <div className="col-sm-3 bg-light border-right">
-                            <Aside 
-                                selectedTags={ selectedTags }
-                                onTagChange={ handleTagChange }
-                                searchedName={ searchedName }
-                                onSearchChange={ handleSearchChange }
-                                onSubmit={ handleSubmit }
-                                onUnfilter={ handleUnfilter }
-                            />
-                        </div>
-                        <div className="col-sm-9"> 
-                                { filteredRecipes.length > 0 ?  <RecipeCards recipes={filteredRecipes}  col={4}/> :<h2 className="text-center">vide</h2>}
-                        </div>
-                    </div>   
+        <>
+            <main>
+                <div className="container">
+                    <div className="card px-4"> 
+                        <Cockpit title={category} />
+                        <div className="row">
+                            <div className="col-sm-3 bg-light border-right">
+                                <Aside 
+                                    selectedTags={ selectedTags }
+                                    onTagChange={ handleTagChange }
+                                    searchedName={ searchedName }
+                                    onSearchChange={ handleSearchChange }
+                                    onSubmit={ handleSubmit }
+                                    onUnfilter={ handleUnfilter }
+                                />
+                            </div>
+                            <div className="col-sm-9"> 
+                                    { filteredRecipes.length > 0 ?  <RecipeCards recipes={filteredRecipes}  col={4}/> :<h2 className="text-center">vide</h2>}
+                            </div>
+                        </div>   
+                    </div>
                 </div>
-            </div>
+            </main>    
             <Footer/>
-        </main>    
+        </>
     );
 }
  

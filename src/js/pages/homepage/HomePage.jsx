@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //import Cockpit from '../../components/Cockpit';
 import Footer from '../../components/Footer';
-import Block from '../../components/Block';
+import Block from '../../components/blocks/Block';
 
 import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from './HomepageText.json'
 import recipesAPI from '../../services/recipesAPI';
@@ -33,7 +33,7 @@ const HomePage = (props) => {
         <main className="mt-1" style={style}>
             <div className="jumbotron tomato" style={{ paddingTop: '100px'}}>
                 <h1 className="display-4 text-center">SUPER TOMATE</h1>
-                <h3 className="text-center">Le héros du potager</h3> 
+                <h2 className="text-center">Le héros du potager</h2> 
             </div>  
            
             <Block

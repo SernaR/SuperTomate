@@ -1,6 +1,6 @@
 import React from 'react';
 import RecipeStepsCard from './recipeStepsCard';
-import Block from '../../../components/Block';
+import Block from '../../../components/blocks/Block';
 
 const RecipeSteps = ({steps}) => {
     
