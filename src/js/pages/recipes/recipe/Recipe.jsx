@@ -40,7 +40,7 @@ const Recipe = ({ match }) => {
 
     return ( 
         <>
-            <main>
+            <main style={{ backgroundImage:"url('/images/fond-rouge.jpg')" }}>
                 <div className="container bg-white card p-3 mb-3" style={{ marginTop: '80px'}}>
                     <h1 className="display-2 text-center py-4">{ recipe.name }</h1>  
                     <p className="text-center mb-4 ">

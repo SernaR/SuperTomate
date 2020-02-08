@@ -1,11 +1,14 @@
 import React from 'react';
+//import 'moment'
 
 const Comment = ({ content, createdAt, userName, isAdmin, onValidate, onRemove, onAnswer }) => {
+    const moment = require('moment')
+    moment.locale('fr');
     return ( 
         <div className="list-group-item ">
             <div className="d-flex w-100 justify-content-between my-2">
                 <h3>{ userName }</h3>
-                <small className="text-muted">{ createdAt } 3 days ago</small>
+                <small className="text-muted">Il y a { moment(createdAt).fromNow(true) }</small>
             </div>    
             <p className="mb-2">{ content }</p>
             <div className="row justify-content-end">

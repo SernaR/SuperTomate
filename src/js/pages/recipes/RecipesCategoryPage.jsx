@@ -93,7 +93,7 @@ const RecipesCategoryPage = ({ match }) => {
 
     return ( 
         <>
-            <main>
+            <main style={{ backgroundImage:"url('/images/fond-vert.jpg')" }}>
                 <div className="container">
                     <div className="card px-4"> 
                         <Cockpit title={category} />

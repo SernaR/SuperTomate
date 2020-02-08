@@ -27,8 +27,10 @@ const Comments = ({ comments, onModerated = null, isAdmin = false }) => {
 
     }
 
+    const pluriel = comments.length > 1 ? 's' : ''
+
     return ( 
-        <CommentBlock title="Commentaires">
+        <CommentBlock title={ comments.length + " commentaire" + pluriel }>
             { comments.map( ({ id, content, createdAt, user }) =>  
                 <Comment 
                     key={ id }

@@ -90,7 +90,7 @@ const AdminPage = (props) => {
     }
 
     return ( 
-        <main> 
+        <main style={{ backgroundImage:"url('/images/fond-gris.jpg')" }}> 
             <div className="container">
                 <div className="card px-4 mb-3"> 
                     <Cockpit title="Admin Page" />
