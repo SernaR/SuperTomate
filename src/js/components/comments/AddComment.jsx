@@ -14,7 +14,6 @@ const AddComment = ({ commentId }) => {
         try {
             await commentsAPI.save(commentId, comment)
             setComment('')
-            console.log('OK OK !')
         } catch(err) {
             //NotificationManager.error(err.response.data.error, 'Error');
             console.log(err.response)

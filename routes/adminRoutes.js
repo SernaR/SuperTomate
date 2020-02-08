@@ -18,7 +18,7 @@ router.post('/difficulty', params.addDifficulty)
 
 //comments routes
 router.get('/comment', commentController.getNewComments)
-router.get('/comment/:commentId', commentController.setComment)//?action=add ou ?action=remove
+router.post('/comment/:commentId', commentController.setComment)//?action=add ou ?action=remove
 router.get('/subcomment', commentController.getNewSubComments)
 router.get('/subcomment/:commentId', commentController.setSubComment)//?action=add ou ?action=remove
 

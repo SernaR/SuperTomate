@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Cockpit from '../components/Cockpit';
+import adminAPI from '../services/adminAPI';
+import Comments from '../components/comments/Comments';
+import CommentBlock from '../components/blocks/CommentBlock';
 
-//TODO : refacto les inputs et methodes
+//TODO : refacto les inputs
 
 const AdminPage = (props) => {
 
@@ -19,17 +22,22 @@ const AdminPage = (props) => {
     const [list, setList] = useState({
         tags: [],
         difficulties: [],
-        categories: []
+        categories: [],
     })
 
+    const [comments, setComments] = useState([])
+
     const fetchList = async () => {
-        await Axios.get('http://localhost:3000/api/user/recipe-params')
-            .then( result => {
-                const { tags, difficulties, categories } = result.data
-                setList({ tags, difficulties, categories})
-                
-            })
-            .catch( err => console.log(err.response))
+        try {
+            const { tags, difficulties, categories } = await adminAPI.getParams()
+            const { comments } = await adminAPI.getComments()
+
+            setList({ tags, difficulties, categories })
+            setComments(comments)
+
+        } catch(err) {
+            console.log(err.response)
+        }
     }
 
     const handleChange = ({ currentTarget }) => {
@@ -37,50 +45,62 @@ const AdminPage = (props) => {
         setParams({ ...params, [name]: value })
     }
 
-    //const handleListChange = list => setNewRecipe({ ...newRecipe, [list]: list })
-
-    const categories = list.categories.map( category => <li key={category.id}>{category.name}</li>)
-    const tags = list.tags.map( tag => <li key={tag.id}>{tag.name}</li>)
-    const difficulties = list.difficulties.map( difficulty => <li key={difficulty.id}>{difficulty.name}</li>)
-
-    const handleCategorySubmit = event => {
-        event.preventDefault()
-        Axios
-            .post('http://localhost:3000/api/admin/category', { category: params.category})
-            .then( result => {
-                list.categories.push(result.data)
-                setParams({ ...params, category:'' })
-            })
-            .catch( err => console.log(err.response))
+    const handleChangeComments = (comments) => {
+        setComments(comments)
     }
 
-    const handleTagSubmit = event => {
+    const categories = list.categories.map( (category, index) => <li key={index}>{category.name}</li>)
+    const tags = list.tags.map( (tag, index) => <li key={index}>{tag.name}</li>)
+    const difficulties = list.difficulties.map( (difficulty, index) => <li key={index}>{difficulty.name}</li>)
+
+    const handleCategorySubmit = async event => {
         event.preventDefault()
-        Axios
-            .post('http://localhost:3000/api/admin/tag', { tag: params.tag})
-            .then( result => {
-                list.tags.push(result.data)
-                setParams({ ...params, tag:'' })
-            })
-            .catch( err => console.log(err.response))
+        try {
+            const category = await adminAPI.setCategory(params.category)
+            list.categories.push(category)
+            setParams({ ...params, category:'' })
+
+        } catch(err) {
+            console.log(err.response)
+        }
     }
 
-    const handleDifficultySubmit = event => {
+    const handleTagSubmit = async event => {
         event.preventDefault()
-        Axios
-            .post('http://localhost:3000/api/admin/difficulty', { difficulty: params.difficulty })
-            .then( result => {
-                list.difficulties.push(result.data)
-                setParams({ ...params, difficulty:'' })
-            })
-            .catch( err => console.log(err.response))
+        try {
+            const tag = await adminAPI.setTag(params.tag)
+            list.tags.push(tag)
+            setParams({ ...params, tag:'' })
+    
+        } catch(err) {
+            console.log(err.response)
+        }
+    }
+
+    const handleDifficultySubmit = async event => {
+        event.preventDefault()
+        try {
+            const difficulty = await adminAPI.setDifficulty(params.difficulty)
+            list.difficulties.push(difficulty)
+            setParams({ ...params, difficulty:'' })
+
+        } catch(err) {
+            console.log(err.response)
+        }
     }
 
     return ( 
         <main> 
             <div className="container">
-                <div className="card px-4"> 
+                <div className="card px-4 mb-3"> 
                     <Cockpit title="Admin Page" />
+                </div>
+                <Comments
+                    onModerated={ handleChangeComments }
+                    comments={ comments } 
+                    isAdmin={ true } 
+                />        
+                <CommentBlock title="Paramètres">
                     <form >
                         <div className="form-group">
                             <label className="control-label">Ajouter une catégorie</label>
@@ -125,7 +145,7 @@ const AdminPage = (props) => {
                         </div>
                     </form>
                     <ul>{ difficulties }</ul>
-                </div>
+                </CommentBlock>     
             </div>    
         </main>
      );

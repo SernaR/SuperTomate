@@ -35,13 +35,11 @@ exports.getNewComments = (req, res) => {
     adminUtils.checkRoleAdmin(userId, admin => {
         if (admin) {
             models.Comment.findAll({
-                attributes: ['content'],
+                attributes: ['id', 'content'],
                 include: [
                     {
                         model:models.User,
-                        attributes: ['name']
-                    },{
-                        model: models.Recipe,
+                        as: 'user',
                         attributes: ['name']
                     }
                 ],

@@ -13,11 +13,8 @@ body{
 	border-color:#a2b667;
 }
 .btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
-	background:#8aa151;
-	border-color:#8aa151;
-}
-.btn-primary.focus, .btn-primary:focus{
-	box-shadow:0 0 0 0.2rem rgba(138,161,81,0.5);
+	background:#55b298;
+	border-color:#55b298;
 }
 
 /*-----BADGE-----*/

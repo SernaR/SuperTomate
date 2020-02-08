@@ -47,8 +47,7 @@ function getTags() {
 
 function save(formData) {
     return axios
-        .post( USER_API + '/recipe', formData,
-    )
+        .post( USER_API + '/recipe', formData )
 }
 
 export default { findAll, find, getHome, getParams, getCategories, getTags, save }

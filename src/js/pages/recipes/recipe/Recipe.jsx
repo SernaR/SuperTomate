@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import recipesAPI from '../../../services/recipesAPI';
 import Header from './RecipeHeader'
 import Ingredients from './RecipeIngredients';
@@ -6,10 +6,12 @@ import Steps from './RecipeSteps';
 import Footer from '../../../components/Footer';
 import Comments from '../../../components/comments/Comments';
 import AddComment from '../../../components/comments/AddComment';
+import AuthContext from '../../../contexts/AuthContext';
 
 //todo afficher addcomment si loggué
 
 const Recipe = ({ match }) => {
+    
     const [recipe, setRecipe] = useState({
         name: '',
         serve: '',
@@ -17,8 +19,11 @@ const Recipe = ({ match }) => {
         cook: '',
         difficulty: '',
         ingredients: [],
-        steps: []
+        steps: [],
+        comments: []
     })
+
+    const { isAuthenticated } = useContext(AuthContext)
 
     useEffect(() => {
         fetchRecipe(match.params.id)
@@ -49,8 +54,8 @@ const Recipe = ({ match }) => {
                     <Ingredients ingredients={recipe.ingredients}/>
                     <Steps steps={recipe.steps}/>
                 </div>
-                <AddComment commentId={ match.params.id }/>
-                <Comments />
+                { isAuthenticated && <AddComment commentId={ match.params.id }/> }
+                <Comments comments={recipe.comments} />
             </main>
             <Footer/>
         </>

@@ -134,16 +134,18 @@ exports.getRecipe = (req, res) => {
                 as: 'ingredients',
                 attributes: ['rank', 'content'],
                 order: [['rank', 'ASC']]
-            },/*{
+            },{
                 model: models.Comment,
                 required: false,
+                as: 'comments',
                 where: { isChecked: 1, isBlocked: 0 },
-                attributes:[ 'content', 'createdAt' ],
+                attributes:[ 'id', 'content', 'createdAt' ],
                 include: [
                     { 
                         model: models.User,
+                        as: 'user',
                         attributes: ['name']
-                    },{
+                    }/*,{
                         model: models.SubComment,
                         required: false,
                         where: { isChecked: 1, isBlocked: 0 },
@@ -155,10 +157,10 @@ exports.getRecipe = (req, res) => {
                             }
                         ],
                         order:[['createdAt', 'DESC']] 
-                    
+                    } */   
                 ],
                 order:[['createdAt', 'DESC']]
-            }}*/
+            }
         ]
     })
     .then( recipe => {

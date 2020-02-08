@@ -1,9 +1,14 @@
 import axios from 'axios'
-import { COMMENT_API } from '../config.js';
+import { COMMENT_API, ADMIN_API } from '../config.js';
 
 function save(commentId, comment) {
     return axios
         .post( COMMENT_API + '/' + commentId, { content: comment })
 }
 
-export default { save }
+function moderate(commentId, mode) {
+    return axios.post( ADMIN_API + '/comment/' + commentId + '?action=' + mode)
+}
+
+
+export default { save, moderate }
