@@ -1,1 +1,1 @@
-site collaboratif de recettes végétarienne
+site collaboratif de recettes végétariennes
