@@ -8,6 +8,7 @@ import Select from '../../../components/forms/Select';
 import Block from './AddRecipeBlock';
 import ClassicField from '../../../components/forms/ClassicField';
 import Footer from '../../../components/Footer';
+import PageBlock from '../../../components/blocks/pageBlock';
 
 //TODO : contraintes
 //TODO : prise en charge des options du select
@@ -77,7 +78,6 @@ const AddRecipe = () => {
 
     const handleRecipeSubmit = async (event) => {
         event.preventDefault()
-        console.log(newRecipe)
         
         const { name, difficulty, serve, making, cook, tags, category, isDraft } = newRecipe 
         const steps = newRecipe.steps.map( (step, index) => { return {"rank": index + 1, "content": step} })
@@ -140,105 +140,103 @@ const AddRecipe = () => {
     const category = params.categories.map( (c, index) => <option key={index} value={c.id}>{c.name}</option> )
     
     return (
-        <main>
-            <div className="container">
-                <div className="card px-4"> 
-                    <Cockpit title="Proposer une recette" />
-                    <form>
-                        <Field
-                            label="Nom de la recette"
-                            value={newRecipe.name}
-                            onChange={handleChange}
-                            name="name"
-                        />
-                        <Select
-                            label="Difficulté"
-                            value={newRecipe.difficulty}
-                            onChange={handleChange}
-                            name="difficulty"
-                            options={ difficulty }
-                        />
-                        <hr></hr>
-                        <div className="row mb-3">
-                            <div className="col">
-                            <ClassicField 
-                                 label="Temps de préparation (en mn)"
-                                 type="number"
-                                 value={newRecipe.making}
-                                 onChange={handleChange}
-                                 name="making"
-                            />    
-                            </div>
-                            <div className="col">
-                            <ClassicField 
-                                label="Temps de cuisson (en mn)"
+        <>
+            <PageBlock back="utilisateur">
+                <Cockpit title="Proposer une recette" />
+                <form>
+                    <Field
+                        label="Nom de la recette"
+                        value={newRecipe.name}
+                        onChange={handleChange}
+                        name="name"
+                    />
+                    <Select
+                        label="Difficulté"
+                        value={newRecipe.difficulty}
+                        onChange={handleChange}
+                        name="difficulty"
+                        options={ difficulty }
+                    />
+                    <hr></hr>
+                    <div className="row mb-3">
+                        <div className="col">
+                        <ClassicField 
+                                label="Temps de préparation (en mn)"
                                 type="number"
-                                value={newRecipe.cook}
+                                value={newRecipe.making}
                                 onChange={handleChange}
-                                name="cook"
-                            />
-                            </div>
-                            <div className="col">
-                            <ClassicField 
-                                label="Nombre de personnes"
-                                type="number"
-                                value={newRecipe.serve}
-                                onChange={handleChange}
-                                name="serve"
-                            />
+                                name="making"
+                        />    
+                        </div>
+                        <div className="col">
+                        <ClassicField 
+                            label="Temps de cuisson (en mn)"
+                            type="number"
+                            value={newRecipe.cook}
+                            onChange={handleChange}
+                            name="cook"
+                        />
+                        </div>
+                        <div className="col">
+                        <ClassicField 
+                            label="Nombre de personnes"
+                            type="number"
+                            value={newRecipe.serve}
+                            onChange={handleChange}
+                            name="serve"
+                        />
+                        </div>
+                    </div>
+                    <hr></hr>
+                    
+                    <Select
+                        label="Catégories"
+                        value={newRecipe.category}
+                        onChange={handleChange}
+                        name="category"
+                        options={ category }
+                    />
+                    <Block>
+                        {tags}
+                        <p><span className="small">Limité à 3 badges maximum</span></p>
+                    </Block>
+                    <hr></hr>
+                    <Block label="Ingrédients">
+                        <AddRecipeList
+                            items={ newRecipe.ingredients }
+                            aria="ingrédients"
+                            onChange={ handleIngredientsChange }/>
+                    </Block> 
+                    <Block label="Étapes">
+                        <AddRecipeList
+                            items={ newRecipe.steps }
+                            aria="steps"
+                            type="textarea"
+                            onChange={ handleStepsChange }/>
+                    </Block>   
+                    <Block label="Ajouter une photo">
+                        <div className="input-group mb-3">    
+                            <div className="custom-file">
+                                <input 
+                                    type="file" 
+                                    className="custom-file-input" 
+                                    id="inputGroupFile" 
+                                    aria-describedby="fileHelp" 
+                                    onChange={ handleImageChange }
+                                />
+                                <label className="custom-file-label" htmlFor="inputGroupFile">{ (newRecipe.picture && newRecipe.picture.name) || "selectionner une image" }</label>
                             </div>
                         </div>
-                        <hr></hr>
-                        
-                        <Select
-                            label="Catégories"
-                            value={newRecipe.category}
-                            onChange={handleChange}
-                            name="category"
-                            options={ category }
-                        />
-                        <Block>
-                            {tags}
-                            <p><span className="small">Limité à 3 badges maximum</span></p>
-                        </Block>
-                        <hr></hr>
-                        <Block label="Ingrédients">
-                            <AddRecipeList
-                                items={ newRecipe.ingredients }
-                                aria="ingrédients"
-                                onChange={ handleIngredientsChange }/>
-                        </Block> 
-                        <Block label="Étapes">
-                            <AddRecipeList
-                                items={ newRecipe.steps }
-                                aria="steps"
-                                type="textarea"
-                                onChange={ handleStepsChange }/>
-                        </Block>   
-                        <Block label="Ajouter une photo">
-                            <div className="input-group mb-3">    
-                                <div className="custom-file">
-                                    <input 
-                                        type="file" 
-                                        className="custom-file-input" 
-                                        id="inputGroupFile" 
-                                        aria-describedby="fileHelp" 
-                                        onChange={ handleImageChange }
-                                    />
-                                    <label className="custom-file-label" htmlFor="inputGroupFile">{ (newRecipe.picture && newRecipe.picture.name) || "selectionner une image" }</label>
-                                </div>
-                            </div>
-                        </Block>       
-                        <hr></hr>
-                        <div className="container text-center my-5">
-                            <button type="submit" className="btn btn-primary mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
-                            <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                    </Block>       
+                    <hr></hr>
+                    <div className="container text-center my-5">
+                        <button type="submit" className="btn btn-primary mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
+                        <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>
+                    </div>
+                </form>
+            </PageBlock>
             <Footer/>    
-        </main>        
+        </>        
     );
 }
  

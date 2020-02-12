@@ -6,6 +6,7 @@ import Block from '../../components/blocks/Block';
 import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from './HomepageText.json'
 import recipesAPI from '../../services/recipesAPI';
 import RecipeCards from '../../components/RecipeCards';
+import ScrollToTopOnMount from '../../services/ScrollToTopOnMount';
 
 const HomePage = (props) => {
     useEffect( () => {
@@ -25,12 +26,9 @@ const HomePage = (props) => {
         }
     }
 
-    const style = {
-        backgroundColor: '#fff'
-    }
-
     return ( 
-        <main className="mt-1" style={style}>
+        <main className="mt-1">
+            <ScrollToTopOnMount />
             <div className="jumbotron tomato" style={{ paddingTop: '100px'}}>
                 <h1 className="display-4 text-center">SUPER TOMATE</h1>
                 <h2 className="text-center">Le héros du potager</h2> 

@@ -50,4 +50,10 @@ function save(formData) {
         .post( USER_API + '/recipe', formData )
 }
 
-export default { findAll, find, getHome, getParams, getCategories, getTags, save }
+function findByUser() {
+    return axios
+        .get(USER_API + '/recipe')
+        .then(result => result.data)
+}
+
+export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save }

@@ -4,6 +4,7 @@ import Cockpit from '../components/Cockpit';
 import adminAPI from '../services/adminAPI';
 import Comments from '../components/comments/Comments';
 import CommentBlock from '../components/blocks/CommentBlock';
+import PageBlock from '../components/blocks/pageBlock';
 
 //TODO : refacto les inputs
 
@@ -90,64 +91,67 @@ const AdminPage = (props) => {
     }
 
     return ( 
-        <main style={{ backgroundImage:"url('/images/fond-gris.jpg')" }}> 
-            <div className="container">
-                <div className="card px-4 mb-3"> 
-                    <Cockpit title="Admin Page" />
-                </div>
-                <Comments
-                    onModerated={ handleChangeComments }
-                    comments={ comments } 
-                    isAdmin={ true } 
-                />        
-                <CommentBlock title="Paramètres">
-                    <form >
+        <PageBlock 
+            back="gris"
+            commentBlock={
+                <>
+                    <Comments
+                        onModerated={ handleChangeComments }
+                        comments={ comments } 
+                        isAdmin={ true } 
+                    />  
+                </>
+            }
+        >
+            
+            <Cockpit title="Admin Page" />    
+            <CommentBlock title="Paramètres">
+                <form >
+                    <div className="form-group">
+                        <label className="control-label">Ajouter une catégorie</label>
                         <div className="form-group">
-                            <label className="control-label">Ajouter une catégorie</label>
-                            <div className="form-group">
-                                <div className="input-group mb-3">
-                                    <input name="category" type="text" value={ params.category } className="form-control" onChange={handleChange}/>
-                                    <div className="input-group-append">
-                                        <span className="input-group-text" onClick={handleCategorySubmit}>Envoyer</span>
-                                    </div>
+                            <div className="input-group mb-3">
+                                <input name="category" type="text" value={ params.category } className="form-control" onChange={handleChange}/>
+                                <div className="input-group-append">
+                                    <span className="input-group-text" onClick={handleCategorySubmit}>Envoyer</span>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <ul>{ categories }</ul>
+                    </div>
+                </form>
+                <ul>{ categories }</ul>
 
-                    <form >
+                <form >
+                    <div className="form-group">
+                        <label className="control-label">Ajouter un tag</label>
                         <div className="form-group">
-                            <label className="control-label">Ajouter un tag</label>
-                            <div className="form-group">
-                                <div className="input-group mb-3">
-                                    <input name="tag" type="text" value={ params.tag } className="form-control" onChange={handleChange}/>
-                                    <div className="input-group-append">
-                                        <span className="input-group-text" onClick={handleTagSubmit}>Envoyer</span>
-                                    </div>
+                            <div className="input-group mb-3">
+                                <input name="tag" type="text" value={ params.tag } className="form-control" onChange={handleChange}/>
+                                <div className="input-group-append">
+                                    <span className="input-group-text" onClick={handleTagSubmit}>Envoyer</span>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <ul>{ tags }</ul>
+                    </div>
+                </form>
+                <ul>{ tags }</ul>
 
-                    <form >
+                <form >
+                    <div className="form-group">
+                        <label className="control-label">Ajouter une difficulté</label>
                         <div className="form-group">
-                            <label className="control-label">Ajouter une difficulté</label>
-                            <div className="form-group">
-                                <div className="input-group mb-3">
-                                    <input name="difficulty" type="text" value={ params.difficulty } className="form-control" onChange={handleChange}/>
-                                    <div className="input-group-append">
-                                        <span className="input-group-text" onClick={handleDifficultySubmit}>Envoyer</span>
-                                    </div>
+                            <div className="input-group mb-3">
+                                <input name="difficulty" type="text" value={ params.difficulty } className="form-control" onChange={handleChange}/>
+                                <div className="input-group-append">
+                                    <span className="input-group-text" onClick={handleDifficultySubmit}>Envoyer</span>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <ul>{ difficulties }</ul>
-                </CommentBlock>     
-            </div>    
-        </main>
+                    </div>
+                </form>
+                <ul>{ difficulties }</ul>
+            </CommentBlock>     
+        </PageBlock>
      );
 }
  

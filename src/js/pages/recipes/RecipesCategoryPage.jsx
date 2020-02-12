@@ -5,6 +5,7 @@ import recipesAPI from '../../services/recipesAPI';
 import RecipeCards from '../../components/RecipeCards';
 import Aside from '../../components/Aside'
 import Footer from '../../components/Footer';
+import PageBlock from '../../components/blocks/pageBlock';
 
 
 //todo pagination
@@ -93,28 +94,24 @@ const RecipesCategoryPage = ({ match }) => {
 
     return ( 
         <>
-            <main style={{ backgroundImage:"url('/images/fond-vert.jpg')" }}>
-                <div className="container">
-                    <div className="card px-4"> 
-                        <Cockpit title={category} />
-                        <div className="row">
-                            <div className="col-sm-3 bg-light border-right">
-                                <Aside 
-                                    selectedTags={ selectedTags }
-                                    onTagChange={ handleTagChange }
-                                    searchedName={ searchedName }
-                                    onSearchChange={ handleSearchChange }
-                                    onSubmit={ handleSubmit }
-                                    onUnfilter={ handleUnfilter }
-                                />
-                            </div>
-                            <div className="col-sm-9"> 
-                                    { filteredRecipes.length > 0 ?  <RecipeCards recipes={filteredRecipes}  col={4}/> :<h2 className="text-center">vide</h2>}
-                            </div>
-                        </div>   
+             <PageBlock back="visiteur">
+                <Cockpit title={category} />
+                <div className="row">
+                    <div className="col-sm-3 bg-light border-right">
+                        <Aside 
+                            selectedTags={ selectedTags }
+                            onTagChange={ handleTagChange }
+                            searchedName={ searchedName }
+                            onSearchChange={ handleSearchChange }
+                            onSubmit={ handleSubmit }
+                            onUnfilter={ handleUnfilter }
+                        />
                     </div>
-                </div>
-            </main>    
+                    <div className="col-sm-9"> 
+                            { filteredRecipes.length > 0 ?  <RecipeCards recipes={filteredRecipes}  col={4}/> :<h2 className="text-center">vide</h2>}
+                    </div>
+                </div>          
+            </PageBlock>  
             <Footer/>
         </>
     );

@@ -3,8 +3,9 @@ import React from 'react';
 //TODO : user ??
 //todo : notes -->  <p className="my-5 pt-3" id="note">Noter la recette: </p>
 
-const RecipeHeader = ({ recipe }) => {
-    const { serve, making, cook, picture, difficulty } = recipe
+const RecipeHeader = ({ recipe, userId }) => {
+    const { serve, making, cook, picture, difficulty, user } = recipe
+
     return ( 
         <div className="row p-3">
             <div id="recette-img" className="col">
@@ -15,7 +16,10 @@ const RecipeHeader = ({ recipe }) => {
                 <p>Nombre de personnes : { serve }</p>
                 <p>Préparation : { making }mn</p>
                 <p>Cuisson : { cook }mn</p>
-                
+
+                { (user && userId === user.id)  &&
+                    <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
+                }
             </div>
         </div>
      );

@@ -3,6 +3,7 @@ import authAPI from '../services/authAPI';
 import authContext from '../contexts/AuthContext';
 import Field from '../components/forms/Field';
 import Cockpit from '../components/Cockpit';
+import PageBlock from '../components/blocks/pageBlock';
 
 const LoginPage = ({ history }) => {
     const { setIsAuthenticated, setIsAdmin } = useContext(authContext);
@@ -36,38 +37,34 @@ const LoginPage = ({ history }) => {
     }
 
     return (
-        <main>
-            <div className="container">
-                <div className="card px-4"> 
-                    <form onSubmit={handleSubmit}>
-                        <Cockpit title="Connexion à l'application" />
-                        <Field 
-                            name="email" 
-                            label="Adresse email" 
-                            value={credentials.email} 
-                            onChange={handleChange}
-                            placeholder="Adresse email de connexion"
-                            type="email" 
-                            error ={error}
-                        /> 
-                        <Field 
-                            name="password" 
-                            label="Mot de passe" 
-                            value={credentials.password}
-                            onChange={handleChange}
-                            type="password" 
-                        
-                        />        
-                        <div className="form-group">
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary"
-                            >Je me connecte</button>
-                        </div>
-                    </form>
-                </div>    
-            </div>  
-        </main>
+        <PageBlock back="utilisateur"> 
+            <form onSubmit={handleSubmit}>
+                <Cockpit title="Connexion à l'application" />
+                <Field 
+                    name="email" 
+                    label="Adresse email" 
+                    value={credentials.email} 
+                    onChange={handleChange}
+                    placeholder="Adresse email de connexion"
+                    type="email" 
+                    error ={error}
+                /> 
+                <Field 
+                    name="password" 
+                    label="Mot de passe" 
+                    value={credentials.password}
+                    onChange={handleChange}
+                    type="password" 
+                
+                />        
+                <div className="form-group">
+                    <button 
+                        type="submit" 
+                        className="btn btn-primary"
+                    >Je me connecte</button>
+                </div>
+            </form>  
+        </PageBlock>
     );
 }
  

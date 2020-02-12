@@ -40,9 +40,9 @@ function isAuthenticated() {
     const token = window.localStorage.getItem("authToken");
 
     if(token) {
-        const {exp: expiration} = jwtDecode(token);
+        const {exp: expiration, userId} = jwtDecode(token);
         if(expiration * 1000 > new Date().getTime()) {
-            return true
+            return userId//true
         } 
     } 
     return false

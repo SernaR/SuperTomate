@@ -106,6 +106,23 @@ exports.getAllRecipes = (req, res) => {
     })    
 }
 
+exports.getUserRecipes = (req, res) => {
+    const userId = req.userId
+    models.Recipe.findAll({
+        where: { userId},
+        attributes: ['id', 'name'],
+        order:[['name', 'ASC']]
+    })
+    .then( recipes => {
+        res.status(200).json({
+            'recipes': recipes
+        })
+    })
+    .catch( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })    
+}
+
 exports.getRecipe = (req, res) => {
     const id = req.params.recipeId
     models.Recipe.findOne({
@@ -123,7 +140,7 @@ exports.getRecipe = (req, res) => {
             },{ 
                 model: models.User,
                 as: 'user',
-                attributes: ['name']
+                attributes: ['id']
             },{
                 model: models.Step,
                 as: 'steps',

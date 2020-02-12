@@ -10,5 +10,8 @@ function moderate(commentId, mode) {
     return axios.post( ADMIN_API + '/comment/' + commentId + '?action=' + mode)
 }
 
+function findByUser(id) {
+    //code
+}
 
-export default { save, moderate }
+export default { save, moderate, findByUser }

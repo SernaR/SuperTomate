@@ -18,6 +18,7 @@ router.put('/password', userController.updatePassword)
 
 //Recipes routes
 router.get('/recipe-params', recipeParamController.getRecipeParams)
+router.get('/recipe', recipeController.getUserRecipes)
 router.post('/recipe', upload.single('image'), recipeController.addRecipe)
 router.put('/recipe/:recipeId', recipeController.updateRecipe)
 
