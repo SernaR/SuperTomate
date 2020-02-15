@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import Cockpit from '../components/Cockpit';
 import adminAPI from '../services/adminAPI';
 import Comments from '../components/comments/Comments';

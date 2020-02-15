@@ -4,7 +4,7 @@ const recipeUtils = require('../utils/recipeUtils')
 //const sequelize = require('sequelize')
 
 //TODO :  revoir toutes les RQT - optimisation
-//TODO : revoir update, manque l'image
+
 
 exports.addRecipe = async (req, res) => {
     const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
@@ -26,12 +26,8 @@ exports.addRecipe = async (req, res) => {
             defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture, isDraft}  
         })
         if (created) { 
-            const newSteps = JSON.parse(steps).map( step => { return {...step, recipeId : newRecipe.id} })
-            const newIngredients =JSON.parse(ingredients).map( ingredient => { return {...ingredient, recipeId : newRecipe.id} })
-            
-            await models.Step.bulkCreate(newSteps)
-            await models.RecipeIngredient.bulkCreate(newIngredients)
-            await newRecipe.addTags(JSON.parse(tags))
+
+            await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, newRecipe)
                 
             res.status(201).json({ 'recipeName': newRecipe.name })
             
@@ -45,11 +41,13 @@ exports.addRecipe = async (req, res) => {
 
 exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
-    const { name, serve, making, cook, steps, ingredients, category } = req.body
+    const image = req.file
+    
+    const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId
     const admin = jwt.checkAdmin(req.headers['authorization']) 
 
-    if ( !name || !serve || !making || !cook || !steps || !category || !ingredients) {
+    if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
@@ -58,13 +56,24 @@ exports.updateRecipe = async (req, res) => {
             where: { id: recipeId }
         })
         if (recipeFound.userId === userId || admin) {
-            const ingredientsFound = await recipeUtils.checkIngredients(ingredients)
-            const updatedRecipe = await recipeFound.update({ name, serve, making, cook, categoryId: category })   
-            await recipeUtils.updateStepsAndIngredients(steps, ingredientsFound, recipeId)
-                            
+            let updatedRecipe
+        
+            if(image) {
+                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture: image.path, isDraft }) 
+            } else {
+                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, isDraft }) 
+            }
+            
+            await models.Step.destroy({ where: { recipeId }})
+            await models.RecipeIngredient.destroy({ where: { recipeId }})
+            await models.RecipeTag.destroy({ where: { recipeId }})
+
+            await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, recipeFound)
+
             res.status(201).json({
                 'recipeName': updatedRecipe.name
-            })             
+            })   
+                   
         } else {
             res.status(403).json({
                 'error': 'not authorized path'
@@ -78,6 +87,7 @@ exports.updateRecipe = async (req, res) => {
 exports.getAllRecipes = (req, res) => {
     const name = req.params.categoryId
     models.Recipe.findAll({
+        where: { isDraft: false },
         attributes: ['id','name','picture'],
         include: [
             {
@@ -109,8 +119,8 @@ exports.getAllRecipes = (req, res) => {
 exports.getUserRecipes = (req, res) => {
     const userId = req.userId
     models.Recipe.findAll({
-        where: { userId},
-        attributes: ['id', 'name'],
+        where: { userId },
+        attributes: ['id', 'name', 'isDraft'],
         order:[['name', 'ASC']]
     })
     .then( recipes => {
@@ -127,16 +137,21 @@ exports.getRecipe = (req, res) => {
     const id = req.params.recipeId
     models.Recipe.findOne({
         where: { id },
-        attributes: ['name', 'serve', 'making', 'cook', 'picture'],
+        attributes: ['name', 'serve', 'making', 'cook', 'picture', 'isDraft'],
         include: [
             { 
+                model: models.Tag,
+                as: 'tags',
+                attributes: ['id'],
+                through: { attributes: [] }
+            },{ 
                 model: models.Category,
                 as: 'category',
-                attributes: ['name']
+                attributes: ['id']
             },{ 
                 model: models.Difficulty,
                 as: 'difficulty',
-                attributes: ['name']
+                attributes: ['id', 'name']
             },{ 
                 model: models.User,
                 as: 'user',
@@ -144,12 +159,12 @@ exports.getRecipe = (req, res) => {
             },{
                 model: models.Step,
                 as: 'steps',
-                attributes: ['rank', 'content'],
-                order: [['step', 'ASC']]
+                attributes: ['rank', 'content'], //'id',
+                order: [['rank', 'ASC']]
             },{
                 model: models.RecipeIngredient,
                 as: 'ingredients',
-                attributes: ['rank', 'content'],
+                attributes: ['rank', 'content'], //'id',
                 order: [['rank', 'ASC']]
             },{
                 model: models.Comment,

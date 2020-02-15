@@ -37,7 +37,7 @@ const Profile = () => {
             <Link to={"/recipe/" + recipe.id } >
                 { recipe.name }
             </Link>
-            <span className="badge badge-secondary mx-1">Brouillon</span>
+           { recipe.isDraft && <span className="badge badge-secondary mx-1">Brouillon</span>}
         </li>
     )
 

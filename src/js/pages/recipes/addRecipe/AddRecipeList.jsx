@@ -1,70 +1,75 @@
 import React, { useState } from 'react';
 
 const AddRecipeList = ({aria, type, items = [], onChange}) => {
-    const [list, setList] = useState({
-        item: '',
+
+    const [item, setItem] = useState({
+        content: '', 
         update: false,
         updatedIndex: ''
     })
 
     const itemList = items.map( (item, index) => 
         <li key={index} className="lead mb-1">
-            { item }
+            { item.content }
             <button className="ml-3 btn btn-outline-secondary btn-sm" onClick={ (event) => updateItem(event,item) }>modifier</button>
             <button className="ml-3 btn btn-outline-danger btn-sm" onClick={ (event) => deleteItem(event, item) }>supprimer</button>
         </li>
     )
 
+    const setRank = items => {
+        onChange( items.map( (item, index) => { return { "rank": index + 1, "content": item.content} })) 
+    }
+
     const handleItemChange = ({ currentTarget }) => {
-        setList({ ...list, item: currentTarget.value })
+        setItem({ ...item, content: currentTarget.value }) 
     }
 
     const addItem = event => {
         event.preventDefault()
-        const { item, update, updatedIndex} = list
-        if(item) {
+        const { content, update, updatedIndex} = item 
+        if(content) {
             if(update){
                 items[updatedIndex] = item
-                setList({
-                    item: '',
+                setItem({
+                    content: '',
                     update: false,
                     updatedIndex: ''
                 })
             } else {
                 items.push(item)
-                setList({ ...list, item: '' })
+                setItem({ ...item, content: '' })
             }
-            onChange(items)
+            setRank(items)
         }   
     }
 
-    const deleteItem = (event, item) => {
-        event.preventDefault()
-        if ( !list.item ) {
-            const index = items.indexOf(item)
+    const deleteItem = (event, i) => {
+        event.preventDefault() 
+        if ( !item.content ) {
+            const index = items.indexOf(i)
             items.splice(index, 1)
-            onChange(items)
+            setRank(items)
         }    
     } 
 
-    const updateItem = (event, item) => {
-        event.preventDefault()
-        if ( !list.item ) {
-            const index = items.indexOf(item)
-            setList({
-                item: items[index],
+    const updateItem = (event, i) => {
+        event.preventDefault() 
+        if ( !item.content ) {
+            const index = items.indexOf(i)
+            setItem({
+                content: items[index].content,
                 updatedIndex: index,
                 update: true
             })
-        }    
-    }
+        }  
+    } 
 
     return ( 
         <>
             <div className="input-group mb-3">
                 { type ?
                 <textarea
-                    value={ list.item } 
+                    value={ item.content } 
                     onChange={ handleItemChange }
                     placeholder={ aria }
                     aria-label={ aria }
@@ -75,7 +80,7 @@ const AddRecipeList = ({aria, type, items = [], onChange}) => {
                 :
                 <input 
                     type = "text"
-                    value={ list.item }
+                    value={ item.content }
                     onChange={ handleItemChange }
                     placeholder={ aria }
                     aria-label={ aria }

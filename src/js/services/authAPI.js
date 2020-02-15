@@ -40,9 +40,9 @@ function isAuthenticated() {
     const token = window.localStorage.getItem("authToken");
 
     if(token) {
-        const {exp: expiration, userId} = jwtDecode(token);
+        const {exp: expiration, userId:id } = jwtDecode(token);
         if(expiration * 1000 > new Date().getTime()) {
-            return userId//true
+            return id
         } 
     } 
     return false
@@ -58,10 +58,17 @@ function isAdmin() {
     return false
 }
 
+function userId() {
+    const token = window.localStorage.getItem("authToken");
+    const { userId } = jwtDecode(token);
+    return userId 
+}
+
 export default {
     authenticate,
     logout,
     setup,
     isAuthenticated,
-    isAdmin
+    isAdmin,
+    userId
 }

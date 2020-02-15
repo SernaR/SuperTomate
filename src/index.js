@@ -32,7 +32,7 @@ const Index = () => {
       isAuthenticated,
       setIsAuthenticated,
       isAdmin,
-      setIsAdmin
+      setIsAdmin,
     }}>
       <HashRouter>
         <NavbarWithRouter />
@@ -41,7 +41,7 @@ const Index = () => {
             <Route path="/recipes/:category" component={RecipesCategoryPage}/>
             <Route path="/recipe/:id" component={Recipe}/>
             <PrivateRoute path="/profile" component={Profile}/>
-            <PrivateRoute path="/addRecipe" component={AddRecipe}/>
+            <PrivateRoute path="/addRecipe/:id" component={AddRecipe}/>
             <AdminRoute path="/dashboard" component={AdminPage} />
             <Route path="/" component={HomePage} />
           </Switch>

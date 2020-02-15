@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 //TODO : user ??
 //todo : notes -->  <p className="my-5 pt-3" id="note">Noter la recette: </p>
 
-const RecipeHeader = ({ recipe, userId }) => {
+const RecipeHeader = ({ recipe, userId, recipeId }) => {
     const { serve, making, cook, picture, difficulty, user } = recipe
-
+    
     return ( 
         <div className="row p-3">
             <div id="recette-img" className="col">
@@ -18,7 +19,9 @@ const RecipeHeader = ({ recipe, userId }) => {
                 <p>Cuisson : { cook }mn</p>
 
                 { (user && userId === user.id)  &&
-                    <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
+                    <Link to={ "/addRecipe/" + recipeId} >
+                        <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
+                    </Link> 
                 }
             </div>
         </div>
@@ -26,4 +29,4 @@ const RecipeHeader = ({ recipe, userId }) => {
 }
  
 export default RecipeHeader;
-
+''

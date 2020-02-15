@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CommentBlock from '../blocks/CommentBlock';
 import commentsAPI from '../../services/commentsAPI';
 
-const AddComment = ({ commentId }) => {
+const AddComment = ({ recipeId }) => {
     const [comment, setComment] = useState('')
 
     const handleChange = ({ currentTarget }) => {
@@ -12,7 +12,7 @@ const AddComment = ({ commentId }) => {
     const handleSubmit = async event => {
         event.preventDefault() 
         try {
-            await commentsAPI.save(commentId, comment)
+            await commentsAPI.save(recipeId, comment)
             setComment('')
         } catch(err) {
             //NotificationManager.error(err.response.data.error, 'Error');

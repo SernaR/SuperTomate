@@ -11,6 +11,8 @@ import PageBlock from '../../../components/blocks/pageBlock';
 
 const Recipe = ({ match }) => {
     
+    const recipeId = match.params.id
+
     const [recipe, setRecipe] = useState({
         name: '',
         serve: '',
@@ -25,7 +27,8 @@ const Recipe = ({ match }) => {
     const { isAuthenticated } = useContext(AuthContext)
 
     useEffect(() => {
-        fetchRecipe(match.params.id)
+        fetchRecipe(recipeId)
+        
     }, [])
 
     const fetchRecipe = async (id) => {
@@ -43,20 +46,22 @@ const Recipe = ({ match }) => {
                 back="visiteur"
                 commentBlock={
                     <>
-                        { isAuthenticated && <AddComment commentId={ match.params.id }/> }
+                        { isAuthenticated && <AddComment recipeId={ recipeId }/> }
                         <Comments comments={recipe.comments} />
                     </>  
                 }
             >  
                 <h1 className="display-2 text-center py-4">{ recipe.name }</h1>  
+                { recipe.isDraft && <span className="badge badge-secondary mx-1">Brouillon</span>
+                ||
                 <p className="text-center mb-4 ">
                     <i className="fas fa-heart text-danger mx-1"></i>
                     <i className="fas fa-heart text-danger mx-1"></i>
                     <i className="fas fa-heart text-danger mx-1"></i>
                     <i className="fas fa-heart text-danger mx-1"></i>
                     <i className="far fa-heart text-danger mx-1"></i> 
-                </p> 
-                <Header recipe={ recipe } userId={ isAuthenticated } />
+                </p> }
+                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId}/>
                 <Ingredients ingredients={recipe.ingredients}/>
                 <Steps steps={recipe.steps}/>
             </PageBlock>

@@ -4,5 +4,5 @@ export default React.createContext({
     isAuthenticated: false,
     setIsAuthenticated: value => {},
     isAdmin: false,
-    setIsAdmin: value => {}, 
+    setIsAdmin: value => {},
 });

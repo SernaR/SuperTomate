@@ -77,7 +77,7 @@ const Navbar = ({ history }) => {
                                         <NavLink to="/profile" className="nav-link lead">Profil</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                        <NavLink to="/addRecipe" className="btn btn-outline-success mx-2">Nouvelle recette</NavLink>
+                                        <NavLink to="/addRecipe/new" className="btn btn-outline-success mx-2">Nouvelle recette</NavLink>
                                 </li>
                                 <li className="nav-item">
                                     <button 

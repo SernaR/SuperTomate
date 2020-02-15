@@ -9,14 +9,20 @@ import Block from './AddRecipeBlock';
 import ClassicField from '../../../components/forms/ClassicField';
 import Footer from '../../../components/Footer';
 import PageBlock from '../../../components/blocks/pageBlock';
+import recipesAPI from '../../../services/recipesAPI';
 
 //TODO : contraintes
-//TODO : prise en charge des options du select
-//TODO : revoir addRecipeList - refacto
 //TODO : prise en charge des tags -> composant
 //TODO : notification
+//mettre option dans le composant select ??
+//todo gestion du draft
 
-const AddRecipe = () => {
+//mettre le vrai id ***** lors du push
+
+const AddRecipe = ({ match, history }) => {
+
+    const { id = 'new' } = match.params
+    
     useEffect( () => {
         fetchRecipeParams()
     }, [])
@@ -32,7 +38,7 @@ const AddRecipe = () => {
         ingredients: [],
         steps: [],
         picture: null,
-        isDraft: false
+        isDraft: true
     })
 
     const [params, setParams] = useState({
@@ -41,21 +47,33 @@ const AddRecipe = () => {
         categories: []
     })
 
+    const [editing, setEditing] = useState(false)
+   
     const fetchRecipeParams = async () => {
         try {
             const { tags, difficulties, categories } = await recipeAPI.getParams()
-            setNewRecipe({ ...newRecipe,
-                difficulty: difficulties[0].id,
-                category: categories[0].id ,
-            })
             setParams({ tags, difficulties, categories })
+
+            if( id !== 'new') {
+                setEditing(true)
+
+                const { recipe } = await recipesAPI.find(id) 
+                const { name, difficulty, serve, cook, making, category, steps, ingredients, isDraft} = recipe
+                const tags = recipe.tags.map( tag => tag.id)
+                
+                setNewRecipe({ name, difficulty: difficulty.id, serve, cook, making, category:category.id, tags, ingredients, steps, isDraft })
+            } else {
+                setNewRecipe({ ...newRecipe,
+                    difficulty: difficulties[0].id,
+                    category: categories[0].id ,
+                })
+            }
+            
         } catch(err) {
             console.log(err.response)
-        }
-        
+        } 
     }
 
-    
     const handleChange = ({ currentTarget }) => {
         const {value, name} = currentTarget;
         setNewRecipe({ ...newRecipe, [name]: value })
@@ -73,20 +91,15 @@ const AddRecipe = () => {
                 setNewRecipe({ ...newRecipe, tags})
             } else  {
                 setNewRecipe({ ...newRecipe, tags: tags.filter( tag => tag !== id )})   
-            } 
+            }
     }
 
-    const handleRecipeSubmit = async (event) => {
-        event.preventDefault()
-        
-        const { name, difficulty, serve, making, cook, tags, category, isDraft } = newRecipe 
-        const steps = newRecipe.steps.map( (step, index) => { return {"rank": index + 1, "content": step} })
-        const ingredients = newRecipe.ingredients.map( (ingredient, index) => { return {"rank": index + 1, "content": ingredient} })
-
+    const sendRecipe = async () => {
+        const { name, difficulty, serve, making, cook, tags, category, steps, ingredients, isDraft } = newRecipe 
         const picture = newRecipe.picture
+        
         let formData = new FormData()
 
-        formData.append('image', picture)
         formData.set('name', name)
         formData.set('difficulty', difficulty)
         formData.set('serve', serve)
@@ -99,23 +112,34 @@ const AddRecipe = () => {
         formData.set('isDraft', isDraft)
 
         try {
-            await recipeAPI.save(formData)
+            if(editing){
+                if(picture) formData.append('image', picture)
+                await recipeAPI.update(id, formData) 
+            } else {
+                formData.append('image', picture)
+                await recipeAPI.save(formData)
+            }
             clearForm()
+            history.push("/recipe/" + 1 ); //mettre le vrai id *****
         } catch(err) {
             //NotificationManager.error(err.response.data.error, 'Error');
             console.log(err.response)
         } 
     }
-    
+
+    const handleRecipeSubmit = event => {
+        event.preventDefault()
+        newRecipe.isDraft = false
+        sendRecipe()
+    }
+
     const handleDraftSubmit = event => {
-        setNewRecipe({ ...newRecipe,
-            isDraft: true
-        })
-        handleRecipeSubmit(event)
+        event.preventDefault()
+        sendRecipe()
     }
 
     const clearForm = () => {
-        setNewRecipe({ //...newRecipe,
+        setNewRecipe({ 
             name: '',
             difficulty: params.difficulties[0].id,
             serve: '',
@@ -126,14 +150,14 @@ const AddRecipe = () => {
             ingredients: [],
             steps: [],
             picture: null,
-            isDraft: false, 
+            isDraft: true, 
         })
     }  
 
     const tags = params.tags.map( tag => <Tag 
         key={tag.id} 
         name={ tag.name }  
-        color={ newRecipe.tags && newRecipe.tags.includes(tag.id) ? "secondary" : "ligth" }
+        color={ newRecipe.tags && newRecipe.tags.includes(tag.id) ? "secondary" : "primary" }
         onClick={() => handleTagChange(tag.id)}/>
     ) 
     const difficulty = params.difficulties.map( (d, index) => <option key={index} value={d.id}>{ d.name }</option>)
@@ -142,7 +166,7 @@ const AddRecipe = () => {
     return (
         <>
             <PageBlock back="utilisateur">
-                <Cockpit title="Proposer une recette" />
+                { !editing && <Cockpit title="Proposer une recette"/> || <Cockpit title="Modifier une recette"/>}
                 <form>
                     <Field
                         label="Nom de la recette"
@@ -197,7 +221,7 @@ const AddRecipe = () => {
                         options={ category }
                     />
                     <Block>
-                        {tags}
+                        { tags }
                         <p><span className="small">Limité à 3 badges maximum</span></p>
                     </Block>
                     <hr></hr>
@@ -231,7 +255,7 @@ const AddRecipe = () => {
                     <hr></hr>
                     <div className="container text-center my-5">
                         <button type="submit" className="btn btn-primary mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
-                        <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>
+                        { newRecipe.isDraft && <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>}
                     </div>
                 </form>
             </PageBlock>

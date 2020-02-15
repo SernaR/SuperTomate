@@ -50,10 +50,16 @@ function save(formData) {
         .post( USER_API + '/recipe', formData )
 }
 
+function update(id, formData) {
+    return axios
+        .put( USER_API + '/recipe/' + id, formData )
+}
+
+
 function findByUser() {
     return axios
         .get(USER_API + '/recipe')
         .then(result => result.data)
 }
 
-export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save }
+export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save, update }

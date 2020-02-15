@@ -25,11 +25,11 @@ const LoginPage = ({ history }) => {
         try{
             await authAPI.authenticate(credentials);
             
-            setIsAuthenticated(true);
+            setIsAuthenticated(authAPI.isAuthenticated);
             setIsAdmin(authAPI.isAdmin())
 
             setError('');
-            history.replace("/addRecipe");
+            history.push("/profile");
         } catch(error) {
             setError("Aucun compte ne possède cette adresse ou alors les informations ne correspondent pas")
             console.log(error.response)
