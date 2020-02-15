@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     content: DataTypes.TEXT,
     isChecked: DataTypes.BOOLEAN,
-    isBlocked: DataTypes.BOOLEAN
+    isBlocked: DataTypes.BOOLEAN,
+    isReaded: DataTypes.BOOLEAN
   }, {});
   Comment.associate = function(models) {
     // associations can be defined here
@@ -13,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }),
     models.Comment.belongsTo(models.Recipe, {
+      as: 'recipe',
       foreignKey: 'recipeId',
         allowNull: false
     }),

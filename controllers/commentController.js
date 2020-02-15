@@ -16,7 +16,7 @@ exports.newComment = (req, res) => {
         return res.status(400).json({ 'error': 'some invalid characters were used' })
     }
 
-    models.Comment.create({ userId, content, recipeId, isChecked: 0, isBlocked: 0 })
+    models.Comment.create({ userId, content, recipeId, isChecked: 0, isBlocked: 0, isReaded: 0 })
     .then( newcomment => {
         if (newcomment) {
             res.status(201).json({ 'success': 'comment sent to admin for validation' })
@@ -185,4 +185,38 @@ exports.setSubComment = (req, res) => {
             })
         }    
     })      
+}
+
+exports.getUnreadComments = (req, res) => {
+    const userId = req.userId
+    
+    models.Comment.findAll({
+        attributes: ['id', 'content', 'createdAt'],
+        where: { isReaded: false },   
+        include: [{
+            model:models.Recipe,
+            as: 'recipe',
+            attributes: ['name'],
+            require: true,
+            where: { userId }         
+        }],
+        order: [['createdAt', 'ASC']]
+    })
+    .then( comments => {
+        res.status(200).json({ 'comments': comments})
+    })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })
+}
+
+exports.setReaded = async (req, res) => {
+    const id = req.params.commentId
+    try {
+        const comment = await models.Comment.findOne({where: { id } })
+        await comment.update( {isReaded: 1} )
+        res.status(201).json({ 'success': 'comment updated '})
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }
 }

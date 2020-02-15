@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { COMMENT_API, ADMIN_API } from '../config.js';
+import { COMMENT_API, ADMIN_API, USER_API } from '../config.js';
 
 function save(commentId, comment) {
     return axios
@@ -10,8 +10,15 @@ function moderate(commentId, mode) {
     return axios.post( ADMIN_API + '/comment/' + commentId + '?action=' + mode)
 }
 
-function findByUser(id) {
-    //code
+function findByUser() {
+    return axios
+        .get(USER_API + '/comment')
+        .then(result => result.data)
 }
 
-export default { save, moderate, findByUser }
+function readed(id) {
+    return axios
+        .put(USER_API + '/comment/' + id)
+}
+
+export default { save, moderate, findByUser, readed }

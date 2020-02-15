@@ -1,9 +1,9 @@
 import React from 'react';
-import Comment from './Comment';
+import Comment from './RecipeComment';
 import CommentBlock from '../blocks/CommentBlock';
 import commentsAPI from '../../services/commentsAPI';
 
-const Comments = ({ comments, onModerated = null, isAdmin = false }) => {
+const RecipeComments = ({ comments, onModerated = null, isAdmin = false }) => {
     const handleValidate =  id => {
         moderateComment( id, 'add')
     }
@@ -48,4 +48,4 @@ const Comments = ({ comments, onModerated = null, isAdmin = false }) => {
     );
 }
  
-export default Comments;
+export default RecipeComments;

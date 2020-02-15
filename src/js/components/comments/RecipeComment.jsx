@@ -1,7 +1,7 @@
 import React from 'react';
 //import 'moment'
 
-const Comment = ({ content, createdAt, userName, isAdmin, onValidate, onRemove, onAnswer }) => {
+const RecipeComment = ({ content, createdAt, userName, isAdmin, onValidate, onRemove, onAnswer }) => {
     const moment = require('moment')
     moment.locale('fr');
     return ( 
@@ -26,4 +26,4 @@ const Comment = ({ content, createdAt, userName, isAdmin, onValidate, onRemove, 
      );
 }
  
-export default Comment;
+export default RecipeComment;

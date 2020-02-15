@@ -23,7 +23,9 @@ router.post('/recipe', upload.single('image'), recipeController.addRecipe)
 router.put('/recipe/:recipeId', upload.single('image'), recipeController.updateRecipe)
 
 //comments routes
+router.get('/comment', commentController.getUnreadComments)
 router.post('/comment/:recipeId', commentController.newComment)
+router.put('/comment/:commentId', commentController.setReaded)
 router.post('/subcomment/:commentId', commentController.newSubComment)
 
 //like routes

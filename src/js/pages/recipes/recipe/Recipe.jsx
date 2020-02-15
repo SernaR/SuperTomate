@@ -4,7 +4,7 @@ import Header from './RecipeHeader'
 import Ingredients from './RecipeIngredients';
 import Steps from './RecipeSteps';
 import Footer from '../../../components/Footer';
-import Comments from '../../../components/comments/Comments';
+import Comments from '../../../components/comments/RecipeComments';
 import AddComment from '../../../components/comments/AddComment';
 import AuthContext from '../../../contexts/AuthContext';
 import PageBlock from '../../../components/blocks/pageBlock';

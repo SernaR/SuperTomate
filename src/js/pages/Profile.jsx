@@ -3,9 +3,11 @@ import Cockpit from '../components/Cockpit';
 import Footer from '../components/Footer';
 import PageBlock from '../components/blocks/pageBlock';
 import CommentBlock from '../components/blocks/CommentBlock';
-import authAPI from '../services/authAPI';
 import recipesAPI from '../services/recipesAPI';
 import { Link } from 'react-router-dom';
+import commentsAPI from '../services/commentsAPI';
+import ProfileComments from '../components/comments/ProfileComments';
+
 
 const Profile = () => {
 
@@ -17,10 +19,10 @@ const Profile = () => {
         try {
             
             const { recipes } = await recipesAPI.findByUser()
-            //const { comments } = await adminAPI.findByUser()
+            const { comments } = await commentsAPI.findByUser()
 
             setRecipes(recipes)
-            //setComments(comments)
+            setComments(comments)
 
         } catch(err) {
             console.log(err.response)
@@ -29,9 +31,9 @@ const Profile = () => {
     
 
     const [recipes, setRecipes] = useState([])
-    //const [comments, setComments] = useState([])
+    const [comments, setComments] = useState([])
 
-    
+
     const myRecipes = recipes.map( (recipe, index) => 
         <li key={index} className="lead mb-1">
             <Link to={"/recipe/" + recipe.id } >
@@ -40,6 +42,15 @@ const Profile = () => {
            { recipe.isDraft && <span className="badge badge-secondary mx-1">Brouillon</span>}
         </li>
     )
+
+    const handleRead = async id => {
+        try {
+            await commentsAPI.readed(id)
+            setComments( comments.filter( comment => comment.id !== id))
+        }catch(err) {
+            console.log(err.response)
+        }
+    }
 
     return ( 
         <>
@@ -70,7 +81,7 @@ const Profile = () => {
                         { myRecipes}
                     </ul>
                 </CommentBlock>
-                <CommentBlock title="Derniers commentaires"></CommentBlock>
+                <ProfileComments comments={comments} onRead={handleRead}/>
             </PageBlock>
             <Footer/>
         </>  

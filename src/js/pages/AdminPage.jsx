@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cockpit from '../components/Cockpit';
 import adminAPI from '../services/adminAPI';
-import Comments from '../components/comments/Comments';
+import Comments from '../components/comments/RecipeComments';
 import CommentBlock from '../components/blocks/CommentBlock';
 import PageBlock from '../components/blocks/pageBlock';
 
