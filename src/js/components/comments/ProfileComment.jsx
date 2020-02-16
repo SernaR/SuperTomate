@@ -11,7 +11,7 @@ const ProfileComment = ({ content, createdAt, recipe, onRead }) => {
             </div>    
             <p className="mb-2">{ content }</p>
             <div className="row justify-content-end">
-                <button className="btn btn-outline-dark btn-sm mr-3" onClick={ onRead }>Lu</button>     
+                <button className="btn btn-outline-dark btn-sm mr-3" onClick={ onRead }>Marquer comme lu</button>     
             </div>  
         </div>
 

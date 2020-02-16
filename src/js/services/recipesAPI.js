@@ -48,11 +48,13 @@ function getTags() {
 function save(formData) {
     return axios
         .post( USER_API + '/recipe', formData )
+        .then(({data}) => data.recipeId)
 }
 
 function update(id, formData) {
     return axios
         .put( USER_API + '/recipe/' + id, formData )
+        .then(({data}) => data.recipeId)
 }
 
 

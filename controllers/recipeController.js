@@ -29,7 +29,7 @@ exports.addRecipe = async (req, res) => {
 
             await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, newRecipe)
                 
-            res.status(201).json({ 'recipeName': newRecipe.name })
+            res.status(201).json({ 'recipeId': newRecipe.id })
             
         } else {
             res.status(409).json({ 'error': 'recipe name already exist' })
@@ -71,7 +71,7 @@ exports.updateRecipe = async (req, res) => {
             await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, recipeFound)
 
             res.status(201).json({
-                'recipeName': updatedRecipe.name
+                'recipeId': updatedRecipe.id
             })   
                    
         } else {

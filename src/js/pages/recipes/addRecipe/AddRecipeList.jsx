@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddRecipeList = ({aria, type, items = [], onChange}) => {
+const AddRecipeList = ({name, type, items = [], onChange}) => {
 
     const [item, setItem] = useState({
         content: '', 
@@ -17,7 +17,7 @@ const AddRecipeList = ({aria, type, items = [], onChange}) => {
     )
 
     const setRank = items => {
-        onChange( items.map( (item, index) => { return { "rank": index + 1, "content": item.content} })) 
+        onChange( name, items.map( (item, index) => { return { "rank": index + 1, "content": item.content} })) 
     }
 
     const handleItemChange = ({ currentTarget }) => {
@@ -71,22 +71,22 @@ const AddRecipeList = ({aria, type, items = [], onChange}) => {
                 <textarea
                     value={ item.content } 
                     onChange={ handleItemChange }
-                    placeholder={ aria }
-                    aria-label={ aria }
+                    placeholder={ name }
+                    aria-label={ name }
                     aria-describedby="basic-addon"
                     className="form-control" 
-                    id={ aria }
+                    id={ name }
                 />
                 :
                 <input 
                     type = "text"
                     value={ item.content }
                     onChange={ handleItemChange }
-                    placeholder={ aria }
-                    aria-label={ aria }
+                    placeholder={ name }
+                    aria-label={ name }
                     aria-describedby="basic-addon"
                     className="form-control" 
-                    id={ aria }
+                    id={ name }
                 />
                 }
                 <div className="input-group-append">

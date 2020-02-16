@@ -3,21 +3,16 @@ import Cockpit from '../../../components/Cockpit';
 import Field from '../../../components/forms/Field'
 import recipeAPI from '../../../services/recipesAPI'
 import AddRecipeList from './AddrecipeList';
-import Tag from '../../../components/Tag'
 import Select from '../../../components/forms/Select';
 import Block from './AddRecipeBlock';
 import ClassicField from '../../../components/forms/ClassicField';
 import Footer from '../../../components/Footer';
 import PageBlock from '../../../components/blocks/pageBlock';
 import recipesAPI from '../../../services/recipesAPI';
+import AddRecipeTags from './AddRecipeTags';
 
 //TODO : contraintes
-//TODO : prise en charge des tags -> composant
 //TODO : notification
-//mettre option dans le composant select ??
-//todo gestion du draft
-
-//mettre le vrai id ***** lors du push
 
 const AddRecipe = ({ match, history }) => {
 
@@ -79,25 +74,14 @@ const AddRecipe = ({ match, history }) => {
         setNewRecipe({ ...newRecipe, [name]: value })
     };
 
-    const handleIngredientsChange = ingredients => setNewRecipe({ ...newRecipe, ingredients })
-    const handleStepsChange = steps => setNewRecipe({ ...newRecipe, steps })
-
+    const handleRecipeParamChange = (name, param) => setNewRecipe({ ...newRecipe, [name]: param })
     const handleImageChange = ({ currentTarget }) => setNewRecipe({ ...newRecipe, picture: currentTarget.files[0] })
-
-    const handleTagChange = (id) => {
-            const tags = newRecipe.tags
-            if ( tags.indexOf(id) === -1 && tags.length < 3 ) {
-                tags.push(id)
-                setNewRecipe({ ...newRecipe, tags})
-            } else  {
-                setNewRecipe({ ...newRecipe, tags: tags.filter( tag => tag !== id )})   
-            }
-    }
 
     const sendRecipe = async () => {
         const { name, difficulty, serve, making, cook, tags, category, steps, ingredients, isDraft } = newRecipe 
         const picture = newRecipe.picture
         
+        let recipeId
         let formData = new FormData()
 
         formData.set('name', name)
@@ -114,13 +98,12 @@ const AddRecipe = ({ match, history }) => {
         try {
             if(editing){
                 if(picture) formData.append('image', picture)
-                await recipeAPI.update(id, formData) 
+                recipeId = await recipeAPI.update(id, formData) 
             } else {
                 formData.append('image', picture)
-                await recipeAPI.save(formData)
+                recipeId = await recipeAPI.save(formData)
             }
-            clearForm()
-            history.push("/recipe/" + 1 ); //mettre le vrai id *****
+            history.push("/recipe/" + recipeId ); 
         } catch(err) {
             //NotificationManager.error(err.response.data.error, 'Error');
             console.log(err.response)
@@ -138,31 +121,6 @@ const AddRecipe = ({ match, history }) => {
         sendRecipe()
     }
 
-    const clearForm = () => {
-        setNewRecipe({ 
-            name: '',
-            difficulty: params.difficulties[0].id,
-            serve: '',
-            cook: '', 
-            making: '', 
-            category: params.categories[0].id,
-            tags: [],
-            ingredients: [],
-            steps: [],
-            picture: null,
-            isDraft: true, 
-        })
-    }  
-
-    const tags = params.tags.map( tag => <Tag 
-        key={tag.id} 
-        name={ tag.name }  
-        color={ newRecipe.tags && newRecipe.tags.includes(tag.id) ? "secondary" : "primary" }
-        onClick={() => handleTagChange(tag.id)}/>
-    ) 
-    const difficulty = params.difficulties.map( (d, index) => <option key={index} value={d.id}>{ d.name }</option>)
-    const category = params.categories.map( (c, index) => <option key={index} value={c.id}>{c.name}</option> )
-    
     return (
         <>
             <PageBlock back="utilisateur">
@@ -179,7 +137,7 @@ const AddRecipe = ({ match, history }) => {
                         value={newRecipe.difficulty}
                         onChange={handleChange}
                         name="difficulty"
-                        options={ difficulty }
+                        options={ params.difficulties }
                     />
                     <hr></hr>
                     <div className="row mb-3">
@@ -218,25 +176,26 @@ const AddRecipe = ({ match, history }) => {
                         value={newRecipe.category}
                         onChange={handleChange}
                         name="category"
-                        options={ category }
+                        options={ params.categories }
                     />
-                    <Block>
-                        { tags }
-                        <p><span className="small">Limité à 3 badges maximum</span></p>
-                    </Block>
+                    <AddRecipeTags 
+                        tagList = { params.tags }
+                        tags = { newRecipe.tags }
+                        onTagChange = { handleRecipeParamChange }
+                    />
                     <hr></hr>
                     <Block label="Ingrédients">
                         <AddRecipeList
                             items={ newRecipe.ingredients }
-                            aria="ingrédients"
-                            onChange={ handleIngredientsChange }/>
+                            name="ingredients"
+                            onChange={ handleRecipeParamChange }/>
                     </Block> 
                     <Block label="Étapes">
                         <AddRecipeList
                             items={ newRecipe.steps }
-                            aria="steps"
+                            name="steps"
                             type="textarea"
-                            onChange={ handleStepsChange }/>
+                            onChange={ handleRecipeParamChange }/>
                     </Block>   
                     <Block label="Ajouter une photo">
                         <div className="input-group mb-3">    
@@ -254,7 +213,7 @@ const AddRecipe = ({ match, history }) => {
                     </Block>       
                     <hr></hr>
                     <div className="container text-center my-5">
-                        <button type="submit" className="btn btn-primary mx-1" onClick={handleRecipeSubmit}>Ajouter ma recette</button>
+                        <button type="submit" className="btn btn-primary mx-1" onClick={handleRecipeSubmit}>{ editing ? "modifier" : "Ajouter "} ma recette</button>
                         { newRecipe.isDraft && <button className="btn btn-outline-secondary" onClick={handleDraftSubmit}>Enregistrer le brouillon</button>}
                     </div>
                 </form>
