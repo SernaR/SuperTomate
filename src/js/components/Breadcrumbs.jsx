@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Breadcrumbs = (props) => {
-    
+const Breadcrumbs = ({ recipe }) => {
+    const { category, name } = recipe
     return (  
-        <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="#">Accueil</a></li>
-            <li className="breadcrumb-item"><a href="#">Catégories</a></li>
-            <li className="breadcrumb-item active">Entrées</li>
+        <ol className="breadcrumb bg-danger">
+            <li className="breadcrumb-item"><Link to={ '/' }>Accueil</Link></li>
+            { category && <li className="breadcrumb-item"><Link to={ '/recipes/'+ category.name }>{ category.name }</Link></li>}
+            <li className="breadcrumb-item active">{ name }</li>
         </ol>
     );
 }

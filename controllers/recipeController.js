@@ -147,7 +147,7 @@ exports.getRecipe = (req, res) => {
             },{ 
                 model: models.Category,
                 as: 'category',
-                attributes: ['id']
+                attributes: ['id', 'name']
             },{ 
                 model: models.Difficulty,
                 as: 'difficulty',

@@ -8,6 +8,7 @@ import Comments from '../../../components/comments/RecipeComments';
 import AddComment from '../../../components/comments/AddComment';
 import AuthContext from '../../../contexts/AuthContext';
 import PageBlock from '../../../components/blocks/pageBlock';
+import Breadcrumbs from '../../../components/Breadcrumbs';
 
 const Recipe = ({ match }) => {
     
@@ -44,6 +45,9 @@ const Recipe = ({ match }) => {
         <>
             <PageBlock 
                 back="visiteur"
+                breadcrumds={
+                    <Breadcrumbs recipe={ recipe }/>
+                }
                 commentBlock={
                     <>
                         { isAuthenticated && <AddComment recipeId={ recipeId }/> }
