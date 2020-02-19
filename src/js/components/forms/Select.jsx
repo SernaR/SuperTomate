@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Select = ({ name, label, value, onChange, options }) => 
+const Select = ({ name, label, onChange, options }) => 
     (  
         <div className="form-group">
             <div className="row">
@@ -8,7 +8,6 @@ const Select = ({ name, label, value, onChange, options }) =>
                 <div className="col-sm-8">
                     <select 
                         className="form-control" 
-                        value={value}
                         onChange={onChange}
                         id={name} 
                         name={name} >

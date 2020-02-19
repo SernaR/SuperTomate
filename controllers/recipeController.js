@@ -140,6 +140,11 @@ exports.getRecipe = (req, res) => {
         attributes: ['name', 'serve', 'making', 'cook', 'picture', 'isDraft'],
         include: [
             { 
+                model: models.Like,
+                as: 'likes',
+                attributes: ['userId', 'record'],
+            },
+            { 
                 model: models.Tag,
                 as: 'tags',
                 attributes: ['id'],

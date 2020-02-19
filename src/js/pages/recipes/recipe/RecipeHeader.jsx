@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-//TODO : user ??
-//todo : notes -->  <p className="my-5 pt-3" id="note">Noter la recette: </p>
+import Like from '../../../components/Like';
 
 const RecipeHeader = ({ recipe, userId, recipeId }) => {
-    const { serve, making, cook, picture, difficulty, user } = recipe
-    
+    const { serve, making, cook, picture, difficulty, user, likes } = recipe
+    let isRecorded
+
+    if (likes) {
+        isRecorded = likes.findIndex( like => like.userId === userId) === -1
+    }   
+
     return ( 
         <div className="row p-3">
             <div id="recette-img" className="col">
@@ -15,13 +18,16 @@ const RecipeHeader = ({ recipe, userId, recipeId }) => {
             <div className="col card py-3 lead"> 
                 <p>Difficulté : {difficulty.name }</p>
                 <p>Nombre de personnes : { serve }</p>
-                <p>Préparation : { making }mn</p>
-                <p>Cuisson : { cook }mn</p>
+                <p>Préparation : { making } mn</p>
+                <p>Cuisson : { cook } mn</p>
 
                 { (user && userId === user.id)  &&
-                    <Link to={ "/addRecipe/" + recipeId} >
-                        <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
-                    </Link> 
+                    <>
+                        <Link to={ "/addRecipe/" + recipeId} >
+                            <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
+                        </Link> 
+                        { isRecorded && <Like recipeId={ recipeId }/> }
+                    </>
                 }
             </div>
         </div>

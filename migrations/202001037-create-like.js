@@ -24,7 +24,7 @@ module.exports = {
           key: 'id'
         }
       },
-      liked: {
+      record: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

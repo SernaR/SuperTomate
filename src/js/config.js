@@ -7,3 +7,4 @@ export const PARAMS_API = API_URL + 'params'
 
 export const RECIPE_API = API_URL + 'recipe'
 export const COMMENT_API =  USER_API + '/comment'
+export const LIKE_API = USER_API + '/like/'

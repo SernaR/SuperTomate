@@ -71,6 +71,7 @@ const AddRecipe = ({ match, history }) => {
 
     const handleChange = ({ currentTarget }) => {
         const {value, name} = currentTarget;
+        console.log(newRecipe)
         setNewRecipe({ ...newRecipe, [name]: value })
     };
 
@@ -134,7 +135,6 @@ const AddRecipe = ({ match, history }) => {
                     />
                     <Select
                         label="Difficulté"
-                        value={newRecipe.difficulty}
                         onChange={handleChange}
                         name="difficulty"
                         options={ params.difficulties }
@@ -173,7 +173,6 @@ const AddRecipe = ({ match, history }) => {
                     
                     <Select
                         label="Catégories"
-                        value={newRecipe.category}
                         onChange={handleChange}
                         name="category"
                         options={ params.categories }
