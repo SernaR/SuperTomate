@@ -1,6 +1,6 @@
 const models = require('../models')
 
-exports.noteRecipe = (req,res) => {
+exports.noteRecipe = async (req,res) => {
     const userId = req.userId
     const recipeId = req.params.recipeId
     const { record } = req.body
@@ -10,20 +10,19 @@ exports.noteRecipe = (req,res) => {
     if (isNaN(record) || record < 1 || record > 6) 
         return res.status(400).json({ 'error': 'invalid note' })   
 
-    models.Recipe.findOne({
-        attributes: ['id'],
-        where: { id: recipeId }
-    })
-    .then( recipeFound => {
-        return models.Like.create({ record, userId, recipeId: recipeFound.id })
-    })
-    .then( () => {
-        res.status(201).json({ 'succes': 'note: '+ record + '/5' }) 
-    })
-    .catch( () => {
-        res.status(500).json({ 'error': 'sorry, an error has occured' })
-    })
-}
+    try {
+        const [like, created] = await models.Like.findOrCreate({
+            where:{ userId, recipeId },
+            defaults: { record, userId, recipeId }
+        })
 
-// modifier une note ? oui
-// faire find or create => 2 en 1 rate!!
+        if (created) {
+            res.status(201).json({ 'succes': 'note: '+ record + '/5' })  
+        } else {
+            res.status(409).json({ 'error': 'you already note this recipe' })
+        }
+
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }   
+}

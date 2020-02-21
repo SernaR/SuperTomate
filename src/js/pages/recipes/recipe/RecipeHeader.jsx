@@ -2,14 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Like from '../../../components/Like';
 
-const RecipeHeader = ({ recipe, userId, recipeId }) => {
+const RecipeHeader = ({ recipe, userId, recipeId, onLike }) => {
     const { serve, making, cook, picture, difficulty, user, likes } = recipe
     let isRecorded
 
     if (likes) {
         isRecorded = likes.findIndex( like => like.userId === userId) === -1
-    }   
-
+    }  
+    
+    const handleLike = (record) => onLike({...record, userId})
+    
     return ( 
         <div className="row p-3">
             <div id="recette-img" className="col">
@@ -26,7 +28,7 @@ const RecipeHeader = ({ recipe, userId, recipeId }) => {
                         <Link to={ "/addRecipe/" + recipeId} >
                             <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>
                         </Link> 
-                        { isRecorded && <Like recipeId={ recipeId }/> }
+                        { isRecorded && <Like recipeId={ recipeId } onLike={handleLike}/> }
                     </>
                 }
             </div>

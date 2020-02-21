@@ -6,7 +6,7 @@ function Block({title, text, children}) {
             <h2 className="display-4 text-primary text-center pt-3 mb-4">{ title }</h2>
             <div className="container pt-3">
                 <p className="lead">{ text }</p>
-            <div>{ children }</div>
+                <div>{ children }</div>
             </div>
         </section>    
     )

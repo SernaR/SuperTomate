@@ -1,7 +1,7 @@
 const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
-//const sequelize = require('sequelize')
+const sequelize = require('sequelize')
 
 //TODO :  revoir toutes les RQT - optimisation
 
@@ -213,15 +213,18 @@ exports.getRecipe = (req, res) => {
 
 exports.getHomepage = async (req,res) => {
     try {
-        const bestRecipes = await models.Recipe.findAll({
-            attributes: ['name']//,
-            /*include: [{
-                model: models.Like,
-                attributes: [
-                    [sequelize.fn('AVG', sequelize.col('liked')), 'Avg'],   
-                ]
+        const bestRecipes = await models.Like.findAll({
+            attributes: [
+                [sequelize.fn('AVG', sequelize.col('record')), 'Avg'],
+                'recipeId'
+            ],
+            include:[{
+                model: models.Recipe,
+                attributes: ['name'],
             }],
-            group: ['name'],*/
+            group: ['recipeId'],
+            order: [['record', 'DESC']],
+            limit: 5
         })
 
         const newRecipes = await models.Recipe.findAll({
@@ -241,7 +244,7 @@ exports.getHomepage = async (req,res) => {
         
         res.status(200).json({
             'newRecipes': newRecipes,
-            'bestRecipe': bestRecipes
+            'bestRecipes': bestRecipes
         })
     } catch (err) {
         res.status(500).json({ 'error': 'sorry, an error has occured' })

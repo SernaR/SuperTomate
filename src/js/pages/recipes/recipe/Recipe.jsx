@@ -42,6 +42,11 @@ const Recipe = ({ match }) => {
         }
     }
 
+    const handleLike = (record) => {
+        recipe.likes.push(record)
+        setRecipe( { ...recipe, likes:recipe.likes})
+    }
+
     return ( 
         <>
             <PageBlock 
@@ -63,7 +68,7 @@ const Recipe = ({ match }) => {
                 </p>
                 ||
                 <Hearts likes={ recipe.likes }/> }
-                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId}/>
+                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike}/>
                 <Ingredients ingredients={recipe.ingredients}/>
                 <Steps steps={recipe.steps}/>
             </PageBlock>

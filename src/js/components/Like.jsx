@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Select from './forms/Select';
 import likesAPI from '../services/likesAPI';
 
-const Like = ({ recipeId }) => {
+const Like = ({ recipeId, onLike}) => {
     const [show, setshow] = useState(true)
     const recordOptions = [
         { id: 0, name: ""},
@@ -17,6 +17,7 @@ const Like = ({ recipeId }) => {
         try{
             await likesAPI.record(recipeId, currentTarget.value )
             setshow(false)
+            onLike({record: parseInt(currentTarget.value) })
         }catch(err){
             console.log(err.response)
         } 

@@ -7,6 +7,7 @@ import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from './Homepag
 import recipesAPI from '../../services/recipesAPI';
 import RecipeCards from '../../components/RecipeCards';
 import ScrollToTopOnMount from '../../services/ScrollToTopOnMount';
+import Super from '../../components/Super';
 
 const HomePage = (props) => {
     useEffect( () => {
@@ -15,12 +16,13 @@ const HomePage = (props) => {
 
     const [newRecipes, setNewRecipes] = useState([])
     const [bestRecipe, setBestRecipe] = useState({})
+    const randomIndex = Math.floor( Math.random() * 6 );
     
     const fetchRecipes = async() => {
         try {
-            const { newRecipes, bestRecipe } = await recipesAPI.getHome()
+            const { newRecipes, bestRecipes } = await recipesAPI.getHome()
             setNewRecipes(newRecipes)
-            setBestRecipe(bestRecipe)
+            setBestRecipe(bestRecipes[randomIndex])
         } catch(err) {
             console.log(err.response)
         }
@@ -41,7 +43,7 @@ const HomePage = (props) => {
             <Block title="Les jeunes pousses">
                 <RecipeCards recipes={ newRecipes } col={3}/>
             </Block>
-            
+            <Super bestRecipe={bestRecipe} />
             <Block
                 title={devenir_cuisinier_vegetal.title} 
                 text={devenir_cuisinier_vegetal.text} 
