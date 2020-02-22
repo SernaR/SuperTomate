@@ -1,6 +1,6 @@
 import axios from 'axios'
 import cache from './cache.js';
-import { API_URL, RECIPE_API, USER_API, PARAMS_API } from '../config.js';
+import { API_URL, RECIPE_API, USER_API, PARAMS_API, ADMIN_API } from '../config.js';
 
 function getHome() {
     return axios
@@ -64,4 +64,16 @@ function findByUser() {
         .then(result => result.data)
 }
 
-export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save, update }
+function getSlugs() {
+    return axios
+        .get( ADMIN_API + '/slug')
+        .then(result => result.data)
+}
+
+function setSlug(id, slug) {
+    return axios
+        .put( ADMIN_API + '/slug/'+ id, {slug})
+        .then(({data}) => data.recipeId)
+}
+
+export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save, update, getSlugs, setSlug }

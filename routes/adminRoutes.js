@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const userController = require('../controllers/userController')
+const recipeController = require('../controllers/recipeController')
 const params = require('../controllers/recipeParamController')
 const commentController = require('../controllers/commentController')
 
@@ -17,6 +18,8 @@ router.post('/tag', params.addTag)
 router.post('/difficulty', params.addDifficulty)
 
 //comments routes
+router.get('/slug', recipeController.getEmptySlugs)
+router.put('/slug/:recipeId', recipeController.setSlug)
 router.get('/comment', commentController.getNewComments)
 router.post('/comment/:commentId', commentController.setComment)//?action=add ou ?action=remove
 router.get('/subcomment', commentController.getNewSubComments)

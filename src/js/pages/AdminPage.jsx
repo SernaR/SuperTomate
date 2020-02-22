@@ -4,10 +4,13 @@ import adminAPI from '../services/adminAPI';
 import Comments from '../components/comments/RecipeComments';
 import CommentBlock from '../components/blocks/CommentBlock';
 import PageBlock from '../components/blocks/pageBlock';
+import recipesAPI from '../services/recipesAPI';
+import Slugs from '../components/Slugs';
+import { Redirect } from 'react-router-dom';
 
 //TODO : refacto les inputs
 
-const AdminPage = (props) => {
+const AdminPage = ({ history }) => {
 
     useEffect( () => {
         fetchList()
@@ -26,14 +29,18 @@ const AdminPage = (props) => {
     })
 
     const [comments, setComments] = useState([])
+    const [slugs, setSlugs] = useState([])
 
     const fetchList = async () => {
         try {
             const { tags, difficulties, categories } = await adminAPI.getParams()
             const { comments } = await adminAPI.getComments()
-
+            const { slugs } = await recipesAPI.getSlugs()
+            
+            setSlugs(slugs)
             setList({ tags, difficulties, categories })
             setComments(comments)
+            
 
         } catch(err) {
             console.log(err.response)
@@ -89,6 +96,11 @@ const AdminPage = (props) => {
         }
     }
 
+    const handleSlugChange = (id, slug, category) => {
+        setSlugs(slugs.filter( slug => slug.id !== id ))
+        history.push('/recette/'+ category + '/'+ slug + '/' + id,)
+    }
+
     return ( 
         <PageBlock 
             back="gris"
@@ -98,7 +110,7 @@ const AdminPage = (props) => {
                         onModerated={ handleChangeComments }
                         comments={ comments } 
                         isAdmin={ true } 
-                    />  
+                    />
                 </>
             }
         >
@@ -149,6 +161,7 @@ const AdminPage = (props) => {
                     </div>
                 </form>
                 <ul>{ difficulties }</ul>
+                <Slugs slugs={slugs} onSlugChange={handleSlugChange}/>
             </CommentBlock>     
         </PageBlock>
      );

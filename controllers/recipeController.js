@@ -2,6 +2,7 @@ const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
 const sequelize = require('sequelize')
+const adminUtils = require('../utils/adminUtils')
 
 //TODO :  revoir toutes les RQT - optimisation
 
@@ -88,7 +89,7 @@ exports.getAllRecipes = (req, res) => {
     const name = req.params.categoryId
     models.Recipe.findAll({
         where: { isDraft: false },
-        attributes: ['id','name','picture'],
+        attributes: ['id','name','picture', 'slug'],
         include: [
             {
                 model: models.Tag,
@@ -120,7 +121,7 @@ exports.getUserRecipes = (req, res) => {
     const userId = req.userId
     models.Recipe.findAll({
         where: { userId },
-        attributes: ['id', 'name', 'isDraft'],
+        attributes: ['id', 'name', 'isDraft', 'slug'],
         order:[['name', 'ASC']]
     })
     .then( recipes => {
@@ -218,24 +219,28 @@ exports.getHomepage = async (req,res) => {
                 [sequelize.fn('AVG', sequelize.col('record')), 'Avg'],
                 'recipeId'
             ],
-            include:[{
-                model: models.Recipe,
-                attributes: ['name'],
-            }],
+            include:[
+                {
+                    model: models.Recipe,
+                    attributes: ['name', 'slug'],
+                }
+            ],
             group: ['recipeId'],
             order: [['record', 'DESC']],
             limit: 5
         })
 
         const newRecipes = await models.Recipe.findAll({
-            attributes: ['id','name','picture'],
-            include: [{
-                model: models.Tag,
-                as: 'tags',
-                required: false,
-                attributes: ['name'],
-                through: { attributes: [] }
-            }],
+            attributes: ['id','name','picture', 'slug'],
+            include: [
+                {
+                    model: models.Tag,
+                    as: 'tags',
+                    required: false,
+                    attributes: ['name'],
+                    through: { attributes: [] }
+                }
+            ],
             order: [
                 ['id', 'DESC']
             ],
@@ -251,3 +256,57 @@ exports.getHomepage = async (req,res) => {
     }   
 }
 
+exports.getEmptySlugs = async (req, res) => {
+    try{
+        const slugs = await models.Recipe.findAll({
+            where:{ slug:  null },
+            attributes: ['id', 'categoryId', 'name' ],
+            include:[
+                { 
+                    model: models.Category,
+                    as: 'category',
+                    attributes: ['name']
+                }
+            ]
+        })
+        res.status(200).json({
+            'slugs': slugs
+        })
+        
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }      
+}
+
+exports.setSlug = async (req, res) => {
+    const id = req.params.recipeId
+    const { slug } = req.body
+    const admin = jwt.checkAdmin(req.headers['authorization']) 
+
+    console.log(req.body)
+
+
+    if ( !slug ) { 
+        return res.status(400).json({ 'error': 'missing parameters' })
+    }
+
+    if(admin){
+        try{
+            const recipeFound = await models.Recipe.findOne({
+                where: { id }
+            })
+
+            const updatedRecipe = await recipeFound.update({ slug })
+            res.status(201).json({
+                'recipeId': updatedRecipe.id
+            }) 
+
+        } catch (err) {
+            res.status(500).json({ 'error': 'sorry, an error has occured' })
+        }  
+    } else {
+        res.status(403).json({
+            'error': 'not authorized path'
+        })
+    }        
+}

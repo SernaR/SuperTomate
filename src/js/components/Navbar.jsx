@@ -42,7 +42,7 @@ const Navbar = ({ history }) => {
 
     const categotyList = categories.map( category => 
         <li className="nav-item" key={ category.id }>
-            <NavLink className="nav-link lead" to={ "/recipes/" + category.name }>{ category.name }</NavLink>
+            <NavLink className="nav-link lead" to={ "/recettes/" + category.name }>{ category.name }</NavLink>
         </li>
     )
     //<img src="/images/mascotte-super-tomate.svg"></img>

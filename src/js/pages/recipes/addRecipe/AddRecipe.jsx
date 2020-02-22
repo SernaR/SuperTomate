@@ -71,7 +71,6 @@ const AddRecipe = ({ match, history }) => {
 
     const handleChange = ({ currentTarget }) => {
         const {value, name} = currentTarget;
-        console.log(newRecipe)
         setNewRecipe({ ...newRecipe, [name]: value })
     };
 
@@ -104,7 +103,7 @@ const AddRecipe = ({ match, history }) => {
                 formData.append('image', picture)
                 recipeId = await recipeAPI.save(formData)
             }
-            history.push("/recipe/" + recipeId ); 
+            history.push("/recette/categorie/nouveau/" + recipeId ); 
         } catch(err) {
             //NotificationManager.error(err.response.data.error, 'Error');
             console.log(err.response)

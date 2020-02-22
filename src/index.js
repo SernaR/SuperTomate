@@ -38,8 +38,8 @@ const Index = () => {
         <NavbarWithRouter />
           <Switch>
             <Route path="/login" component={LoginPage} />
-            <Route path="/recipes/:category" component={RecipesCategoryPage}/>
-            <Route path="/recipe/:id" component={Recipe}/>
+            <Route path="/recettes/:category" component={RecipesCategoryPage}/>
+            <Route path="/recette/:category/:slug/:id" component={Recipe}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/addRecipe/:id" component={AddRecipe}/>
             <AdminRoute path="/dashboard" component={AdminPage} />
