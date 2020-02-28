@@ -27,7 +27,7 @@ const Recipe = ({ match }) => {
         likes: []
     })
 
-    const { isAuthenticated } = useContext(AuthContext)
+    const { isAuthenticated, isAdmin } = useContext(AuthContext)
 
     useEffect(() => {
         fetchRecipe(recipeId)
@@ -68,7 +68,7 @@ const Recipe = ({ match }) => {
                 </p>
                 ||
                 <Hearts likes={ recipe.likes }/> }
-                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike}/>
+                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
                 <Ingredients ingredients={recipe.ingredients}/>
                 <Steps steps={recipe.steps}/>
             </PageBlock>

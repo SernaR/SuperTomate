@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Like from '../../../components/Like';
 
-const RecipeHeader = ({ recipe, userId, recipeId, onLike }) => {
+const RecipeHeader = ({ recipe, userId, recipeId, onLike, isAdmin }) => {
     const { serve, making, cook, picture, difficulty, user, likes } = recipe
     let isRecorded
 
@@ -23,7 +23,7 @@ const RecipeHeader = ({ recipe, userId, recipeId, onLike }) => {
                 <p>Préparation : { making } mn</p>
                 <p>Cuisson : { cook } mn</p>
 
-                { (user && userId === user.id)  &&
+                {  ((user && userId === user.id) || isAdmin)  &&
                     <>
                         <Link to={ "/addRecipe/" + recipeId} >
                             <button className="ml-3 btn btn-outline-primary btn-sm">modifier</button>

@@ -1,11 +1,6 @@
+/*-----PRIMARY BUTTON-----*/
 
-.jumbotron{
-	background:rgba(100,107,79,0.8);
-	color:#fff;
-}
-
-/*-----PRIMARY BUTTON-----
-.btn-primary, .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+/*.btn-primary, .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
 	background:#a2b667;
 	border-color:#a2b667;
 }
@@ -13,6 +8,15 @@
 	background:#55b298;
 	border-color:#55b298;
 }*/
+
+/*-----NAV BAR-----*/
+.nav-link{
+	color: #555 !important;
+}
+.nav-link.active, .nav-link:hover{
+	color: #FF7851 !important;
+	border-bottom: 2px solid #FF7851;
+}
 
 /*-----BADGE-----*/
 .badge{

@@ -1,14 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Breadcrumbs = ({ recipe }) => {
-    const { category, name } = recipe
-    return (  
-        <ol className="breadcrumb bg-danger">
-            <li className="breadcrumb-item"><Link to={ '/' }>Accueil</Link></li>
-            { category && <li className="breadcrumb-item"><Link to={ '/recettes/'+ category.name }>{ category.name }</Link></li>}
-            <li className="breadcrumb-item active">{ name }</li>
-        </ol>
+const Breadcrumbs = ({ recipe, category }) => {
+    return ( 
+        <> 
+            {recipe && <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to={ '/' }>Accueil</Link></li>
+                { recipe.category && <li className="breadcrumb-item"><Link to={ '/recettes/'+ recipe.category.name }>{ recipe.category.name }</Link></li>}
+                <li className="breadcrumb-item active">{ recipe.name }</li>
+            </ol>
+            ||
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item"><Link to={ '/' }>Accueil</Link></li>
+                <li className="breadcrumb-item active"><Link to={ '/recettes/'+ category }>{ category }</Link></li>
+            </ol>}
+        </>
     );
 }
  

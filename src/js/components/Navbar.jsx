@@ -42,10 +42,10 @@ const Navbar = ({ history }) => {
 
     const categotyList = categories.map( category => 
         <li className="nav-item" key={ category.id }>
-            <NavLink className="nav-link lead" to={ "/recettes/" + category.name }>{ category.name }</NavLink>
-        </li>
+            <NavLink className="nav-link" to={ "/recettes/" + category.name }>{ category.name }</NavLink>
+        </li> //color + border-bottom:2px solid pour active
     )
-    //<img src="/images/mascotte-super-tomate.svg"></img>
+    
     return ( 
         <header>
             <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
@@ -62,19 +62,19 @@ const Navbar = ({ history }) => {
                         { !isAuthenticated &&
                             <>
                                 <li className="nav-item">
-                                    <NavLink to="/" className="nav-link lead">Inscription</NavLink>
+                                    <NavLink to="/login" className="nav-link">Inscription</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to="/login" className="btn btn-success lead">Connexion</NavLink>
+                                    <NavLink to="/login" className="btn btn-danger" >Connexion</NavLink>
                                 </li>
                             </> || <>
                                 { isAdmin &&
                                     <li className="nav-item">
-                                        <NavLink className="nav-link lead" to="/dashboard">Dashboard</NavLink>
+                                        <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                                     </li>
                                 }
                                 <li className="nav-item">
-                                        <NavLink to="/profile" className="nav-link lead">Profil</NavLink>
+                                        <NavLink to="/profile" className="nav-link">Profil</NavLink>
                                 </li>
                                 <li className="nav-item">
                                         <NavLink to="/addRecipe/new" className="btn btn-outline-success mx-2">Nouvelle recette</NavLink>

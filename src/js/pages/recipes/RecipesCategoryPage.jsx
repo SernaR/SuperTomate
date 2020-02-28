@@ -94,7 +94,12 @@ const RecipesCategoryPage = ({ match }) => {
 
     return ( 
         <>
-             <PageBlock back="visiteur">
+            <PageBlock 
+                back="visiteur"
+                breadcrumds={
+                    <Breadcrumbs category={ category }/>
+                }
+            >
                 <Cockpit title={category} />
                 <div className="row">
                     <div className="col-sm-3 bg-light border-right">
