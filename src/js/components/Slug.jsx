@@ -34,10 +34,10 @@ const Slug = ({ slug, onSetSlug }) => {
                 <input type="text" readOnly className="form-control-plaintext" value={slug.name}/>
             </div>
             <div className="form-group mx-sm-3 mb-2">
-                <input type="text" className="form-control" placeholder="slug" value={url.slug} onChange={handleChange}/>
+                <input type="text" className="form-control" value={url.slug} onChange={handleChange}/>
             </div>
             { !url.show && 
-                <button className="btn btn-outline-dark mb-2" onClick={prepareSlug}>créer slug</button>
+                <button className="btn btn-outline-dark mb-2" onClick={prepareSlug}>créer Url</button>
                 ||
                 <button className="btn btn-primary mb-2" onClick={setSlug}>Voir</button>
             }

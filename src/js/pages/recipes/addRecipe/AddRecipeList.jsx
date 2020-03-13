@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const AddRecipeList = ({name, type, items = [], onChange}) => {
 
@@ -8,12 +8,19 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
         updatedIndex: ''
     })
 
+    const inputRef = useRef(null)
+
     const itemList = items.map( (item, index) => 
-        <li key={index} className="lead mb-1">
+        
+        <li key={index} className="list-group-item d-flex justify-content-between bg-light">
             { item.content }
-            <button className="ml-3 btn btn-outline-secondary btn-sm" onClick={ (event) => updateItem(event,item) }>modifier</button>
-            <button className="ml-3 btn btn-outline-danger btn-sm" onClick={ (event) => deleteItem(event, item) }>supprimer</button>
+            <div className="btn-group">
+                <i className="fas fa-pencil-alt mx-2 text-primary pointer" onClick={ (event) => updateItem(event,item) }></i>
+                <i className="fas fa-trash-alt mx-2 text-danger pointer" onClick={ (event) => deleteItem(event, item) }></i>
+            </div>
         </li>
+        
+        
     )
 
     const setRank = items => {
@@ -56,6 +63,8 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
         event.preventDefault() 
         if ( !item.content ) {
             const index = items.indexOf(i)
+
+            inputRef.current.focus()
             setItem({
                 content: items[index].content,
                 updatedIndex: index,
@@ -71,9 +80,9 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
                 <textarea
                     value={ item.content } 
                     onChange={ handleItemChange }
-                    placeholder={ name }
                     aria-label={ name }
                     aria-describedby="basic-addon"
+                    ref={inputRef}
                     className="form-control" 
                     id={ name }
                 />
@@ -82,9 +91,9 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
                     type = "text"
                     value={ item.content }
                     onChange={ handleItemChange }
-                    placeholder={ name }
                     aria-label={ name }
                     aria-describedby="basic-addon"
+                    ref={inputRef}
                     className="form-control" 
                     id={ name }
                 />
@@ -96,7 +105,7 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
                     >Ajouter</button>
                 </div>
             </div>
-            <ul>
+            <ul className="list-group">
                 { itemList }
             </ul>
         </>        

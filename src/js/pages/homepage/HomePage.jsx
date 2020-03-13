@@ -16,7 +16,7 @@ const HomePage = (props) => {
 
     const [newRecipes, setNewRecipes] = useState([])
     const [bestRecipe, setBestRecipe] = useState({})
-    const randomIndex = Math.floor( Math.random() * 6 );
+    const randomIndex = Math.floor( Math.random() * 5 );
     
     const fetchRecipes = async() => {
         try {
@@ -32,8 +32,8 @@ const HomePage = (props) => {
         <main className="mt-1">
             <ScrollToTopOnMount />
             <div className="jumbotron tomato" style={{ paddingTop: '100px'}}>
-                <h1 className="display-4 text-center">SUPER TOMATE</h1>
-                <h2 className="text-center">Le héros du potager</h2> 
+                <h1 className="display-4 text-center text-primary">SUPER TOMATE</h1>
+                <h2 className="text-center text-primary">Le héros du potager</h2> 
             </div>  
            
             <Block
@@ -44,13 +44,16 @@ const HomePage = (props) => {
                 <RecipeCards recipes={ newRecipes } col={3}/>
             </Block>
             <Super bestRecipe={bestRecipe} />
-            <Block
-                title={devenir_cuisinier_vegetal.title} 
-                text={devenir_cuisinier_vegetal.text} 
-            />
             <Footer />
         </main>
     );
 }
  
 export default HomePage;
+
+/**
+ * <Block
+                title={devenir_cuisinier_vegetal.title} 
+                text={devenir_cuisinier_vegetal.text} 
+            />
+ */

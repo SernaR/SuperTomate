@@ -26,17 +26,18 @@
 
 /*-----HOME-----*/
 .tomato{
-	background-image: url('/images/super-tomato.jpg');
+	background-image: url('/images/404.jpg');
 	background-size: cover;
-	background-position: bottom;
+	background-position: top;
 	height:700px;
+	padding-top: 0em;
 }
 
-.tomato>h1, .tomato>h2{color:red;}	
+.tomato>h1, .tomato>h2{color:#fff;}	
 
-.jumbotron.super{
-	background-image: url('/images/super-heroine.jpg');
-	background-size: cover;
+/*.jumbotron.super{
+	background-image: url('/images/fond-vert.jpg');
+	background-size: contain;
 	height:350px;}
 [class*="img-gradient"]{
 	position: relative;
@@ -56,7 +57,7 @@
 	background-repeat: repeat-x;}
 .container.tomato,.super-titre{color:#fff;}
 .container.vide{height:40%;}
-.card-col{height:70%;}
+.card-col{height:70%;}*/
 
 /*-----IMAGES-----*/
 img {
@@ -67,3 +68,4 @@ img {
 	width: 3em;
 	height: auto;
 }
+.pointer {cursor: pointer;}

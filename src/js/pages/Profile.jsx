@@ -7,6 +7,7 @@ import recipesAPI from '../services/recipesAPI';
 import { Link } from 'react-router-dom';
 import commentsAPI from '../services/commentsAPI';
 import ProfileComments from '../components/comments/ProfileComments';
+import { recipeUrl } from '../services/utils'
 
 
 const Profile = () => {
@@ -33,14 +34,18 @@ const Profile = () => {
     const [recipes, setRecipes] = useState([])
     const [comments, setComments] = useState([])
 
-
     const myRecipes = recipes.map( (recipe, index) => 
-        <li key={index} className="lead mb-1">
-            <Link to={"/recipe/" + recipe.id } >
-                { recipe.name }
-            </Link>
-           { recipe.isDraft && <span className="badge badge-secondary mx-1">Brouillon</span>}
-        </li>
+
+        <Link 
+            to={recipeUrl(recipe.category, recipe.slug) + recipe.id }  
+            style={{textDecoration: 'none'}} 
+            key={index} 
+        >
+            <li className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                <span >{ recipe.name }</span>
+                { recipe.isDraft && <span className="badge badge-secondary mx-1" >Brouillon</span>}
+            </li>
+        </Link>
     )
 
     const handleRead = async id => {
@@ -77,7 +82,7 @@ const Profile = () => {
                     </table>
                 </CommentBlock>
                 <CommentBlock title="Mes recettes">
-                    <ul>
+                    <ul className="list-group">
                         { myRecipes}
                     </ul>
                 </CommentBlock>

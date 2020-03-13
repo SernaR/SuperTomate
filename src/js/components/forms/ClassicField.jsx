@@ -10,7 +10,6 @@ const ClassicField = ({ name, label, value, onChange, placeholder = "", type = "
                         value={value}
                         onChange={onChange}
                         type={type}
-                        placeholder={placeholder || label}
                         name={name} 
                         id={name} 
                         className={"form-control" + (error && " is-invalid") }/>

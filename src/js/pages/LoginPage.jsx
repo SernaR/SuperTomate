@@ -25,7 +25,7 @@ const LoginPage = ({ history }) => {
         try{
             await authAPI.authenticate(credentials);
             
-            setIsAuthenticated(authAPI.isAuthenticated);
+            setIsAuthenticated(authAPI.isAuthenticated());
             setIsAdmin(authAPI.isAdmin())
 
             setError('');

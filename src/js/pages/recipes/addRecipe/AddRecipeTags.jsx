@@ -1,5 +1,5 @@
 import React from 'react';
-import AddRecipeBlock from './AddRecipeBlock';
+import AddRecipeBlock from '../../../components/blocks/AddRecipeBlock';
 import Tag from '../../../components/Tag';
 
 const AddRecipeTags = ({tagList, tags, onTagChange}) => {

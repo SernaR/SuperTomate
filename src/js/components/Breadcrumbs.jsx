@@ -12,7 +12,7 @@ const Breadcrumbs = ({ recipe, category }) => {
             ||
             <ol className="breadcrumb">
                 <li className="breadcrumb-item"><Link to={ '/' }>Accueil</Link></li>
-                <li className="breadcrumb-item active"><Link to={ '/recettes/'+ category }>{ category }</Link></li>
+                <li className="breadcrumb-item active">{ category }</li>  
             </ol>}
         </>
     );

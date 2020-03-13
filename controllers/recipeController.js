@@ -122,6 +122,11 @@ exports.getUserRecipes = (req, res) => {
     models.Recipe.findAll({
         where: { userId },
         attributes: ['id', 'name', 'isDraft', 'slug'],
+        include: [{
+            model: models.Category,
+            as: 'category',
+            attributes: ['name']
+        }],
         order:[['name', 'ASC']]
     })
     .then( recipes => {
@@ -222,7 +227,12 @@ exports.getHomepage = async (req,res) => {
             include:[
                 {
                     model: models.Recipe,
-                    attributes: ['name', 'slug'],
+                    attributes: ['name', 'slug', 'picture'],
+                    include: [{
+                        model: models.Category,
+                        as: 'category',
+                        attributes: ['name'],
+                    }]
                 }
             ],
             group: ['recipeId'],

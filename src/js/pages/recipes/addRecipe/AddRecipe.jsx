@@ -4,12 +4,13 @@ import Field from '../../../components/forms/Field'
 import recipeAPI from '../../../services/recipesAPI'
 import AddRecipeList from './AddrecipeList';
 import Select from '../../../components/forms/Select';
-import Block from './AddRecipeBlock';
+import Block from '../../../components/blocks/AddRecipeBlock';
 import ClassicField from '../../../components/forms/ClassicField';
 import Footer from '../../../components/Footer';
 import PageBlock from '../../../components/blocks/pageBlock';
 import recipesAPI from '../../../services/recipesAPI';
 import AddRecipeTags from './AddRecipeTags';
+import Steps from '../../../components/Steps';
 
 //TODO : contraintes
 //TODO : notification
@@ -188,13 +189,22 @@ const AddRecipe = ({ match, history }) => {
                             name="ingredients"
                             onChange={ handleRecipeParamChange }/>
                     </Block> 
-                    <Block label="Étapes">
+                    <hr></hr>
+
+                    { 0===1 && <Block label="Nouvelle étape">
                         <AddRecipeList
                             items={ newRecipe.steps }
                             name="steps"
                             type="textarea"
                             onChange={ handleRecipeParamChange }/>
-                    </Block>   
+                    </Block>}
+                    <Steps 
+                        steps={ newRecipe.steps } 
+                        onChange={ handleRecipeParamChange }
+                    />
+
+
+                    <hr></hr>
                     <Block label="Ajouter une photo">
                         <div className="input-group mb-3">    
                             <div className="custom-file">
@@ -205,7 +215,7 @@ const AddRecipe = ({ match, history }) => {
                                     aria-describedby="fileHelp" 
                                     onChange={ handleImageChange }
                                 />
-                                <label className="custom-file-label" htmlFor="inputGroupFile">{ (newRecipe.picture && newRecipe.picture.name) || "selectionner une image" }</label>
+                                <label className="custom-file-label" htmlFor="inputGroupFile">{ newRecipe.picture && newRecipe.picture.name }</label>
                             </div>
                         </div>
                     </Block>       

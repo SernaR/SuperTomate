@@ -6,7 +6,8 @@ function Cockpit({title}){
             className="jumbotron" 
             style={{ 
                 marginTop: '80px', 
-                color:'#fff', 
+                color:'#fff',
+                backgroundSize: "contain",
                 background: '#78C2AD'
             }}
         >
