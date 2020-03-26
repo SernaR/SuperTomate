@@ -13,9 +13,9 @@ router.get('/user/:id', userController.setUserPamams)//?action=promote ou ?actio
 //params routes
 //router.post('/ingredient', params.addIngredient) // a supprimer
 //router.post('/unit', params.addUnit) // a supprimer
-router.post('/category', params.addCategory)
-router.post('/tag', params.addTag)
-router.post('/difficulty', params.addDifficulty)
+router.post('/categories', params.addCategory)
+router.post('/tags', params.addTag)
+router.post('/difficulties', params.addDifficulty)
 
 //comments routes
 router.get('/slug', recipeController.getEmptySlugs)

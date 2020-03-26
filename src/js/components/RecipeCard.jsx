@@ -12,7 +12,7 @@ const recipecard = ({ recipe, col }) => {
                 <Link to={ recipeUrl(category, slug) + id } >
                     <img src={ picture } className="img-fluid" alt={ name } ></img>
                 </Link>
-                <div className="card-body" text-center> 
+                <div className="card-body"> 
                     <p className="card-text">
                         {tags.map( (tag, index) => <span key={index} className="badge badge-secondary ml-1">{tag.name}</span>)}
                     </p>

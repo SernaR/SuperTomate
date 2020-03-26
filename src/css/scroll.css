@@ -1,0 +1,38 @@
+html, body{
+  height: 100%;
+}
+
+a {
+  color: white;
+}
+  
+.long {
+  width: 100%;
+  background-color: #010e19;
+}
+ 
+.scroll {
+  opacity: 0.3;
+  background-color: rgb(120, 194, 173);
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 5px;
+  border: none;
+}
+
+.scroll:hover {
+    opacity: 1;
+  }
+
+.arrow-up {
+  color: white;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  margin-top: -9px;
+  margin-left: -5px;
+}
+  

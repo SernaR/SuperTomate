@@ -1,6 +1,7 @@
 import React, { useState  } from 'react';
 import Slug from './Slug';
 import recipesAPI from '../services/recipesAPI';
+import CommentBlock from './blocks/CommentBlock';
 
 const Slugs = ({slugs, onSlugChange}) => {
 
@@ -17,12 +18,9 @@ const Slugs = ({slugs, onSlugChange}) => {
     const pluriel = slugs.length > 1 ? 's' : ''
 
     return (  
-        <>
-            <h2>{ slugs.length + " recette" + pluriel } à vérifier</h2>
-            
-            {slugs.map( (slug, index) => <Slug key={index} slug={slug} onSetSlug={handleSetSlug} /> )}
-            
-        </>
+        <CommentBlock title={ slugs.length + " recette" + pluriel + " à vérifier"}>
+            {slugs.map( (slug, index) => <Slug key={index} slug={slug} onSetSlug={handleSetSlug} /> )} 
+        </CommentBlock>
      );
 }
  

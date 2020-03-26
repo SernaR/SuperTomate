@@ -37,6 +37,7 @@ exports.getTags = async (req, res) => {
 }
 
 //a supprimer
+/*
 exports.addIngredient = (req, res) => {
     const userId = req.userId
     const name = req.body.ingredient
@@ -67,45 +68,11 @@ exports.addIngredient = (req, res) => {
             })
         }    
     })   
-}
-
-//a supprimer
-/*
-exports.addUnit = (req, res) => {
-    const userId = req.userId
-    const name = req.body.unit
-    if (!name) {
-        return res.status(400).json({ 'error': 'missing parameters' })
-    }
-
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) {
-            models.Unit.findOrCreate({
-                where: { name }
-            })
-            .then( ([newUnit, created]) => {
-                if (created) {
-                    res.status(201).json({
-                        'unit': newUnit.name
-                    })
-                } else {
-                    res.status(409).json({ 'error': 'unit already exist' })
-                }
-            })
-            .catch( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })   
 }*/
 
 exports.addCategory = (req, res) => {
     const userId = req.userId
-    const name = req.body.category
+    const name = req.body.categories
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
@@ -138,7 +105,8 @@ exports.addCategory = (req, res) => {
 
 exports.addTag = (req, res) => {
     const userId = req.userId
-    const name = req.body.tag
+    const name = req.body.tags
+
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }
@@ -171,7 +139,7 @@ exports.addTag = (req, res) => {
 
 exports.addDifficulty = (req, res) => {
     const userId = req.userId
-    const name = req.body.difficulty
+    const name = req.body.difficulties
     if (!name) {
         return res.status(400).json({ 'error': 'missing parameters' })
     }

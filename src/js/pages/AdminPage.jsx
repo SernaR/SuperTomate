@@ -6,9 +6,14 @@ import CommentBlock from '../components/blocks/CommentBlock';
 import PageBlock from '../components/blocks/pageBlock';
 import recipesAPI from '../services/recipesAPI';
 import Slugs from '../components/Slugs';
-import { Redirect } from 'react-router-dom';
+import NavItems from '../components/NavItems';
+import Params from '../components/Params';
 
-//TODO : refacto les inputs
+
+const items = ['Recettes', 'Commentaires', 'Paramètres']
+const RECIPES = 0
+const COMMENTS = 1
+const PARAMS =  2 
 
 const AdminPage = ({ history }) => {
 
@@ -16,13 +21,8 @@ const AdminPage = ({ history }) => {
         fetchList()
     }, [])
 
-    const [params, setParams] = useState({
-        tag: '',
-        difficulty: '',
-        category: ''
-    })
 
-    const [list, setList] = useState({
+    const [params, setParams] = useState({
         tags: [],
         difficulties: [],
         categories: [],
@@ -30,15 +30,16 @@ const AdminPage = ({ history }) => {
 
     const [comments, setComments] = useState([])
     const [slugs, setSlugs] = useState([])
+    const [item, setItem] = useState(0)
 
     const fetchList = async () => {
         try {
-            const { tags, difficulties, categories } = await adminAPI.getParams()
+            const params = await adminAPI.getParams()
             const { comments } = await adminAPI.getComments()
             const { slugs } = await recipesAPI.getSlugs()
             
             setSlugs(slugs)
-            setList({ tags, difficulties, categories })
+            setParams(params)
             setComments(comments)
             
 
@@ -47,52 +48,21 @@ const AdminPage = ({ history }) => {
         }
     }
 
-    const handleChange = ({ currentTarget }) => {
-        const {value, name} = currentTarget;
-        setParams({ ...params, [name]: value })
-    }
-
     const handleChangeComments = (comments) => {
         setComments(comments)
     }
 
-    const categories = list.categories.map( (category, index) => <li key={index}>{category.name}</li>)
-    const tags = list.tags.map( (tag, index) => <li key={index}>{tag.name}</li>)
-    const difficulties = list.difficulties.map( (difficulty, index) => <li key={index}>{difficulty.name}</li>)
+    const handleParamSubmit = async (value, param) => {
+        if(value) {
+            try {
+                const newParam = await adminAPI.addParam(value, param)
 
-    const handleCategorySubmit = async event => {
-        event.preventDefault()
-        try {
-            const category = await adminAPI.setCategory(params.category)
-            list.categories.push(category)
-            setParams({ ...params, category:'' })
-
-        } catch(err) {
-            console.log(err.response)
-        }
-    }
-
-    const handleTagSubmit = async event => {
-        event.preventDefault()
-        try {
-            const tag = await adminAPI.setTag(params.tag)
-            list.tags.push(tag)
-            setParams({ ...params, tag:'' })
+                const newParamTab = [...params[param], newParam]
+                setParams({...params, [param]: newParamTab})
     
-        } catch(err) {
-            console.log(err.response)
-        }
-    }
-
-    const handleDifficultySubmit = async event => {
-        event.preventDefault()
-        try {
-            const difficulty = await adminAPI.setDifficulty(params.difficulty)
-            list.difficulties.push(difficulty)
-            setParams({ ...params, difficulty:'' })
-
-        } catch(err) {
-            console.log(err.response)
+            } catch(err) {
+                console.log(err.response)
+            }
         }
     }
 
@@ -102,67 +72,45 @@ const AdminPage = ({ history }) => {
     }
 
     return ( 
-        <PageBlock 
-            back="gris"
-            commentBlock={
-                <>
-                    <Comments
-                        onModerated={ handleChangeComments }
-                        comments={ comments } 
-                        isAdmin={ true } 
-                    />
-                </>
-            }
-        >
+        <PageBlock>
+            <Cockpit title="Admin Page" />
+
+            <NavItems
+                items={ items }
+                item={ item }
+                setItem={ setItem }
+            />
+
+            { item === RECIPES && <Slugs slugs={slugs} onSlugChange={handleSlugChange}/>} 
+
+            { item === COMMENTS && 
+                <Comments
+                    onModerated={ handleChangeComments }
+                    comments={ comments } 
+                    isAdmin={ true } 
+                 />}
+
+            { item === PARAMS && <CommentBlock title="Paramètres">
+                <Params
+                    params={ params.categories }
+                    name ="categories"
+                    title="Ajouter une catégorie"
+                    onSubmit={handleParamSubmit}
+                />
+                <Params
+                    params={ params.tags }
+                    name ="tags"
+                    title="Ajouter un Tag"
+                    onSubmit={handleParamSubmit}
+                />
+                <Params
+                    params={ params.difficulties }
+                    name ="difficulties"
+                    title="Ajouter une difficulté"
+                    onSubmit={handleParamSubmit}
+                />
+            </CommentBlock>}
             
-            <Cockpit title="Admin Page" />    
-            <CommentBlock title="Paramètres">
-                <form >
-                    <div className="form-group">
-                        <label className="control-label">Ajouter une catégorie</label>
-                        <div className="form-group">
-                            <div className="input-group mb-3">
-                                <input name="category" type="text" value={ params.category } className="form-control" onChange={handleChange}/>
-                                <div className="input-group-append">
-                                    <span className="input-group-text" onClick={handleCategorySubmit}>Envoyer</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <ul>{ categories }</ul>
-
-                <form >
-                    <div className="form-group">
-                        <label className="control-label">Ajouter un tag</label>
-                        <div className="form-group">
-                            <div className="input-group mb-3">
-                                <input name="tag" type="text" value={ params.tag } className="form-control" onChange={handleChange}/>
-                                <div className="input-group-append">
-                                    <span className="input-group-text" onClick={handleTagSubmit}>Envoyer</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <ul>{ tags }</ul>
-
-                <form >
-                    <div className="form-group">
-                        <label className="control-label">Ajouter une difficulté</label>
-                        <div className="form-group">
-                            <div className="input-group mb-3">
-                                <input name="difficulty" type="text" value={ params.difficulty } className="form-control" onChange={handleChange}/>
-                                <div className="input-group-append">
-                                    <span className="input-group-text" onClick={handleDifficultySubmit}>Envoyer</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <ul>{ difficulties }</ul>
-                <Slugs slugs={slugs} onSlugChange={handleSlugChange}/>
-            </CommentBlock>     
         </PageBlock>
      );
 }

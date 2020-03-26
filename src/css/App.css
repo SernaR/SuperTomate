@@ -69,3 +69,9 @@ img {
 	height: auto;
 }
 .pointer {cursor: pointer;}
+
+.pages-back {
+	min-height: 100vh; 
+	padding-bottom: 1em;
+	background-attachment: fixed;
+}

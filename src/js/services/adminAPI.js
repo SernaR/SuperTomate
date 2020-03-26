@@ -1,21 +1,10 @@
 import axios from 'axios'
 import { ADMIN_API, USER_API } from '../config.js';
 
-
-function setCategory(category) {
+function addParam(value, param) {
     return axios
-        .post(ADMIN_API + '/category', { category })
-};
-
-function setTag(tag) {
-    return axios
-        .post(ADMIN_API + '/tag', { tag })
-};
-
-function setDifficulty(difficulty) {
-    return axios
-        .post(ADMIN_API + '/difficulty', { difficulty })
-};
+        .post(ADMIN_API + '/' + param, { [param]:value }).then( result => result.data)
+}
 
 function getParams() {
     return axios
@@ -34,4 +23,4 @@ function moderateComment(commentId) {
         .post(ADMIN_API + '/comment/' + commentId)
 }
 
-export default { setCategory, setTag, setDifficulty, getParams, getComments, moderateComment }
+export default { addParam, getParams, getComments, moderateComment }

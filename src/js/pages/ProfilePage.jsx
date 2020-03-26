@@ -8,9 +8,14 @@ import { Link } from 'react-router-dom';
 import commentsAPI from '../services/commentsAPI';
 import ProfileComments from '../components/comments/ProfileComments';
 import { recipeUrl } from '../services/utils'
+import NavItems from '../components/NavItems';
 
+const items = ['Recettes', 'Commentaires', 'Infos']
+const RECIPES = 0
+const COMMENTS = 1
+const USER_DATA =  2 
 
-const Profile = () => {
+const ProfilePage = () => {
 
     useEffect( () => {
         fetchLists()
@@ -33,6 +38,7 @@ const Profile = () => {
 
     const [recipes, setRecipes] = useState([])
     const [comments, setComments] = useState([])
+    const [item, setItem] = useState(0)
 
     const myRecipes = recipes.map( (recipe, index) => 
 
@@ -59,9 +65,22 @@ const Profile = () => {
 
     return ( 
         <>
-            <PageBlock back="utilisateur">
+            <PageBlock >
                 <Cockpit title="Profil de l'utilisateur !" />
-                <CommentBlock title="Mes infos">
+
+                <NavItems 
+                    items={ items }
+                    item={ item }
+                    setItem={ setItem }
+                />
+
+                { item === RECIPES && <CommentBlock title="Mes recettes">
+                    <ul className="list-group">
+                        { myRecipes}
+                    </ul>
+                </CommentBlock>}
+                { item === COMMENTS && <ProfileComments comments={comments} onRead={handleRead}/>}
+                { item === USER_DATA && <CommentBlock title="Mes infos">
                     <table className="table">
                         <tbody>
                             <tr>
@@ -80,17 +99,11 @@ const Profile = () => {
                             </tr>
                         </tbody>
                     </table>
-                </CommentBlock>
-                <CommentBlock title="Mes recettes">
-                    <ul className="list-group">
-                        { myRecipes}
-                    </ul>
-                </CommentBlock>
-                <ProfileComments comments={comments} onRead={handleRead}/>
+                </CommentBlock>}
             </PageBlock>
             <Footer/>
         </>  
     );
 }
  
-export default Profile;
+export default ProfilePage;

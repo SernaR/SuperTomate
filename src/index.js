@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import HomePage from './js/pages/homepage/HomePage.jsx';
 import { HashRouter, Switch, Route, withRouter } from 'react-router-dom';
 import Navbar from './js/components/Navbar';
-import Profile from './js/pages/Profile';
+import ProfilePage from './js/pages/ProfilePage';
 import LoginPage from './js/pages/LoginPage';
 import AuthContext from './js/contexts/AuthContext';
 import authAPI from './js/services/authAPI';
@@ -40,7 +40,7 @@ const Index = () => {
             <Route path="/login" component={LoginPage} />
             <Route path="/recettes/:category" component={RecipesCategoryPage}/>
             <Route path="/recette/:category/:slug/:id" component={Recipe}/>
-            <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute path="/profile" component={ProfilePage}/>
             <PrivateRoute path="/addRecipe/:id" component={AddRecipe}/>
             <AdminRoute path="/dashboard" component={AdminPage} />
             <Route path="/" component={HomePage} />
