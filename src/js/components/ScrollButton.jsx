@@ -25,7 +25,7 @@ class ScrollButton extends React.Component {
     render () {
         return <button title='Back to top' className='scroll' 
                  onClick={ () => { this.scrollToTop(); }}>
-                  <span className='arrow-up'><i class="fas fa-angle-up"></i></span>
+                  <span className='arrow-up'><i className="fas fa-angle-up"></i></span>
                 </button>;
      }
   } 

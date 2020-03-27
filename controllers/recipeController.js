@@ -2,24 +2,41 @@ const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
 const sequelize = require('sequelize')
-const adminUtils = require('../utils/adminUtils')
+const sharp = require('sharp');
+const path = require('path')
 
-//TODO :  revoir toutes les RQT - optimisation
 
+exports.fileResize = async(req, res, next) => {
+    const image = req.file
+    if(!image) {
+        res.status(422).json({ 'error': 'attached file is not an image' }) 
+    }
+
+    const imagePath = 'images/' + new Date().toDateString() + '-' + image.originalname
+    
+    try{
+        await sharp(image.buffer)
+        .resize(640) // voir pour le format*****************************
+        .toFormat("jpeg")
+        .jpeg({ quality: 90 })
+        .toFile(imagePath);
+        
+        req.picture = imagePath
+        next()    
+    }catch(err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    }   
+}
 
 exports.addRecipe = async (req, res) => {
     const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId 
-    const image = req.file
+    const picture = req.picture
         
     if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
-    if(!image) {
-        res.status(422).json({ 'error': 'attached file is not an image' }) 
-    }
     
-    const picture = image.path
     try {
         const [newRecipe, created] = await models.Recipe.findOrCreate({
             attributes: ['name'],
@@ -27,11 +44,8 @@ exports.addRecipe = async (req, res) => {
             defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture, isDraft}  
         })
         if (created) { 
-
-            await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, newRecipe)
-                
-            res.status(201).json({ 'recipeId': newRecipe.id })
-            
+            await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, newRecipe)  
+            res.status(201).json({ 'recipeId': newRecipe.id })         
         } else {
             res.status(409).json({ 'error': 'recipe name already exist' })
         }

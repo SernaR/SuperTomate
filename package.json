@@ -34,6 +34,7 @@
     "react-svg": "^11.0.7",
     "regenerator-runtime": "^0.13.3",
     "sequelize": "^5.16.0",
+    "sharp": "^0.25.2",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {

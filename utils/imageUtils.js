@@ -1,5 +1,6 @@
 const multer = require('multer')
 
+/* //pour stocker directement sur le disk
 exports.fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb( null, 'images' )
@@ -8,6 +9,9 @@ exports.fileStorage = multer.diskStorage({
         cb( null, new Date().toDateString()+ '-' +file.originalname)
     }
 })
+*/
+
+exports.memoryStorage = multer.memoryStorage()
 
 exports.fileFilter = (req, file, cb) => {
     if (
@@ -20,3 +24,4 @@ exports.fileFilter = (req, file, cb) => {
         cb(null, false)
     }   
 }
+

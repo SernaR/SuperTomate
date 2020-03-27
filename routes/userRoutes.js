@@ -3,7 +3,8 @@ const router = express.Router()
 
 const multer = require('multer')
 const imageUtils = require('../utils/imageUtils')
-const upload = multer({ storage: imageUtils.fileStorage, fileFilter: imageUtils.fileFilter })
+const upload = multer({ storage: imageUtils.memoryStorage, fileFilter: imageUtils.fileFilter })
+//const upload = multer({ storage: imageUtils.fileStorage, fileFilter: imageUtils.fileFilter })
 
 const userController = require('../controllers/userController')
 const recipeController = require('../controllers/recipeController')
@@ -19,7 +20,7 @@ router.put('/password', userController.updatePassword)
 //Recipes routes
 router.get('/recipe-params', recipeParamController.getRecipeParams)
 router.get('/recipe', recipeController.getUserRecipes)
-router.post('/recipe', upload.single('image'), recipeController.addRecipe)
+router.post('/recipe', upload.single('image'), recipeController.fileResize, recipeController.addRecipe)
 router.put('/recipe/:recipeId', upload.single('image'), recipeController.updateRecipe)
 
 //comments routes
