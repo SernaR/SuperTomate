@@ -1,8 +1,14 @@
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
-import { LOGIN_API } from '../config.js';
+import { LOGIN_API, ADMIN_API } from '../config.js';
 
 //todo factoriser methodes
+
+function register(user) {
+    return axios
+        .post(ADMIN_API + '/register', user)
+        .then( response => response.data )
+}
 
 function logout() {
     window.localStorage.removeItem("authToken");
@@ -65,6 +71,7 @@ function userId() {
 }
 
 export default {
+    register,
     authenticate,
     logout,
     setup,

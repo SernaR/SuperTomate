@@ -9,7 +9,9 @@ import AddComment from '../../../components/comments/AddComment';
 import AuthContext from '../../../contexts/AuthContext';
 import PageBlock from '../../../components/blocks/pageBlock';
 import Breadcrumbs from '../../../components/Breadcrumbs';
-import Hearts from '../../../components/Hearts';
+
+import Vote from './RecipeVote';
+import Cockpit from './RecipeCockpit';
 
 const Recipe = ({ match }) => {
     
@@ -62,13 +64,9 @@ const Recipe = ({ match }) => {
                 }
             >  
                 <h1 className="display-2 text-center py-4">{ recipe.name }</h1>  
-                { recipe.isDraft && 
-                <p className="text-center mb-4 ">
-                    <span className="badge badge-secondary mx-1">Brouillon</span>
-                </p>
-                ||
-                <Hearts likes={ recipe.likes }/> }
-                <Header recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
+                <Cockpit recipe={ recipe } recipeId={recipeId} userId={ isAuthenticated } isAdmin={isAdmin}/>
+                <Header recipe={ recipe } />
+                <Vote recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
                 <Ingredients ingredients={recipe.ingredients}/>
                 <Steps steps={recipe.steps}/>
             </PageBlock>
@@ -80,3 +78,19 @@ const Recipe = ({ match }) => {
 }
  
 export default Recipe;
+
+/*{ recipe.isDraft && 
+                <p className="text-center mb-4 ">
+                    <span className="badge badge-secondary mx-1">Brouillon</span>
+                </p>
+                ||
+                <>
+                <div className="row">
+                    <div className="col-3"></div>
+                    <div className="col-6">
+                        <Hearts likes={ recipe.likes }/>
+                    </div>
+                    <div className="col-3"><span>test</span></div>     
+                </div>
+                    
+                 </>}*/

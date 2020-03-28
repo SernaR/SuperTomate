@@ -9,6 +9,8 @@ import commentsAPI from '../services/commentsAPI';
 import ProfileComments from '../components/comments/ProfileComments';
 import { recipeUrl } from '../services/utils'
 import NavItems from '../components/NavItems';
+import userAPI from '../services/userAPI';
+import MyData from '../components/MyData';
 
 const items = ['Recettes', 'Commentaires', 'Infos']
 const RECIPES = 0
@@ -26,7 +28,9 @@ const ProfilePage = () => {
             
             const { recipes } = await recipesAPI.findByUser()
             const { comments } = await commentsAPI.findByUser()
-
+            const user = await userAPI.findProfile()
+            
+            setUser(user)
             setRecipes(recipes)
             setComments(comments)
 
@@ -35,10 +39,11 @@ const ProfilePage = () => {
         }
     }
     
-
+    const [user, setUser] = useState('')
     const [recipes, setRecipes] = useState([])
     const [comments, setComments] = useState([])
     const [item, setItem] = useState(0)
+
 
     const myRecipes = recipes.map( (recipe, index) => 
 
@@ -66,7 +71,7 @@ const ProfilePage = () => {
     return ( 
         <>
             <PageBlock >
-                <Cockpit title="Profil de l'utilisateur !" />
+                <Cockpit title={"Bienvenue " + user.name} />
 
                 <NavItems 
                     items={ items }
@@ -81,24 +86,7 @@ const ProfilePage = () => {
                 </CommentBlock>}
                 { item === COMMENTS && <ProfileComments comments={comments} onRead={handleRead}/>}
                 { item === USER_DATA && <CommentBlock title="Mes infos">
-                    <table className="table">
-                        <tbody>
-                            <tr>
-                                <th scope="row">Mon pseudo:</th>
-                                <td>user pseudo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Mon email:</th>
-                                <td>user email</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Mon mot de passe:</th>
-                                <td>
-                                    <button type="button" className="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#Modalmdp">Modifier</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <MyData user={ user }/>
                 </CommentBlock>}
             </PageBlock>
             <Footer/>

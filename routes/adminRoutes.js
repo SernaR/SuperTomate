@@ -9,6 +9,7 @@ const commentController = require('../controllers/commentController')
 // Users routes
 router.get('/user', userController.getAllUsers)
 router.get('/user/:id', userController.setUserPamams)//?action=promote ou ?action=remove
+router.post('/register', userController.register)
 
 //params routes
 //router.post('/ingredient', params.addIngredient) // a supprimer

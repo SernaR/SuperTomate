@@ -3,42 +3,14 @@ const Op = require('sequelize').Op
 const bcrypt = require('bcrypt')
 const jwt = require('../utils/jwt')
 const adminUtils = require('../utils/adminUtils')
+const authUtils = require('../utils/authUtils')
 
-function passwordConstraint( password ) {
-    const PASSWORD_REGEX  = /^(?=.*\d).{8,20}$/
-    if (!password) {
-        return 'missing parameters'
-    }
-    if (!PASSWORD_REGEX.test(password)) {
-        return 'password invalid (must length 8 - 20 and include 1 number at least)'
-    }
-    return false
-}
-
-function userConstraint( name, email, password ) {
-    const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const PASSWORD_REGEX  = /^(?=.*\d).{8,20}$/;
-
-    if (!name || !email || !password) {
-        return 'missing parameters'
-    }
-    if (name.length >= 13 || name.length < 4) {
-        return 'wrong username (must be length 4 - 12)'
-    }
-    if (!EMAIL_REGEX.test(email)) {
-        return 'email is not valid'
-    }
-    if (!PASSWORD_REGEX.test(password)) {
-        return 'password invalid (must length 8 - 20 and include 1 number at least)'
-    }
-    return false
-}
 
 exports.register = (req, res) => {
     const { name, email, password } = req.body
-    const message = userConstraint( name, email, password )
-    if (message)
-        return res.status(400).json({ 'error': message })
+    const messages = authUtils.userConstraint( name, email, password )
+    if (messages.length > 0)
+        return res.status(422).json(messages)
 
     bcrypt.hash(password, 5)
     .then( bcryptedpassword => {
@@ -58,13 +30,22 @@ exports.register = (req, res) => {
             })  
         } else {
             if (user.name === name && user.email === email) {
-                messageAlert = 'user already exist'
+                messages.push({
+                    propertyPath: 'name',
+                    message: 'Utilisateur déjà enregistré'
+                })
             } else if (user.name === name) {
-                messageAlert = 'pseudo already used'
+                messages.push({
+                    propertyPath: 'name',
+                    message: 'ce pseudo est déjà utilisé'
+                })
             } else {
-                messageAlert = 'email already used'
+                messages.push({
+                    propertyPath: 'email',
+                    message: 'Adresse email déjà utilisée'
+                })
             }
-            res.status(409).json({ 'error': messageAlert })
+            res.status(409).json(messages)
         }
     })
     .catch ( () => {
@@ -75,7 +56,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body
     if ( !email || !password ) {
-        return res.status(400).json({ 'error': 'missing parameters' })
+        return res.status(422).json({ 'error': 'missing parameters' })
     }
     
     models.User.findOne({
@@ -104,9 +85,9 @@ exports.login = (req, res) => {
 exports.getUserProfile = (req, res) => {
     const userId = req.userId
     models.User.findOne({
-        attributes: [ 'id', 'name', 'email' ],
+        attributes: [ 'name', 'email' ],
         where: { id: userId },
-        include: [{ all: true }]
+        //include: [{ all: true }]
     })
     .then( user => {
         if (user) {
@@ -148,7 +129,7 @@ exports.updateUserProfile = async (req, res) => {
     const userId = req.userId
     const message = userConstraint( name, email, password )
     if (message)
-        return res.status(400).json({ 'error': message })
+        return res.status(422).json({ 'error': message })
 
     try {
         const existingUsers = await models.User.findAll({
@@ -191,9 +172,9 @@ exports.updatePassword = async (req,res) => {
     const userId = req.userId
     const { password } = req.body
     
-    const message = passwordConstraint( password )
+    const message = authUtils.passwordConstraint( password )
     if (message)
-        return res.status(400).json({ 'error': message })
+        return res.status(400).json(message)
 
     try {
         const user = await models.User.findByPk(userId)

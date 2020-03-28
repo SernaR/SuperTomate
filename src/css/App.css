@@ -1,13 +1,6 @@
-/*-----PRIMARY BUTTON-----*/
-
-/*.btn-primary, .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
-	background:#a2b667;
-	border-color:#a2b667;
-}
-.btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
-	background:#55b298;
-	border-color:#55b298;
-}*/
+h1,h2,h3,h4,h5,h6{
+	font-family: 'Amatic SC',cursive; 
+	font-weight:700;}
 
 /*-----NAV BAR-----*/
 .nav-link{
@@ -34,30 +27,6 @@
 }
 
 .tomato>h1, .tomato>h2{color:#fff;}	
-
-/*.jumbotron.super{
-	background-image: url('/images/fond-vert.jpg');
-	background-size: contain;
-	height:350px;}
-[class*="img-gradient"]{
-	position: relative;
-	z-index: -1;}
-[class*="img-gradient"]::before{
-	position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    content: "";}
-.img-gradient::before{
-	background-image: linear-gradient(0deg,rgba(0,0,0,0) 0%,rgba(21,27,38,0.5) 100%);
-	background-repeat: repeat-x;}
-.container.tomato,.super-titre{color:#fff;}
-.container.vide{height:40%;}
-.card-col{height:70%;}*/
 
 /*-----IMAGES-----*/
 img {

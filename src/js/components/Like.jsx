@@ -24,7 +24,7 @@ const Like = ({ recipeId, onLike}) => {
     }
 
     return ( 
-        <div className="my-5 pt-3">
+        <div className="pt-3">
             {show && <Select
                 label="Noter la recette:"
                 onChange={handleChange}
