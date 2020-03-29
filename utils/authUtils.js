@@ -30,3 +30,42 @@ exports.passwordConstraint = ( password ) => {
     }
     return false
 }
+
+exports.loginCheck = ( email, password ) => {
+    const messages = []
+    if ( !email ) {
+        messages.push({
+            propertyPath: 'email',
+            message: "l'adresse email doit être renseigné"
+        })
+    }
+    if ( !password ) {
+        messages.push({
+            propertyPath: 'password',
+            message: "le mot de passe doit être renseigné"
+        })
+    }
+    return messages
+}
+
+exports.registerCheck = (user, name, email) => {
+    const messages = []
+    
+    if (user.name === name && user.email === email) {
+        messages.push({
+            propertyPath: 'name',
+            message: 'Utilisateur déjà enregistré'
+        })
+    } else if (user.name === name) {
+        messages.push({
+            propertyPath: 'name',
+            message: 'ce pseudo est déjà utilisé'
+        })
+    } else {
+        messages.push({
+            propertyPath: 'email',
+            message: 'Adresse email déjà utilisée'
+        })
+    }
+    return messages
+}

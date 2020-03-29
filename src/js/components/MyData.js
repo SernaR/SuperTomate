@@ -68,7 +68,7 @@ function MyData({user}) {
                 type="password" 
                 error={errors.passwordConfirm}
             />              
-            <div className="form-group">
+            <div className="row justify-content-end mr-1">
                 <button 
                     type="submit" 
                     className="btn btn-outline-secondary btn-sm"

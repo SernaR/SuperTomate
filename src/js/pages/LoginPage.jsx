@@ -4,6 +4,8 @@ import authContext from '../contexts/AuthContext';
 import Field from '../components/forms/Field';
 import Cockpit from '../components/Cockpit';
 import PageBlock from '../components/blocks/pageBlock';
+import toast from '../services/toaster' 
+
 
 const LoginPage = ({ history }) => {
     const { setIsAuthenticated, setIsAdmin } = useContext(authContext);
@@ -12,7 +14,11 @@ const LoginPage = ({ history }) => {
         email: "sblack@gmail.fr",
         password: "password0"
     });
-    const [error, setError] = useState("");
+    
+    const [errors, setErrors] = useState({
+        email: '',
+        password: ''
+    });
 
     const handleChange = ({ currentTarget }) => {
         const {value, name} = currentTarget;
@@ -21,18 +27,31 @@ const LoginPage = ({ history }) => {
 
     const handleSubmit = async event => {
         event.preventDefault();
+        const apiErrors = {};
 
         try{
-            await authAPI.authenticate(credentials);
+            const userName = await authAPI.authenticate(credentials);
             
             setIsAuthenticated(authAPI.isAuthenticated());
             setIsAdmin(authAPI.isAdmin())
+            setErrors({
+                email: '',
+                password: ''
+            });
 
-            setError('');
+            toast.success('hello ' + userName)
             history.push("/profile");
-        } catch(error) {
-            setError("Aucun compte ne possède cette adresse ou alors les informations ne correspondent pas")
-            console.log(error.response)
+
+        } catch ({ response }) {
+            const messages = response.data;
+            if(messages) {
+                messages.map( ({ propertyPath, message }) => {
+                    apiErrors[propertyPath] = message;
+                });
+                setErrors(apiErrors);
+
+                toast.error("Il y a des erreurs dans votre formulaire")
+            } 
         }
     }
 
@@ -47,17 +66,17 @@ const LoginPage = ({ history }) => {
                     onChange={handleChange}
                     placeholder="Adresse email de connexion"
                     type="email" 
-                    error ={error}
+                    error ={errors.email}
                 /> 
                 <Field 
                     name="password" 
                     label="Mot de passe" 
                     value={credentials.password}
                     onChange={handleChange}
-                    type="password" 
-                
+                    type="password"
+                    error ={errors.password}
                 />        
-                <div className="form-group">
+                <div className="row justify-content-end mr-1 mb-3">
                     <button 
                         type="submit" 
                         className="btn btn-primary"

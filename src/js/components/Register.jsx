@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Field from './forms/Field';
 import authAPI from '../services/authAPI';
+import toast from '../services/toaster'
+
 
 const Register = () => {
 
@@ -30,12 +32,14 @@ const Register = () => {
         if(user.password !== user.passwordConfirm) {
             apiErrors.passwordConfirm = "Votre confirmation de mot de passe n'est pas conforme avec le mot de passe original";
             setErrors(apiErrors)
-            //toast.error('Des erreurs dans votre formulaire')
+            toast.error("Il y a des erreurs dans votre formulaire")
             return
         }
         
         try{
             await authAPI.register(user)
+            
+            toast.success(user.name + " est bien inscrit(e)")
             setUser({
                 name: '',
                 email: '',
@@ -43,7 +47,6 @@ const Register = () => {
                 passwordConfirm: ''
             })
             setErrors({})
-            //toast.success('Vous êtes inscrit, vous pouvez vous connecter')
 
         }catch ({ response }) {
             const messages = response.data;
@@ -52,7 +55,8 @@ const Register = () => {
                     apiErrors[propertyPath] = message;
                 });
                 setErrors(apiErrors);
-                //toast.error('Des erreurs dans votre formulaire')
+
+                toast.error("Il y a des erreurs dans votre formulaire")
             } 
         }
     }
@@ -91,10 +95,10 @@ const Register = () => {
                 type="password" 
                 error={errors.passwordConfirm}
             />              
-            <div className="form-group">
+            <div className="row justify-content-end mr-1">
                 <button 
                     type="submit" 
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-sm"
                 >Inscrire</button>
             </div>
         </form>  

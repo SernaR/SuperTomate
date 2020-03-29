@@ -34,10 +34,10 @@ const AddComment = ({ recipeId }) => {
                         onChange={ handleChange }
                     ></textarea>
                 </div>
-                <div className="container text-center">
+                <div className="row mt-3 justify-content-end">
                     <button 
                         type="submit" 
-                        className="btn btn-primary btn-lg my-2 w-50"
+                        className="btn btn-primary btn-sm mr-3"
                         >Envoyer</button>
                 </div>
             </form>      

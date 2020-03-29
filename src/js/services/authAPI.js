@@ -18,10 +18,11 @@ function logout() {
 function authenticate(credentials) {
     return axios
         .post( LOGIN_API, credentials)
-        .then(response => response.data.token)
-        .then(token => {
+        .then(response => response.data)
+        .then(({ userName, token }) => {
             window.localStorage.setItem("authToken", token); 
             setAxiosToken(token);
+            return userName
         })
 }
 

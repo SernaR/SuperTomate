@@ -23,28 +23,12 @@ exports.register = (req, res) => {
         })
     })
     .then( ([user, created]) => {
-        let messageAlert
         if (created) {
             res.status(201).json({
                 'userName': user.name
             })  
         } else {
-            if (user.name === name && user.email === email) {
-                messages.push({
-                    propertyPath: 'name',
-                    message: 'Utilisateur déjà enregistré'
-                })
-            } else if (user.name === name) {
-                messages.push({
-                    propertyPath: 'name',
-                    message: 'ce pseudo est déjà utilisé'
-                })
-            } else {
-                messages.push({
-                    propertyPath: 'email',
-                    message: 'Adresse email déjà utilisée'
-                })
-            }
+            const messages = authUtils.registerCheck(user, name, email)
             res.status(409).json(messages)
         }
     })
@@ -55,9 +39,11 @@ exports.register = (req, res) => {
 
 exports.login = (req, res) => {
     const { email, password } = req.body
-    if ( !email || !password ) {
-        return res.status(422).json({ 'error': 'missing parameters' })
-    }
+
+    const messages = authUtils.loginCheck(email, password)
+    console.log(messages)
+    if (messages.length > 0)
+        return res.status(422).json(messages)
     
     models.User.findOne({
         where: { email }
@@ -71,11 +57,17 @@ exports.login = (req, res) => {
                         'token': jwt.generateToken(userFound)
                     })
                 } else {
-                    res.status(403).json({ 'error': 'invalid password'})
+                    res.status(403).json([{
+                        propertyPath: 'password',
+                        message: "Mot de passe invalide"
+                    }])
                 }
             })
         } else {
-            res.status(404).json({ 'error': 'user not Found' })
+            res.status(404).json([{
+                propertyPath: 'email',
+                message: "Aucun compte ne possède cette adresse"
+            }])
         }
     })
     .catch( () => {

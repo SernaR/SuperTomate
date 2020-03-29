@@ -12,7 +12,7 @@ a {
 }
  
 .scroll {
-  opacity: 0.3;
+  /*opacity: 0.3;*/
   background-color: rgb(120, 194, 173);
   width: 40px;
   height: 40px;
@@ -23,9 +23,9 @@ a {
   border: none;
 }
 
-.scroll:hover {
+/*.scroll:hover {
     opacity: 1;
-  }
+}*/
 
 .arrow-up {
   color: white;
