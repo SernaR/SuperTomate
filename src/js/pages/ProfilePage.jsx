@@ -12,6 +12,8 @@ import NavItems from '../components/NavItems';
 import userAPI from '../services/userAPI';
 import MyData from '../components/MyData';
 
+import '../../css/ProfilePage.css'
+
 const items = ['Recettes', 'Commentaires', 'Infos']
 const RECIPES = 0
 const COMMENTS = 1

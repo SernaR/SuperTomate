@@ -19,7 +19,6 @@ const RecipeComment = ({ content, createdAt, userName, isAdmin, onValidate, onRe
                     </> || 
                     <button className="btn btn-outline-dark btn-sm mr-3" onClick={ onAnswer }>Répondre</button>   
                 }
-                
             </div>  
         </div>
 

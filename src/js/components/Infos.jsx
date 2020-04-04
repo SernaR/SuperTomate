@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const RecipeHeader = ({ recipe }) => {
+const Infos = ({ recipe }) => {
     const { serve, making, cook, picture, difficulty } = recipe
     
     return ( 
@@ -19,5 +19,5 @@ const RecipeHeader = ({ recipe }) => {
      );
 }
  
-export default RecipeHeader;
+export default Infos;
 ''

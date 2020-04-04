@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';     
-import Cockpit from '../../../components/Cockpit';
-import Field from '../../../components/forms/Field'
-import recipeAPI from '../../../services/recipesAPI'
-import AddRecipeList from './AddrecipeList';
-import Select from '../../../components/forms/Select';
-import Block from '../../../components/blocks/AddRecipeBlock';
-import ClassicField from '../../../components/forms/ClassicField';
-import Footer from '../../../components/Footer';
-import PageBlock from '../../../components/blocks/pageBlock';
-import recipesAPI from '../../../services/recipesAPI';
-import AddRecipeTags from './AddRecipeTags';
-import Steps from '../../../components/Steps';
+import Cockpit from '../components/Cockpit';
+import Field from '../components/forms/Field'
+import recipeAPI from '../services/recipesAPI'
+import Ingredients from '../components/Ingredients';
+import Select from '../components/forms/Select';
+import Block from '../components/blocks/AddRecipeBlock';
+import ClassicField from '../components/forms/ClassicField';
+import Footer from '../components/Footer';
+import PageBlock from '../components/blocks/pageBlock';
+import recipesAPI from '../services/recipesAPI';
+import Tags from '../components/Tags';
+import Steps from '../components/Steps';
+
+import '../../css/AddRecipePage.css'
 
 //TODO : contraintes
 //TODO : notification
 
-const AddRecipe = ({ match, history }) => {
+const AddRecipePage = ({ match, history }) => {
 
     const { id = 'new' } = match.params
     
@@ -177,32 +179,23 @@ const AddRecipe = ({ match, history }) => {
                         name="category"
                         options={ params.categories }
                     />
-                    <AddRecipeTags 
+                    <Tags 
                         tagList = { params.tags }
                         tags = { newRecipe.tags }
                         onTagChange = { handleRecipeParamChange }
                     />
                     <hr></hr>
                     <Block label="Ingrédients">
-                        <AddRecipeList
+                        <Ingredients
                             items={ newRecipe.ingredients }
                             name="ingredients"
                             onChange={ handleRecipeParamChange }/>
                     </Block> 
                     <hr></hr>
-
-                    { 0===1 && <Block label="Nouvelle étape">
-                        <AddRecipeList
-                            items={ newRecipe.steps }
-                            name="steps"
-                            type="textarea"
-                            onChange={ handleRecipeParamChange }/>
-                    </Block>}
                     <Steps 
                         steps={ newRecipe.steps } 
                         onChange={ handleRecipeParamChange }
                     />
-
 
                     <hr></hr>
                     <Block label="Ajouter une photo">
@@ -231,4 +224,4 @@ const AddRecipe = ({ match, history }) => {
     );
 }
  
-export default AddRecipe;
+export default AddRecipePage;

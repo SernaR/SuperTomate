@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-const AddRecipeList = ({name, type, items = [], onChange}) => {
+const Ingredients = ({name, type, items = [], onChange}) => {
 
     const [item, setItem] = useState({
         content: '', 
@@ -112,5 +112,5 @@ const AddRecipeList = ({name, type, items = [], onChange}) => {
      );
 }
  
-export default AddRecipeList;
+export default Ingredients;
 

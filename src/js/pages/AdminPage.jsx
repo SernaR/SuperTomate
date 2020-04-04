@@ -10,6 +10,7 @@ import NavItems from '../components/NavItems';
 import Params from '../components/Params';
 import Register from '../components/Register';
 
+import '../../css/AdminPage.css'
 
 const items = ['Recettes', 'Commentaires', 'Paramètres', 'Inscription']
 const RECIPES = 0

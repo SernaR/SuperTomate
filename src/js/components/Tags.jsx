@@ -1,8 +1,8 @@
 import React from 'react';
-import AddRecipeBlock from '../../../components/blocks/AddRecipeBlock';
-import Tag from '../../../components/Tag';
+import AddRecipeBlock from './blocks/AddRecipeBlock';
+import Tag from './Tag';
 
-const AddRecipeTags = ({tagList, tags, onTagChange}) => {
+const Tags = ({tagList, tags, onTagChange}) => {
 
     const handleClick = id => {
         if ( tags.indexOf(id) === -1 && tags.length < 3 ) {
@@ -26,4 +26,4 @@ const AddRecipeTags = ({tagList, tags, onTagChange}) => {
     );
 }
  
-export default AddRecipeTags;
+export default Tags;

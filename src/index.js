@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import HomePage from './js/pages/homepage/HomePage.jsx';
+
 import { HashRouter, Switch, Route, withRouter } from 'react-router-dom';
 import Navbar from './js/components/Navbar';
-import ProfilePage from './js/pages/ProfilePage';
-import LoginPage from './js/pages/LoginPage';
+
 import AuthContext from './js/contexts/AuthContext';
 import authAPI from './js/services/authAPI';
 import PrivateRoute from './js/components/PrivateRoute';
 import AdminRoute from './js/components/AdminRoute'
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import AddRecipe from './js/pages/recipes/addRecipe/AddRecipe.jsx';
-import AdminPage from './js/pages/AdminPage.jsx';
-import Recipe from './js/pages/recipes/recipe/Recipe.jsx';
-import RecipesCategoryPage from './js/pages/recipes/RecipesCategoryPage';
+
+import LoginPage from './js/pages/LoginPage';
+import HomePage from './js/pages/HomePage.jsx';
+import AddRecipe from './js/pages/AddRecipePage';
+import AdminPage from './js/pages/AdminPage';
+import ProfilePage from './js/pages/ProfilePage';
+import Recipe from './js/pages/RecipePage';
+import RecipesCategoryPage from './js/pages/RecipesCategoryPage';
 
 import './css/App.css'
 

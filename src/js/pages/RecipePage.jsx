@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react';
-import recipesAPI from '../../../services/recipesAPI';
-import Header from './RecipeHeader'
-import Ingredients from './RecipeIngredients';
-import Steps from './RecipeSteps';
-import Footer from '../../../components/Footer';
-import Comments from '../../../components/comments/RecipeComments';
-import AddComment from '../../../components/comments/AddComment';
-import AuthContext from '../../../contexts/AuthContext';
-import PageBlock from '../../../components/blocks/pageBlock';
-import Breadcrumbs from '../../../components/Breadcrumbs';
+import recipesAPI from '../services/recipesAPI';
+import Infos from '../components/Infos'
+import PageBlock from '../components/blocks/pageBlock';
+import Block from './blocks/Block';
+//import Ingredients from '../components/RecipeIngredients';
+//import Steps from '../components/RecipeSteps';
+import RecipeStepsCard from '../components/StepsCard'; 
+import Footer from '../components/Footer';
+import Comments from '../components/comments/RecipeComments';
+import AddComment from '../components/comments/AddComment';
+import AuthContext from '../contexts/AuthContext';
 
-import Vote from './RecipeVote';
-import Cockpit from './RecipeCockpit';
+import Breadcrumbs from '../components/Breadcrumbs';
 
-const Recipe = ({ match }) => {
+import Vote from '../components/Vote';
+import Cockpit from '../components/RecipeCockpit'; //à revoir
+
+import '../../css/RecipePage.css'
+
+const RecipePage = ({ match }) => {
     
     const recipeId = match.params.id
 
@@ -65,32 +70,28 @@ const Recipe = ({ match }) => {
             >  
                 <h1 className="display-2 text-center py-4">{ recipe.name }</h1>  
                 <Cockpit recipe={ recipe } recipeId={recipeId} userId={ isAuthenticated } isAdmin={isAdmin}/>
-                <Header recipe={ recipe } />
+                <Infos recipe={ recipe } />
                 <Vote recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
-                <Ingredients ingredients={recipe.ingredients}/>
-                <Steps steps={recipe.steps}/>
+                <Block title="Ingrédients">
+                    <div className="p-3 mb-1">
+                        <ul>
+                            { recipe.ingredients.map( ingredient => 
+                                <li className="lead" key={ingredient.rank} >{ ingredient.content}</li>
+                            )}
+                        </ul>
+                    </div>
+                
+                </Block>
+                <Block title="Les étapes de la recette">
+                    { recipe.steps.map( step => 
+                        <RecipeStepsCard key={ step.rank } step={step}/>
+                    )}
+                </Block>
             </PageBlock>
             <Footer/>
-        </>
-        
-        
+        </>  
     );
 }
  
-export default Recipe;
+export default RecipePage;
 
-/*{ recipe.isDraft && 
-                <p className="text-center mb-4 ">
-                    <span className="badge badge-secondary mx-1">Brouillon</span>
-                </p>
-                ||
-                <>
-                <div className="row">
-                    <div className="col-3"></div>
-                    <div className="col-6">
-                        <Hearts likes={ recipe.likes }/>
-                    </div>
-                    <div className="col-3"><span>test</span></div>     
-                </div>
-                    
-                 </>}*/

@@ -1,7 +1,7 @@
 import React from 'react';
-import Like from '../../../components/Like';
+import Like from './Like';
 
-const RecipeVote = ({ recipe, userId, recipeId, onLike, isAdmin }) => {
+const Vote = ({ recipe, userId, recipeId, onLike, isAdmin }) => {
     const { user, likes } = recipe
     let isRecorded
 
@@ -20,4 +20,4 @@ const RecipeVote = ({ recipe, userId, recipeId, onLike, isAdmin }) => {
     </> );
 }
  
-export default RecipeVote;
+export default Vote;

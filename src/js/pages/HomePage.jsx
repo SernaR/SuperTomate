@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 //import Cockpit from '../../components/Cockpit';
-import Footer from '../../components/Footer';
-import Block from '../../components/blocks/Block';
+import Footer from '../components/Footer';
+import Block from '../components/blocks/Block';
 
-import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from './HomepageText.json'
-import recipesAPI from '../../services/recipesAPI';
-import RecipeCards from '../../components/RecipeCards';
-import ScrollToTopOnMount from '../../services/ScrollToTopOnMount';
-import Super from '../../components/Super';
+import {les_mains_dans_la_tambouille, devenir_cuisinier_vegetal} from '../homepageText.json'
+import recipesAPI from '../services/recipesAPI';
+import RecipeCards from '../components/RecipeCards';
+import ScrollToTopOnMount from '../services/ScrollToTopOnMount';
+import Super from '../components/Super';
+
+import '../../css/HomePage.css'
 
 const HomePage = (props) => {
     useEffect( () => {

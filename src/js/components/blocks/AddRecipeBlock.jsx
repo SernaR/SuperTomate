@@ -1,7 +1,5 @@
 import React from 'react';
 
-//TODO composant à supprimer !!!!
-
 const AddRecipeBlock = ({ label, children }) => 
     (  
         <div className="form-group">

@@ -1,5 +1,5 @@
-h1,h2,h3,h4,h5,h6{
-	font-family: 'Amatic SC',cursive; 
+h1,h2,h3,h4,h5,h6, jumbotron h1{
+	font-family: 'Amatic SC', cursive; 
 }
 
 /*-----NAV BAR-----*/

@@ -1,5 +1,5 @@
 import React from 'react';
-import Hearts from '../../../components/Hearts';
+import Hearts from './Hearts';
 import { Link } from 'react-router-dom';
 
 const RecipeCockpit = ({recipe, recipeId, userId, isAdmin}) => {

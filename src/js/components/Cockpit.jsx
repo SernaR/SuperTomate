@@ -11,7 +11,7 @@ function Cockpit({title}){
                 background: '#78C2AD'
             }}
         >
-            <h1 className="display-4 text-center">{ title.toUpperCase() }</h1>
+            <h1 className="display-4 text-center">{ title }</h1>
         </div>   
     )
 }

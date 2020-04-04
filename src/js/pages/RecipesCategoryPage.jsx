@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Cockpit from '../../components/Cockpit'
-import Breadcrumbs from '../../components/Breadcrumbs'
-import recipesAPI from '../../services/recipesAPI';
-import RecipeCards from '../../components/RecipeCards';
-import Aside from '../../components/Aside'
-import Footer from '../../components/Footer';
-import PageBlock from '../../components/blocks/pageBlock';
+import Cockpit from '../components/Cockpit'
+import Breadcrumbs from '../components/Breadcrumbs'
+import recipesAPI from '../services/recipesAPI';
+import RecipeCards from '../components/RecipeCards';
+import Aside from '../components/Aside'
+import Footer from '../components/Footer';
+import PageBlock from '../components/blocks/pageBlock';
 
+import '../../css/RecipesCategoryPage.css'
 
 //todo pagination
 //todo enlever et recoder Breadcrumbs
