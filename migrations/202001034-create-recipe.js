@@ -46,7 +46,13 @@ module.exports = {
       },
       cook: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      wait: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       picture: {
         allowNull: false,

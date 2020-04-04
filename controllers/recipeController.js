@@ -80,7 +80,7 @@ exports.updateRecipe = async (req, res) => {
             }
             
             await models.Step.destroy({ where: { recipeId }})
-            await models.RecipeIngredient.destroy({ where: { recipeId }})
+            await models.Ingredient.destroy({ where: { recipeId }})
             await models.RecipeTag.destroy({ where: { recipeId }})
 
             await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, recipeFound)
@@ -184,12 +184,12 @@ exports.getRecipe = (req, res) => {
             },{
                 model: models.Step,
                 as: 'steps',
-                attributes: ['rank', 'content'], //'id',
+                attributes: ['rank', 'content'], 
                 order: [['rank', 'ASC']]
             },{
-                model: models.RecipeIngredient,
+                model: models.Ingredient,
                 as: 'ingredients',
-                attributes: ['rank', 'content'], //'id',
+                attributes: ['rank', 'content'], 
                 order: [['rank', 'ASC']]
             },{
                 model: models.Comment,

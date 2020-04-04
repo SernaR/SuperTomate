@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     models.Recipe.hasMany(models.Comment, {as: 'comments'})
     models.Recipe.hasMany(models.Step, {as: 'steps'})
     models.Recipe.hasMany(models.Like,{as: 'likes'})
-    models.Recipe.hasMany(models.RecipeIngredient, {as: 'ingredients'})
+    models.Recipe.hasMany(models.Ingredient, {as: 'ingredients'})
     models.Recipe.belongsToMany(models.Tag, { as: 'tags', through: 'RecipeTag', foreignKey: 'recipeId' });
   };
   return Recipe;
