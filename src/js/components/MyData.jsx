@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Field from './forms/Field'
 import ReadOnlyField from './forms/ReadOnlyField'
-import userAPI from '../services/userAPI';
+import userAPI from '../services/userAPI'
+
+import toast from '../services/toaster'
 
 function MyData({user}) {
     const{ name, email } = user
@@ -30,9 +32,9 @@ function MyData({user}) {
         }
 
         try{
-            const updatedMessage = await userAPI.passwordChange(credentials)
-            console.log(updatedMessage)
-            //toast
+            await userAPI.passwordChange(credentials)
+            toast.success("Le mot de passe a été modifié avec success")
+            
             setCredentials({
                 password: '',
                 passwordConfirm: ''

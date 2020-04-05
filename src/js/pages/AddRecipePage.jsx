@@ -12,10 +12,10 @@ import recipesAPI from '../services/recipesAPI';
 import Tags from '../components/Tags';
 import Steps from '../components/Steps';
 
+import toast from '../services/toaster' 
 import '../../css/AddRecipePage.css'
 
 //TODO : contraintes
-//TODO : notification
 
 const AddRecipePage = ({ match, history }) => {
 
@@ -28,9 +28,10 @@ const AddRecipePage = ({ match, history }) => {
     const [newRecipe, setNewRecipe] = useState({
         name: '',
         difficulty: '',
-        serve: '',
-        cook: '', 
-        making: '', 
+        serve: 0,
+        cook: 0, 
+        making: 0, 
+        wait: 0,
         category: '',
         tags: [],
         ingredients: [],
@@ -56,10 +57,10 @@ const AddRecipePage = ({ match, history }) => {
                 setEditing(true)
 
                 const { recipe } = await recipesAPI.find(id) 
-                const { name, difficulty, serve, cook, making, category, steps, ingredients, isDraft} = recipe
+                const { name, difficulty, serve, cook, wait, making, category, steps, ingredients, isDraft} = recipe
                 const tags = recipe.tags.map( tag => tag.id)
                 
-                setNewRecipe({ name, difficulty: difficulty.id, serve, cook, making, category:category.id, tags, ingredients, steps, isDraft })
+                setNewRecipe({ name, difficulty: difficulty.id, serve, cook, making, wait, category:category.id, tags, ingredients, steps, isDraft })
             } else {
                 setNewRecipe({ ...newRecipe,
                     difficulty: difficulties[0].id,
@@ -68,7 +69,7 @@ const AddRecipePage = ({ match, history }) => {
             }
             
         } catch(err) {
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         } 
     }
 
@@ -81,7 +82,7 @@ const AddRecipePage = ({ match, history }) => {
     const handleImageChange = ({ currentTarget }) => setNewRecipe({ ...newRecipe, picture: currentTarget.files[0] })
 
     const sendRecipe = async () => {
-        const { name, difficulty, serve, making, cook, tags, category, steps, ingredients, isDraft } = newRecipe 
+        const { name, difficulty, serve, making, cook, wait, tags, category, steps, ingredients, isDraft } = newRecipe 
         const picture = newRecipe.picture
         
         let recipeId
@@ -92,6 +93,7 @@ const AddRecipePage = ({ match, history }) => {
         formData.set('serve', serve)
         formData.set('making', making)
         formData.set('cook', cook)
+        formData.set('wait', wait)
         formData.set('tags', JSON.stringify(tags)) 
         formData.set('steps', JSON.stringify(steps))
         formData.set('ingredients', JSON.stringify(ingredients))
@@ -106,10 +108,10 @@ const AddRecipePage = ({ match, history }) => {
                 formData.append('image', picture)
                 recipeId = await recipeAPI.save(formData)
             }
+            toast.success("la recette est enregistrée")
             history.push("/recette/categorie/nouveau/" + recipeId ); 
         } catch(err) {
-            //NotificationManager.error(err.response.data.error, 'Error');
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         } 
     }
 
@@ -144,31 +146,40 @@ const AddRecipePage = ({ match, history }) => {
                     <hr></hr>
                     <div className="row mb-3">
                         <div className="col">
-                        <ClassicField 
+                            <ClassicField 
                                 label="Temps de préparation (en mn)"
                                 type="number"
                                 value={newRecipe.making}
                                 onChange={handleChange}
                                 name="making"
-                        />    
+                            />    
                         </div>
                         <div className="col">
-                        <ClassicField 
-                            label="Temps de cuisson (en mn)"
-                            type="number"
-                            value={newRecipe.cook}
-                            onChange={handleChange}
-                            name="cook"
-                        />
+                            <ClassicField 
+                                label="Temps de cuisson (en mn)"
+                                type="number"
+                                value={newRecipe.cook}
+                                onChange={handleChange}
+                                name="cook"
+                            />
                         </div>
                         <div className="col">
-                        <ClassicField 
-                            label="Nombre de personnes"
-                            type="number"
-                            value={newRecipe.serve}
-                            onChange={handleChange}
-                            name="serve"
-                        />
+                            <ClassicField 
+                                label="Temps de pause (en mn)"
+                                type="number"
+                                value={newRecipe.wait}
+                                onChange={handleChange}
+                                name="wait"
+                            />
+                        </div>
+                        <div className="col">
+                            <ClassicField 
+                                label="Nombre de personnes"
+                                type="number"
+                                value={newRecipe.serve}
+                                onChange={handleChange}
+                                name="serve"
+                            />
                         </div>
                     </div>
                     <hr></hr>

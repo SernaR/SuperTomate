@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const Infos = ({ recipe }) => {
-    const { serve, making, cook, picture, difficulty } = recipe
+    const { serve, making, cook, wait, picture, difficulty } = recipe
     
     return ( 
         <div className="row p-3">
@@ -13,7 +13,8 @@ const Infos = ({ recipe }) => {
                 <p>Difficulté : {difficulty.name }</p>
                 <p>Nombre de personnes : { serve }</p>
                 <p>Préparation : { making } mn</p>
-                <p>Cuisson : { cook } mn</p>
+                { cook !== 0 && <p>Cuisson : { cook } mn</p>}
+                { wait !== 0 && <p>Repos : { wait } mn</p> }
             </div>
         </div>
      );

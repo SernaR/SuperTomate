@@ -73,20 +73,19 @@ exports.setComment = (req, res) => {
             })
             .then( commentFound => {
                 if (action === 'add') {
-                     message = 'validated'
+                    message = 'validé'
                     return commentFound.update({ isChecked: 1 })
                 }
                 if (action === 'remove') {
-                    message = 'bloqued'
+                    message = 'bloqué'
                     return commentFound.update({ isChecked: 1, isBlocked: 1 })  
-                }
-                message = ': no action specified'      
+                }  
             })
             .then( () => {
-                res.status(201).json({ 'success': 'comment '+ message })
+                res.status(201).json(message)
             })
             .catch ( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
+                res.status(500).json(err)
             })
         } else {
             res.status(403).json({

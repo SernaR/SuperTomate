@@ -3,6 +3,8 @@ import Slug from './Slug';
 import recipesAPI from '../services/recipesAPI';
 import CommentBlock from './blocks/CommentBlock';
 
+import toast from '../services/toaster' 
+
 const Slugs = ({slugs, onSlugChange}) => {
 
     const handleSetSlug = (id, slug, category) => {
@@ -11,7 +13,7 @@ const Slugs = ({slugs, onSlugChange}) => {
             onSlugChange(id, slug, category)
         
         }catch(err){
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         }    
     }
 

@@ -36,7 +36,7 @@ exports.addCategory = (req, res) => {
     const userId = req.userId
     const name = req.body.categories
     if (!name) {
-        return res.status(400).json({ 'error': 'missing parameters' })
+        return res.status(400).json('aucune catégorie renseignée')
     }
   
     adminUtils.checkRoleAdmin(userId, admin => {
@@ -51,10 +51,10 @@ exports.addCategory = (req, res) => {
                         'name': newCategory.name
                     }) 
                 } else {
-                    res.status(409).json({ 'error': 'category already exist' })
+                    res.status(409).json('La catégorie existe déjà')
                 }
             })
-            .catch( () => {
+            .catch( (err) => {
                 res.status(500).json({ 'error': 'sorry, an error has occured' })
             })
         } else {
@@ -70,7 +70,7 @@ exports.addTag = (req, res) => {
     const name = req.body.tags
 
     if (!name) {
-        return res.status(400).json({ 'error': 'missing parameters' })
+        return res.status(400).json('aucun tag renseigné')
     }
   
     adminUtils.checkRoleAdmin(userId, admin => {
@@ -85,7 +85,7 @@ exports.addTag = (req, res) => {
                         "name": newTag.name
                     }) 
                 } else {
-                    res.status(409).json({ 'error': 'tag already exist' })
+                    res.status(409).json('Le tag existe déjà')
                 }
             })
             .catch( () => {
@@ -103,7 +103,7 @@ exports.addDifficulty = (req, res) => {
     const userId = req.userId
     const name = req.body.difficulties
     if (!name) {
-        return res.status(400).json({ 'error': 'missing parameters' })
+        return res.status(400).json('aucune difficulté renseignée')
     }
   
     adminUtils.checkRoleAdmin(userId, admin => {
@@ -118,7 +118,7 @@ exports.addDifficulty = (req, res) => {
                         'name': newDifficulty.name
                     }) 
                 } else {
-                    res.status(409).json({ 'error': 'difficulty already exist' })
+                    res.status(409).json('La difficulté existe déjà')
                 }
             })
             .catch( () => {

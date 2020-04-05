@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import recipesAPI from '../services/recipesAPI';
 import Infos from '../components/Infos'
 import PageBlock from '../components/blocks/pageBlock';
-import Block from './blocks/Block';
+import Block from '../components/blocks/Block';
 //import Ingredients from '../components/RecipeIngredients';
 //import Steps from '../components/RecipeSteps';
 import RecipeStepsCard from '../components/StepsCard'; 
@@ -16,6 +16,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import Vote from '../components/Vote';
 import Cockpit from '../components/RecipeCockpit'; //à revoir
 
+import toast from '../services/toaster' 
 import '../../css/RecipePage.css'
 
 const RecipePage = ({ match }) => {
@@ -45,7 +46,7 @@ const RecipePage = ({ match }) => {
             const {recipe} = await recipesAPI.find(id)
             setRecipe(recipe)
         } catch(err) {
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         }
     }
 

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import CommentBlock from '../blocks/CommentBlock';
 import commentsAPI from '../../services/commentsAPI';
 
+import toast from '../../services/toaster' 
+
 const AddComment = ({ recipeId }) => {
     const [comment, setComment] = useState('')
 
@@ -13,10 +15,10 @@ const AddComment = ({ recipeId }) => {
         event.preventDefault() 
         try {
             await commentsAPI.save(recipeId, comment)
+            toast.success("Le commentaire est soumis pour modération")
             setComment('')
         } catch(err) {
-            //NotificationManager.error(err.response.data.error, 'Error');
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         } 
         
     }

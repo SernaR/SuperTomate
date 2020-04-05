@@ -9,6 +9,7 @@ import RecipeCards from '../components/RecipeCards';
 import ScrollToTopOnMount from '../services/ScrollToTopOnMount';
 import Super from '../components/Super';
 
+import toast from '../services/toaster' 
 import '../../css/HomePage.css'
 
 const HomePage = (props) => {
@@ -26,7 +27,7 @@ const HomePage = (props) => {
             setNewRecipes(newRecipes)
             setBestRecipe(bestRecipes[randomIndex])
         } catch(err) {
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         }
     }
 
@@ -54,8 +55,9 @@ const HomePage = (props) => {
 export default HomePage;
 
 /**
+ * block pour inscription
  * <Block
-                title={devenir_cuisinier_vegetal.title} 
-                text={devenir_cuisinier_vegetal.text} 
-            />
+        title={devenir_cuisinier_vegetal.title} 
+        text={devenir_cuisinier_vegetal.text} 
+    />
  */

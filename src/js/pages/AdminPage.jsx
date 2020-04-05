@@ -10,6 +10,7 @@ import NavItems from '../components/NavItems';
 import Params from '../components/Params';
 import Register from '../components/Register';
 
+import toast from '../services/toaster' 
 import '../../css/AdminPage.css'
 
 const items = ['Recettes', 'Commentaires', 'Paramètres', 'Inscription']
@@ -35,6 +36,12 @@ const AdminPage = ({ history }) => {
     const [slugs, setSlugs] = useState([])
     const [item, setItem] = useState(0)
 
+    const [errors, setErrors] = useState({
+        tags: '',
+        difficulties: '',
+        categories: '',
+    });
+
     const fetchList = async () => {
         try {
             const params = await adminAPI.getParams()
@@ -47,7 +54,7 @@ const AdminPage = ({ history }) => {
             
 
         } catch(err) {
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         }
     }
 
@@ -56,17 +63,26 @@ const AdminPage = ({ history }) => {
     }
 
     const handleParamSubmit = async (value, param) => {
-        if(value) {
             try {
                 const newParam = await adminAPI.addParam(value, param)
 
                 const newParamTab = [...params[param], newParam]
                 setParams({...params, [param]: newParamTab})
+                setErrors({
+                    tags: '',
+                    difficulties: '',
+                    categories: '',
+                })
     
-            } catch(err) {
-                console.log(err.response)
-            }
-        }
+            } catch({ response }) {
+                const message = response.data;
+                if(message) {
+                    setErrors({...errors, [param]: message});
+                    toast.error("Il y a des erreurs dans votre formulaire")
+                } else {
+                    toast.error("Oups, un problème est survenue")
+                }
+            }    
     }
 
     const handleSlugChange = (id, slug, category) => {
@@ -97,19 +113,22 @@ const AdminPage = ({ history }) => {
                 <Params
                     params={ params.categories }
                     name ="categories"
+                    error={ errors.categories }
                     title="Ajouter une catégorie"
-                    onSubmit={handleParamSubmit}
+                    onSubmit={ handleParamSubmit }
                 />
                 <Params
                     params={ params.tags }
                     name ="tags"
                     title="Ajouter un Tag"
+                    error={ errors.tags }
                     onSubmit={handleParamSubmit}
                 />
                 <Params
                     params={ params.difficulties }
                     name ="difficulties"
                     title="Ajouter une difficulté"
+                    error={ errors.difficulties }
                     onSubmit={handleParamSubmit}
                 />
             </CommentBlock>}

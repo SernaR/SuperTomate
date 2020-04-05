@@ -7,6 +7,7 @@ import Aside from '../components/Aside'
 import Footer from '../components/Footer';
 import PageBlock from '../components/blocks/pageBlock';
 
+import toast from '../services/toaster' 
 import '../../css/RecipesCategoryPage.css'
 
 //todo pagination
@@ -78,7 +79,7 @@ const RecipesCategoryPage = ({ match }) => {
             setRecipes(recipes)
             setFilteredRecipes(recipes)
         } catch(err) {
-            console.log(err.response)
+            toast.error("Oups, un problème est survenue")
         }
     }
 

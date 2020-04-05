@@ -39,7 +39,7 @@ const Slug = ({ slug, onSetSlug }) => {
             { !url.show && 
                 <button className="btn btn-outline-dark mb-2" onClick={prepareSlug}>créer Url</button>
                 ||
-                <button className="btn btn-primary mb-2" onClick={setSlug}>Voir</button>
+                <button className="btn btn-primary mb-2" onClick={setSlug}>Aperçu</button>
             }
         </form>
     );

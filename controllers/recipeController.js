@@ -3,8 +3,6 @@ const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
 const sequelize = require('sequelize')
 const sharp = require('sharp');
-const path = require('path')
-
 
 exports.fileResize = async(req, res, next) => {
     const image = req.file
@@ -16,7 +14,7 @@ exports.fileResize = async(req, res, next) => {
     
     try{
         await sharp(image.buffer)
-        .resize(640) // voir pour le format*****************************
+        .resize(640) 
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
         .toFile(imagePath);
@@ -29,11 +27,11 @@ exports.fileResize = async(req, res, next) => {
 }
 
 exports.addRecipe = async (req, res) => {
-    const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
+    const { name, difficulty, serve, making, cook, wait, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId 
     const picture = req.picture
         
-    if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
+    if ( !name || !difficulty || !serve || !making || !cook || !wait || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
     
@@ -41,7 +39,7 @@ exports.addRecipe = async (req, res) => {
         const [newRecipe, created] = await models.Recipe.findOrCreate({
             attributes: ['name'],
             where: { name, userId },
-            defaults: { name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture, isDraft}  
+            defaults: { name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, picture, isDraft}  
         })
         if (created) { 
             await recipeUtils.setStepsTagsAndIngredients(tags, steps, ingredients, newRecipe)  
@@ -58,11 +56,11 @@ exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
     const image = req.file
     
-    const { name, difficulty, serve, making, cook, tags, steps, ingredients, category, isDraft } = req.body
+    const { name, difficulty, serve, making, cook, wait, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId
     const admin = jwt.checkAdmin(req.headers['authorization']) 
 
-    if ( !name || !difficulty || !serve || !making || !cook || !steps || !tags || !category || !ingredients ) { 
+    if ( !name || !difficulty || !serve || !making || !wait || !cook || !steps || !tags || !category || !ingredients ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
@@ -74,9 +72,9 @@ exports.updateRecipe = async (req, res) => {
             let updatedRecipe
         
             if(image) {
-                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, picture: image.path, isDraft }) 
+                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, picture: image.path, isDraft }) 
             } else {
-                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, categoryId: category, userId, isDraft }) 
+                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, isDraft }) 
             }
             
             await models.Step.destroy({ where: { recipeId }})
@@ -126,8 +124,8 @@ exports.getAllRecipes = (req, res) => {
             'recipes': recipes
         })
     })
-    .catch( () => {
-        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    .catch( (err) => {
+        res.status(500).json(err)
     })    
 }
 
@@ -157,7 +155,7 @@ exports.getRecipe = (req, res) => {
     const id = req.params.recipeId
     models.Recipe.findOne({
         where: { id },
-        attributes: ['name', 'serve', 'making', 'cook', 'picture', 'isDraft'],
+        attributes: ['name', 'serve', 'making', 'cook', 'wait', 'picture', 'isDraft'],
         include: [
             { 
                 model: models.Like,

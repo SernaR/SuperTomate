@@ -4,8 +4,8 @@ import authContext from '../contexts/AuthContext';
 import Field from '../components/forms/Field';
 import Cockpit from '../components/Cockpit';
 import PageBlock from '../components/blocks/pageBlock';
-import toast from '../services/toaster' 
 
+import toast from '../services/toaster' 
 import '../../css/LoginPage.css'
 
 const LoginPage = ({ history }) => {
@@ -13,7 +13,7 @@ const LoginPage = ({ history }) => {
     
     const [credentials, setCredentials] = useState({
         email: "sblack@gmail.fr",
-        password: "password0"
+        password: "mot2passe"
     });
     
     const [errors, setErrors] = useState({
@@ -50,7 +50,6 @@ const LoginPage = ({ history }) => {
                     apiErrors[propertyPath] = message;
                 });
                 setErrors(apiErrors);
-
                 toast.error("Il y a des erreurs dans votre formulaire")
             } 
         }

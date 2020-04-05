@@ -3,6 +3,8 @@ import Comment from './RecipeComment';
 import CommentBlock from '../blocks/CommentBlock';
 import commentsAPI from '../../services/commentsAPI';
 
+import toast from '../../services/toaster' 
+
 const RecipeComments = ({ comments, onModerated = null, isAdmin = false }) => {
     const handleValidate =  id => {
         moderateComment( id, 'add')
@@ -12,14 +14,14 @@ const RecipeComments = ({ comments, onModerated = null, isAdmin = false }) => {
         moderateComment( id, 'remove')
     }
 
-    const moderateComment = async (id, mode) => {
-        const originalComments = [...comments]
+    const moderateComment = async (id, mode) => {   
         try{
-            await commentsAPI.moderate(id, mode)
+            const message = await commentsAPI.moderate(id, mode)
+
+            toast.success("le commentaire est " + message.data )
             onModerated(comments.filter( comment => comment.id !== id))
         }catch(err) {
-            console.log(err.response)
-            onModerated(originalComments)
+            toast.error("Oups, un problème est survenue")
         }
     }
 
