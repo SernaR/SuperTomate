@@ -3,7 +3,7 @@ import Step from './Step';
 import Block from './blocks/AddRecipeBlock';
 
 
-const Steps = ({steps = [], onChange}) => {
+const Steps = ({steps = [], onChange, error }) => {
   
     const setRank = steps => {
         onChange( "steps", steps.map( (step, index) => { return { "rank": index + 1, "content": step.content} })) 
@@ -39,7 +39,8 @@ const Steps = ({steps = [], onChange}) => {
             })}
             <Block label="Nouvelle étape">
                 <Step 
-                    onAdd ={ addStep }   
+                    onAdd ={ addStep }
+                    error = { error }  
                 />
             </Block>
         </>

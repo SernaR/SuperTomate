@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-const Ingredients = ({name, type, items = [], onChange}) => {
+const Ingredients = ({name, items = [], onChange, error}) => {
 
     const [item, setItem] = useState({
         content: '', 
@@ -76,17 +76,6 @@ const Ingredients = ({name, type, items = [], onChange}) => {
     return ( 
         <>
             <div className="input-group mb-3">
-                { type ?
-                <textarea
-                    value={ item.content } 
-                    onChange={ handleItemChange }
-                    aria-label={ name }
-                    aria-describedby="basic-addon"
-                    ref={inputRef}
-                    className="form-control" 
-                    id={ name }
-                />
-                :
                 <input 
                     type = "text"
                     value={ item.content }
@@ -94,16 +83,16 @@ const Ingredients = ({name, type, items = [], onChange}) => {
                     aria-label={ name }
                     aria-describedby="basic-addon"
                     ref={inputRef}
-                    className="form-control" 
+                    className={"form-control " + (error && "is-invalid") } 
                     id={ name }
                 />
-                }
                 <div className="input-group-append">
                     <button
                         className="input-group-text"
                         onClick={addItem}
                     >Ajouter</button>
                 </div>
+                {error && <p className="invalid-feedback">{error}</p>}  
             </div>
             <ul className="list-group">
                 { itemList }

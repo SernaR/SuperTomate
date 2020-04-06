@@ -7,7 +7,10 @@ const sharp = require('sharp');
 exports.fileResize = async(req, res, next) => {
     const image = req.file
     if(!image) {
-        res.status(422).json({ 'error': 'attached file is not an image' }) 
+        res.status(422).json([{
+            propertyPath: 'picture',
+            message: "le fichier n'est pas une image valide"
+        }]) 
     }
 
     const imagePath = 'images/' + new Date().toDateString() + '-' + image.originalname
@@ -30,9 +33,10 @@ exports.addRecipe = async (req, res) => {
     const { name, difficulty, serve, making, cook, wait, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId 
     const picture = req.picture
-        
-    if ( !name || !difficulty || !serve || !making || !cook || !wait || !steps || !tags || !category || !ingredients ) { 
-        return res.status(400).json({ 'error': 'missing parameters' })
+    
+    const messages = recipeUtils.checkRecipe(req.body)
+    if ( messages.length > 0 ) { 
+        return res.status(422).json(messages)
     }
     
     try {
@@ -60,8 +64,9 @@ exports.updateRecipe = async (req, res) => {
     const userId = req.userId
     const admin = jwt.checkAdmin(req.headers['authorization']) 
 
-    if ( !name || !difficulty || !serve || !making || !wait || !cook || !steps || !tags || !category || !ingredients ) { 
-        return res.status(400).json({ 'error': 'missing parameters' })
+    const messages = recipeUtils.checkRecipe(req.body)
+    if ( messages.length > 0 ) { 
+        return res.status(422).json(messages)
     }
 
     try {

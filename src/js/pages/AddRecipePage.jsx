@@ -40,6 +40,14 @@ const AddRecipePage = ({ match, history }) => {
         isDraft: true
     })
 
+    const [errors, setErrors] = useState({
+        name: '',
+        tags: '',
+        ingredients: '',
+        steps: '',
+        picture: ''
+    })
+
     const [params, setParams] = useState({
         tags: [],
         difficulties: [],
@@ -110,9 +118,20 @@ const AddRecipePage = ({ match, history }) => {
             }
             toast.success("la recette est enregistrée")
             history.push("/recette/categorie/nouveau/" + recipeId ); 
-        } catch(err) {
-            toast.error("Oups, un problème est survenue")
-        } 
+        } catch ({ response }) {
+            const messages = response.data;
+            const apiErrors = {}
+
+            if(messages) {
+                messages.map( ({ propertyPath, message }) => {
+                    apiErrors[propertyPath] = message;
+                });
+                setErrors(apiErrors);
+
+                toast.error("Il y a des erreurs dans votre formulaire")
+                console.error
+            } 
+        }
     }
 
     const handleRecipeSubmit = event => {
@@ -136,6 +155,7 @@ const AddRecipePage = ({ match, history }) => {
                         value={newRecipe.name}
                         onChange={handleChange}
                         name="name"
+                        error ={errors.name}
                     />
                     <Select
                         label="Difficulté"
@@ -194,18 +214,21 @@ const AddRecipePage = ({ match, history }) => {
                         tagList = { params.tags }
                         tags = { newRecipe.tags }
                         onTagChange = { handleRecipeParamChange }
+                        error ={errors.tags}
                     />
                     <hr></hr>
                     <Block label="Ingrédients">
                         <Ingredients
                             items={ newRecipe.ingredients }
                             name="ingredients"
+                            error ={errors.ingredients}
                             onChange={ handleRecipeParamChange }/>
                     </Block> 
                     <hr></hr>
                     <Steps 
                         steps={ newRecipe.steps } 
                         onChange={ handleRecipeParamChange }
+                        error ={errors.steps}
                     />
 
                     <hr></hr>
@@ -214,14 +237,15 @@ const AddRecipePage = ({ match, history }) => {
                             <div className="custom-file">
                                 <input 
                                     type="file" 
-                                    className="custom-file-input" 
+                                    className={"custom-file-input" + (errors.picture && " is-invalid")}
                                     id="inputGroupFile" 
                                     aria-describedby="fileHelp" 
                                     onChange={ handleImageChange }
                                 />
-                                <label className="custom-file-label" htmlFor="inputGroupFile">{ newRecipe.picture && newRecipe.picture.name }</label>
+                                <label className="custom-file-label" htmlFor="inputGroupFile">{ newRecipe.picture && newRecipe.picture.name }</label> 
                             </div>
                         </div>
+                        {errors.picture && <p className="small error-message">{errors.picture}</p>}  
                     </Block>       
                     <hr></hr>
                     <div className="container text-center my-5">

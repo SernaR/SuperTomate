@@ -11,4 +11,16 @@ exports.setStepsTagsAndIngredients = async (tags, steps, ingredients, recipe)  =
 
 }
 
+exports.checkRecipe = ( recipe ) => {
+    const constraints = [] 
 
+    for (const property in recipe) {
+        if( recipe[property] === "" || recipe[property] === "[]") {
+            constraints.push({
+                propertyPath: property,
+                message: 'Champs obligatoire'
+            })
+        } 
+    }
+    return constraints
+}

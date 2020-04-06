@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Step = ({index, step, onAdd, onUpdate, onDelete}) => {
+const Step = ({index, step, onAdd, onUpdate, onDelete, error = ''}) => {
 
     let inputRef = useRef(null)
 
@@ -56,16 +56,17 @@ const Step = ({index, step, onAdd, onUpdate, onDelete}) => {
                     value={ item.content }
                     ref={ inputRef }
                     onChange={ handleChange }
-                    className="form-control"
+                    className={"form-control" + (error && " is-invalid") }
                     aria-label="basic-addon"
                     aria-describedby="basic-addon"
                 />
-            <div className="input-group-append">
+                <div className="input-group-append">
                     <button
                         className="input-group-text"
                         onClick={ handleClick }
                     >Ajouter</button>
                 </div>
+                {error && <p className="invalid-feedback">{error}</p>}
             </div>}
         </> 
      );
