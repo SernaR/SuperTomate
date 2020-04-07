@@ -11,7 +11,6 @@ import Params from '../components/Params';
 import Register from '../components/Register';
 
 import toast from '../services/toaster' 
-import '../../css/AdminPage.css'
 
 const items = ['Recettes', 'Commentaires', 'Paramètres', 'Inscription']
 const RECIPES = 0

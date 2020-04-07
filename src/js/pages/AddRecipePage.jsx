@@ -13,7 +13,6 @@ import Tags from '../components/Tags';
 import Steps from '../components/Steps';
 
 import toast from '../services/toaster' 
-import '../../css/AddRecipePage.css'
 
 //TODO : contraintes
 

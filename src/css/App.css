@@ -1,3 +1,5 @@
+/*-----GÉNÉRAL-----*/
+
 h1,h2,h3,h4,h5,h6, jumbotron h1{
 	font-family: 'Amatic SC', cursive; 
 }
@@ -11,13 +13,29 @@ h1,h2,h3,h4,h5,h6, jumbotron h1{
 	border-bottom: 2px solid #FF7851;
 }
 
+/*--logo hors flux--*/
+.navbar-light .navbar-brand {
+	position:absolute;
+	top:0;
+	left:5px;
+}
+#tomate{width:6em!important;}
+.navbar-expand-lg .navbar-nav{padding-left: 9em;}
+
+
 /*-----BADGE-----*/
 .badge{
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	padding-right:7px;
+	padding-left:7px;
 }
 
+/*--Fil Ariane--*/
+.breadcrumb{background: #fff;}
+.breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a{color:#5a5a5a;}
+.breadcrumb-item a:hover, .breadcrumb-item.active{color:#ff7851;}
 
-/*-----HOME-----*/
+/*-----HOME PAGE-----*/
 .tomato{
 	background-image: url('/images/404.jpg');
 	background-size: cover;
@@ -28,19 +46,65 @@ h1,h2,h3,h4,h5,h6, jumbotron h1{
 
 .tomato>h1, .tomato>h2{color:#fff;}	
 
+#tomate {
+	width: 3em;
+	height: auto;
+}
+
 /*-----IMAGES-----*/
 img {
 	max-width: 100%;
 	height: auto;
 }
-#tomate {
-	width: 3em;
-	height: auto;
-}
-.pointer {cursor: pointer;}
 
+/*-----Divers-----*/
+.pointer {cursor: pointer;}
 .pages-back {
 	min-height: 100vh; 
 	padding-bottom: 1em;
 	background-attachment: fixed;
+}
+.error-message{
+    color:#FF7851;;
+}
+
+/*--FOOTER--*/
+footer{
+	background: #a8947c; 
+	color:#fff;
+	font-size:0.8em;
+	padding:0 0 0.2em 1em;}
+footer a:hover{color:#fff;}
+
+/*-----PAGE RECETTE-----*/
+h2,.card h2{
+	background:#78c2ad;
+	color:#fff;
+	border-radius: 0.4rem;
+	padding:1%;
+}
+h3,.container .lead div .card h3{font-weight:700;}
+
+/*--liste ingrédients--*/
+ul{list-style-type: none;}
+.food {
+  	padding-left: 1.7em;
+  	margin-bottom:0.3em;
+}
+.food:before {
+	color:#ff7851;
+  	content: "\f4d8"; /* FontAwesome Unicode */
+  	font-family: FontAwesome;
+  	display: inline-block;
+  	margin-left: -3em; /* distance de li par rapport au bord */
+  	width: 2em; /* distance entre icone et texte */
+}
+
+/*--commentaires--*/
+.list-group-item+.list-group-item {
+    border-top-width: 1px;
+}
+.list-group-item{
+	margin-bottom: 0.5em;
+	border-radius: 0.4rem;
 }

@@ -12,7 +12,7 @@ const PageBlock = ({ children, commentBlock, breadcrumds, back }) => {
         <main style={ {backgroundImage: url} } className="pages-back">
                 <ScrollToTopOnMount />
                 <div className="container">
-                    <div className="card" style={{ marginTop: '3.75em', marginBottom: '1em'}}></div>
+                    <div className="card" style={{ marginTop: '3.25em', marginBottom: '1em'}}></div>
                     {breadcrumds}
                     <div className="card px-4 mb-3">
                         { children }

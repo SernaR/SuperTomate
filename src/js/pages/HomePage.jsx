@@ -10,7 +10,6 @@ import ScrollToTopOnMount from '../services/ScrollToTopOnMount';
 import Super from '../components/Super';
 
 import toast from '../services/toaster' 
-import '../../css/HomePage.css'
 
 const HomePage = (props) => {
     useEffect( () => {

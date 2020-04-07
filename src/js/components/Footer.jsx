@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Footer() {
-    return(
-        <footer className="d-flex flex-row-reverse bg-light">
-            <a href="/" className="lien">&copy; 2019 | Mentions légales</a>
-        </footer>
-    )
-}
+//link
+
+const Footer = () => (
+    <footer className="flex-row-reverse ">
+        © 2020 Super-Tomate | Site réalisé par <a href="https://www.kipcreativ.fr">Kip Creativ</a> | <a href="/">Mentions légales</a>
+    </footer>
+)
 
 export default Footer

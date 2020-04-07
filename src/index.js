@@ -23,8 +23,6 @@ import './css/App.css'
 
 authAPI.setup();
 
-//TODO :  page d'erreur
-
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(authAPI.isAuthenticated());
   const [isAdmin, setIsAdmin] = useState(authAPI.isAdmin());

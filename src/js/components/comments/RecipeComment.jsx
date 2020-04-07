@@ -16,8 +16,7 @@ const RecipeComment = ({ content, createdAt, userName, isAdmin, onValidate, onRe
                     <>
                         <button className="btn btn-outline-success btn-sm mr-3" onClick={ onValidate }>Valider</button>   
                         <button className="btn btn-outline-danger btn-sm mr-3" onClick={ onRemove }>Modérer</button>   
-                    </> || 
-                    <button className="btn btn-outline-dark btn-sm mr-3" onClick={ onAnswer }>Répondre</button>   
+                    </> 
                 }
             </div>  
         </div>
@@ -26,3 +25,8 @@ const RecipeComment = ({ content, createdAt, userName, isAdmin, onValidate, onRe
 }
  
 export default RecipeComment;
+
+/**
+ * </> || 
+                    <button className="btn btn-outline-dark btn-sm mr-3" onClick={ onAnswer }>Répondre</button>
+ */

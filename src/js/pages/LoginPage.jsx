@@ -6,7 +6,6 @@ import Cockpit from '../components/Cockpit';
 import PageBlock from '../components/blocks/pageBlock';
 
 import toast from '../services/toaster' 
-import '../../css/LoginPage.css'
 
 const LoginPage = ({ history }) => {
     const { setIsAuthenticated, setIsAdmin } = useContext(authContext);

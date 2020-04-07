@@ -39,7 +39,7 @@ const AddComment = ({ recipeId }) => {
                 <div className="row mt-3 justify-content-end">
                     <button 
                         type="submit" 
-                        className="btn btn-primary btn-sm mr-3"
+                        className="btn btn-outline-danger btn-sm mr-3"
                         >Envoyer</button>
                 </div>
             </form>      

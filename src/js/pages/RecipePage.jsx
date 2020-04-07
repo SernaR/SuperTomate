@@ -3,21 +3,15 @@ import recipesAPI from '../services/recipesAPI';
 import Infos from '../components/Infos'
 import PageBlock from '../components/blocks/pageBlock';
 import Block from '../components/blocks/Block';
-//import Ingredients from '../components/RecipeIngredients';
-//import Steps from '../components/RecipeSteps';
 import RecipeStepsCard from '../components/StepsCard'; 
 import Footer from '../components/Footer';
 import Comments from '../components/comments/RecipeComments';
 import AddComment from '../components/comments/AddComment';
 import AuthContext from '../contexts/AuthContext';
-
 import Breadcrumbs from '../components/Breadcrumbs';
-
 import Vote from '../components/Vote';
-import Cockpit from '../components/RecipeCockpit'; //à revoir
 
 import toast from '../services/toaster' 
-import '../../css/RecipePage.css'
 
 const RecipePage = ({ match }) => {
     
@@ -69,25 +63,27 @@ const RecipePage = ({ match }) => {
                     </>  
                 }
             >  
-                <h1 className="display-2 text-center py-4">{ recipe.name }</h1>  
-                <Cockpit recipe={ recipe } recipeId={recipeId} userId={ isAuthenticated } isAdmin={isAdmin}/>
-                <Infos recipe={ recipe } />
-                <Vote recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
-                <Block title="Ingrédients">
-                    <div className="p-3 mb-1">
-                        <ul>
-                            { recipe.ingredients.map( ingredient => 
-                                <li className="lead" key={ingredient.rank} >{ ingredient.content}</li>
-                            )}
-                        </ul>
+                <Infos recipe={ recipe } recipeId={recipeId} userId={ isAuthenticated } isAdmin={isAdmin}/>
+                <div className="row p-3">
+                    <div id="recette-img" className="col">
+                        <img src={ recipe.picture } className="img-fluid card" alt="Responsive image recette" />
                     </div>
-                
-                </Block>
+                    <div className="col card py-3 lead"> 
+                        <Block title="Ingrédients"> 
+                            <ul>
+                                { recipe.ingredients.map( ingredient => 
+                                    <li className="food" key={ingredient.rank} >{ ingredient.content}</li>
+                                )}
+                            </ul>
+                        </Block>
+                    </div>
+                </div>  
                 <Block title="Les étapes de la recette">
                     { recipe.steps.map( step => 
                         <RecipeStepsCard key={ step.rank } step={step}/>
                     )}
                 </Block>
+                <Vote recipe={ recipe } userId={ isAuthenticated } recipeId={recipeId} onLike={handleLike} isAdmin={isAdmin}/>
             </PageBlock>
             <Footer/>
         </>  

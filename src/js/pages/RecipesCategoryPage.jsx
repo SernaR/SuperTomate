@@ -8,10 +8,8 @@ import Footer from '../components/Footer';
 import PageBlock from '../components/blocks/pageBlock';
 
 import toast from '../services/toaster' 
-import '../../css/RecipesCategoryPage.css'
 
 //todo pagination
-//todo enlever et recoder Breadcrumbs
 
 const RecipesCategoryPage = ({ match }) => {
     const category = match.params.category
