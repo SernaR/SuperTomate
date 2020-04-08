@@ -1,10 +1,10 @@
 import React from 'react';
 
-const StepsCard = ({ step }) => {
+const StepsCard = ({ step, customH3 }) => {
     return ( 
         <div className="card p-3 mb-3">
-            <h3>Étape { step.rank }</h3>
-            <p style={{whiteSpace: 'pre'}} className="card-text lead">{ step.content }</p>
+            <h3 className="recipe-3" >Étape { step.rank }</h3>
+            <p className="card-text lead">{ step.content }</p>
         </div>
      );
 }

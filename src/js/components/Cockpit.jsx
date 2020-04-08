@@ -3,13 +3,7 @@ import React from 'react'
 function Cockpit({title}){
     return(
         <div 
-            className="jumbotron" 
-            style={{ 
-                marginTop: '80px', 
-                color:'#fff',
-                backgroundSize: "contain",
-                background: '#78C2AD'
-            }}
+            className="jumbotron jum-cat" 
         >
             <h1 className="display-4 text-center">{ title }</h1>
         </div>   

@@ -69,7 +69,7 @@ const RecipePage = ({ match }) => {
                         <img src={ recipe.picture } className="img-fluid card" alt="Responsive image recette" />
                     </div>
                     <div className="col card py-3 lead"> 
-                        <Block title="Ingrédients"> 
+                        <Block title="Ingrédients" customH2="recipe"> 
                             <ul>
                                 { recipe.ingredients.map( ingredient => 
                                     <li className="food" key={ingredient.rank} >{ ingredient.content}</li>
@@ -78,7 +78,7 @@ const RecipePage = ({ match }) => {
                         </Block>
                     </div>
                 </div>  
-                <Block title="Les étapes de la recette">
+                <Block title="Les étapes de la recette" customH2="recipe">
                     { recipe.steps.map( step => 
                         <RecipeStepsCard key={ step.rank } step={step}/>
                     )}

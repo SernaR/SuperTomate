@@ -7,8 +7,8 @@ const recipecard = ({ recipe, col }) => {
     
     return ( 
         <div className={"col-" + col}>  
-            <div className="card mb-4 text-center"> 
-                <h3 className="card-header">{ name }</h3>
+            <div className="card mb-4 text-center card-2"> 
+                <h3 className="card-header card-3">{ name }</h3>
                 <Link to={ recipeUrl(category, slug) + id } >
                     <img src={ picture } className="img-fluid" alt={ name } ></img>
                 </Link>

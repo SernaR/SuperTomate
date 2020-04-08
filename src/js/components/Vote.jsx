@@ -12,12 +12,12 @@ const Vote = ({ recipe, userId, recipeId, onLike, isAdmin }) => {
     const handleLike = (record) => onLike({...record, userId})
 
     return ( <>
-        {((user && userId === user.id) || isAdmin)  &&    
-            <div className="col-sm-8 ">
-                { isRecorded && <Like recipeId={ recipeId } onLike={handleLike}/> }
-            </div>  
+        {((user && userId === user.id) || isAdmin) 
+            && isRecorded 
+            && <Like recipeId={ recipeId } onLike={handleLike}/> 
         }
     </> );
 }
  
 export default Vote;
+

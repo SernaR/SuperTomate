@@ -7,7 +7,7 @@ const RecipeComment = ({ content, createdAt, userName, isAdmin, onValidate, onRe
     return ( 
         <div className="list-group-item ">
             <div className="d-flex w-100 justify-content-between my-2">
-                <h3>{ userName }</h3>
+                <h3 className="recipe-3">{ userName }</h3>
                 <small className="text-muted">Il y a { moment(createdAt).fromNow(true) }</small>
             </div>    
             <p className="mb-2">{ content }</p>

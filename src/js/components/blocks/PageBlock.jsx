@@ -6,10 +6,10 @@ import ScrollButton from '../ScrollButton';
 
 const PageBlock = ({ children, commentBlock, breadcrumds, back }) => {
     //const url = "url('/images/fond-" + back + ".jpg')"
-    const url = "url('/images/fond-visiteur.jpg')"
+   //style={ {backgroundImage: url} } 
 
     return ( 
-        <main style={ {backgroundImage: url} } className="pages-back">
+        <main className="pages-back">
                 <ScrollToTopOnMount />
                 <div className="container">
                     <div className="card" style={{ marginTop: '3.25em', marginBottom: '1em'}}></div>

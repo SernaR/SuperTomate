@@ -1,39 +1,68 @@
-/*-----GÉNÉRAL-----*/
 
-h1,h2,h3,h4,h5,h6, jumbotron h1{
-	font-family: 'Amatic SC', cursive; 
+/*-----GÉNÉRAL-----*/
+body{
+	font-family:noto, sans-serif;
+	color:#777;
 }
+h1,h2,h3,h4,h5,h6, jumbotron h1{font-family: 'Amatic SC', cursive;}
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+
+/*-----Divers-----*/
+.pointer {cursor: pointer;}
+.pages-back {
+	background-image: url('/images/fond-visiteur.jpg');
+	min-height: 100vh; 
+	padding-bottom: 1em;
+	background-attachment: fixed;
+}
+.error-message{color:#FF7851;;}
+
+
+/*-----FOOTER-----*/
+footer{
+	background: #a8947c; 
+	color:#fff;
+	font-size:0.8em;
+	padding:0 0 0.2em 1em;}
+footer a:hover{color:#fff;}
+
+
+/*-----Fil Ariane-----*/
+.breadcrumb{background: #fff;}
+.breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a{color:inherit;}
+.breadcrumb-item a:hover, .breadcrumb-item.active{color:#ff7851;}
+
 
 /*-----NAV BAR-----*/
-.nav-link{
-	color: #555 !important;
-}
+.nav-link{color: #555 !important;}
 .nav-link.active, .nav-link:hover{
 	color: #FF7851 !important;
 	border-bottom: 2px solid #FF7851;
 }
-
 /*--logo hors flux--*/
 .navbar-light .navbar-brand {
 	position:absolute;
 	top:0;
 	left:5px;
 }
-#tomate{width:6em!important;}
+#tomate{
+	width:6em!important;
+	height: auto;
+	}
 .navbar-expand-lg .navbar-nav{padding-left: 9em;}
 
 
 /*-----BADGE-----*/
 .badge{
-	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-	padding-right:7px;
-	padding-left:7px;
+	font-family: inherit;
+	padding:2px 7px;
+	margin-bottom:5px;
 }
 
-/*--Fil Ariane--*/
-.breadcrumb{background: #fff;}
-.breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a{color:#5a5a5a;}
-.breadcrumb-item a:hover, .breadcrumb-item.active{color:#ff7851;}
 
 /*-----HOME PAGE-----*/
 .tomato{
@@ -43,48 +72,22 @@ h1,h2,h3,h4,h5,h6, jumbotron h1{
 	height:700px;
 	padding-top: 0em;
 }
-
 .tomato>h1, .tomato>h2{color:#fff;}	
 
-#tomate {
-	width: 3em;
-	height: auto;
-}
 
-/*-----IMAGES-----*/
-img {
-	max-width: 100%;
-	height: auto;
-}
 
-/*-----Divers-----*/
-.pointer {cursor: pointer;}
-.pages-back {
-	min-height: 100vh; 
-	padding-bottom: 1em;
-	background-attachment: fixed;
-}
-.error-message{
-    color:#FF7851;;
-}
 
-/*--FOOTER--*/
-footer{
-	background: #a8947c; 
-	color:#fff;
-	font-size:0.8em;
-	padding:0 0 0.2em 1em;}
-footer a:hover{color:#fff;}
 
 /*-----PAGE RECETTE-----*/
-h2,.card h2{
+.recipe{
 	background:#78c2ad;
-	color:#fff;
+	color:#fff!important;
 	border-radius: 0.4rem;
 	padding:1%;
 }
-h3,.container .lead div .card h3{font-weight:700;}
-
+/*h3,.container .lead div .card h3,*/.recipe-3{
+	font-size:2em;
+	font-weight:700;}
 /*--liste ingrédients--*/
 ul{list-style-type: none;}
 .food {
@@ -99,12 +102,20 @@ ul{list-style-type: none;}
   	margin-left: -3em; /* distance de li par rapport au bord */
   	width: 2em; /* distance entre icone et texte */
 }
-
 /*--commentaires--*/
-.list-group-item+.list-group-item {
-    border-top-width: 1px;
-}
+.list-group-item+.list-group-item {border-top-width: 1px;}
 .list-group-item{
 	margin-bottom: 0.5em;
 	border-radius: 0.4rem;
+}
+
+/*-----PAGE CATÉGORIE-----*/ 
+/*ajouter class ci-dessous aux fiches recettes:*/
+.card-1{padding:1%;}
+.card-2{box-shadow: 3px 3px 10px 0px rgba(90,90,90,0.5);}
+.card-3{background-color: #fff;}
+.jum-cat{
+	margin-top: 2em; 
+	color: #fff; 
+	background: #78c2ad;
 }
