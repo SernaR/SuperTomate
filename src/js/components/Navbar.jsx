@@ -48,7 +48,7 @@ const Navbar = ({ history }) => {
     
     return ( 
         <header>
-            <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light d-flex flex-row-reverse">
                 <NavLink className="navbar-brand mr-4" to="/"><ReactSVG src="/images/mascotte-super-tomate-succ.svg"/></NavLink>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

@@ -17,6 +17,8 @@ const apiLimiter = rateLimit({
     max: 100
 })
 
+const port = process.env.PORT || 3000
+
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
 const apiRoutes = require('./routes/apiRoutes')
@@ -50,9 +52,9 @@ app.use('/api/admin', adminRoutes)
 app.use("/api", errorController.pageNotFound)
 
 app.get('/', (req, res) => {
-    res.sendFile(HTML_FILE); // EDIT
+    res.sendFile(HTML_FILE);  
 })
 
-app.listen(3000, () => {
-    console.log('serveur en écoute sur le port 3000')
+app.listen(port, () => {
+    console.log('serveur en écoute sur le port ' + port)
 })
