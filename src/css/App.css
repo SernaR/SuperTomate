@@ -1,15 +1,13 @@
 
 /*-----GÉNÉRAL-----*/
 body{
-	font-family:noto, sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color:#777;
-}
+	font-size:1.2em;}
 h1,h2,h3,h4,h5,h6, jumbotron h1{font-family: 'Amatic SC', cursive;}
 img {
 	max-width: 100%;
-	height: auto;
-}
-
+	height: auto;}
 
 /*-----Divers-----*/
 .pointer {cursor: pointer;}
@@ -17,10 +15,8 @@ img {
 	background-image: url('/images/fond-visiteur.jpg');
 	min-height: 100vh; 
 	padding-bottom: 1em;
-	background-attachment: fixed;
-}
+	background-attachment: fixed;}
 .error-message{color:#FF7851;;}
-
 
 /*-----FOOTER-----*/
 footer{
@@ -30,92 +26,86 @@ footer{
 	padding:0 0 0.2em 1em;}
 footer a:hover{color:#fff;}
 
-
 /*-----Fil Ariane-----*/
 .breadcrumb{background: #fff;}
 .breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a{color:inherit;}
 .breadcrumb-item a:hover, .breadcrumb-item.active{color:#ff7851;}
 
-
 /*-----NAV BAR-----*/
 .nav-link{color: #555 !important;}
 .nav-link.active, .nav-link:hover{
 	color: #FF7851 !important;
-	border-bottom: 2px solid #FF7851;
-}
+	border-bottom: 2px solid #FF7851;}
 /*--logo hors flux--*/
 .navbar-light .navbar-brand {
 	position:absolute;
 	top:0;
-	left:5px;
-}
+	left:5px;}
 #tomate{
 	width:6em!important;
-	height: auto;
-	}
+	height: auto;}
 .navbar-expand-lg .navbar-nav{padding-left: 9em;}
-
+/*-----TOGGLER-----*/
+.navbar-light .navbar-toggler{
+	border-color: #f8f9fa;
+}
+.navbar-toggler{
+	font-size:1.5rem;
+}
 
 /*-----BADGE-----*/
 .badge{
 	font-family: inherit;
+	font-size:0.7em;
+	font-weight:300;
 	padding:2px 7px;
-	margin-bottom:5px;
-}
-
-
-/*-----HOME PAGE-----*/
-.tomato{
-	background-image: url('/images/404.jpg');
-	background-size: cover;
-	background-position: top;
-	height:700px;
-	padding-top: 0em;
-}
-.tomato>h1, .tomato>h2{color:#fff;}	
-
-
-
-
+	margin-bottom:5px;}
 
 /*-----PAGE RECETTE-----*/
 .recipe{
 	background:#78c2ad;
 	color:#fff!important;
 	border-radius: 0.4rem;
-	padding:1%;
-}
-/*h3,.container .lead div .card h3,*/.recipe-3{
-	font-size:2em;
-	font-weight:700;}
+	padding:1%;}
+.recipe-3{font-size:2em;}
 /*--liste ingrédients--*/
 ul{list-style-type: none;}
 .food {
   	padding-left: 1.7em;
-  	margin-bottom:0.3em;
-}
+  	margin-bottom:0.3em;}
 .food:before {
 	color:#ff7851;
   	content: "\f4d8"; /* FontAwesome Unicode */
   	font-family: FontAwesome;
   	display: inline-block;
   	margin-left: -3em; /* distance de li par rapport au bord */
-  	width: 2em; /* distance entre icone et texte */
-}
+  	width: 2em; /* distance entre icone et texte */}
 /*--commentaires--*/
 .list-group-item+.list-group-item {border-top-width: 1px;}
 .list-group-item{
 	margin-bottom: 0.5em;
-	border-radius: 0.4rem;
-}
+	border-radius: 0.4rem;}
 
-/*-----PAGE CATÉGORIE-----*/ 
-/*ajouter class ci-dessous aux fiches recettes:*/
+/*-----PAGE CATÉGORIE-----*/
 .card-1{padding:1%;}
 .card-2{box-shadow: 3px 3px 10px 0px rgba(90,90,90,0.5);}
 .card-3{background-color: #fff;}
 .jum-cat{
 	margin-top: 2em; 
 	color: #fff; 
-	background: #78c2ad;
-}
+	background: #78c2ad;}
+
+/*-----HOME PAGE-----*/
+.tomato{
+	background-image: url('/images/404.jpg');
+	background-size: cover;
+	background-position: top center;
+	height:700px;
+	padding: 10em 0;}
+.tomato>h1, .tomato>h2{
+	color:#fff;
+	font-weight:700;}	
+.home-title-3 {font-size:2em;}
+.heroine{
+	text-align:left;
+	padding:1em;}

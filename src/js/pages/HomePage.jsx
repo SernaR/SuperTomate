@@ -33,16 +33,17 @@ const HomePage = (props) => {
     return ( 
         <main className="mt-1">
             <ScrollToTopOnMount />
-            <div className="jumbotron tomato" style={{ paddingTop: '100px'}}>
-                <h1 className="display-4 text-center text-primary">SUPER TOMATE</h1>
-                <h2 className="text-center text-primary">Le héros du potager</h2> 
+            <div className="jumbotron tomato text-center">
+                <h1 className="display-4">SUPER TOMATE</h1>
+                <h2>Le héros du potager</h2> 
             </div>  
            
             <Block
+                customH2="recipe"
                 title={les_mains_dans_la_tambouille.title}  
                 text={les_mains_dans_la_tambouille.text}
             />
-            <Block title="Les jeunes pousses">
+            <Block title="Les jeunes pousses" customH2="recipe">
                 <RecipeCards recipes={ newRecipes } col={3}/>
             </Block>
             <Super bestRecipe={bestRecipe} />
