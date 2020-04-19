@@ -6,10 +6,27 @@ exports.checkRoleAdmin = (id, cb) => {
         where: { id }
     })
     .then( user => {
-        console.log('admin !')
         return cb(user.isAdmin)  
     })
     .catch( err => {
         console.log(err)
     })    
 }
+
+exports.highlightCheck = ( title, content ) => {
+    const messages = []
+    if ( !title ) {
+        messages.push({
+            propertyPath: 'title',
+            message: "le titre doit être renseigné"
+        })
+    }
+    if ( !content ) {
+        messages.push({
+            propertyPath: 'content',
+            message: "le texte d'actualité doit être renseigné"
+        })
+    }
+    return messages
+}
+

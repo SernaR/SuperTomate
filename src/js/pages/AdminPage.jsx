@@ -11,12 +11,15 @@ import Params from '../components/Params';
 import Register from '../components/Register';
 
 import toast from '../services/toaster' 
+import Highlights from '../components/Highlights';
+import Headlines from '../components/Headlines';
 
-const items = ['Recettes', 'Commentaires', 'Paramètres', 'Inscription']
+const items = ['Recettes', 'Commentaires', 'Paramètres', 'Actu', 'Inscription']
 const RECIPES = 0
 const COMMENTS = 1
 const PARAMS =  2 
-const REGISTER = 3
+const HIGHLIGHT = 3
+const REGISTER = 4
 
 const AdminPage = ({ history }) => {
 
@@ -46,11 +49,10 @@ const AdminPage = ({ history }) => {
             const params = await adminAPI.getParams()
             const { comments } = await adminAPI.getComments()
             const { slugs } = await recipesAPI.getSlugs()
-            
+
             setSlugs(slugs)
             setParams(params)
             setComments(comments)
-            
 
         } catch(err) {
             toast.error("Oups, un problème est survenue")
@@ -131,7 +133,11 @@ const AdminPage = ({ history }) => {
                     onSubmit={handleParamSubmit}
                 />
             </CommentBlock>}
-
+            { item === HIGHLIGHT && 
+                <CommentBlock title="Mise en avant">
+                   <Headlines />
+                </CommentBlock>
+            }    
             { item === REGISTER && 
                 <CommentBlock title="Inscription">
                     <Register />

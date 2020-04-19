@@ -2,7 +2,7 @@
 /*-----GÉNÉRAL-----*/
 body{
 	font-family: 'Quicksand', sans-serif;
-	color:#777;
+	color:#666;
 	font-size:1.2em;}
 h1,h2,h3,h4,h5,h6, jumbotron h1{font-family: 'Amatic SC', cursive;}
 img {
@@ -109,3 +109,20 @@ ul{list-style-type: none;}
 .heroine{
 	text-align:left;
 	padding:1em;}
+
+
+
+
+
+/***************************************************/
+.borderless, .borderless:focus, .borderless:active {
+	padding: 5px;
+    border: 0;
+	box-shadow: none;
+	outline: 0px !important; 
+}
+
+.custom-hr {
+    margin-top: 0;
+    margin-bottom: 0;
+}

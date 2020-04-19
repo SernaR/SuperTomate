@@ -337,3 +337,57 @@ exports.setSlug = async (req, res) => {
         })
     }        
 }
+
+exports.getAllRecipes = (req, res) => {
+    const name = req.params.categoryId
+    models.Recipe.findAll({
+        where: { isDraft: false },
+        attributes: ['id','name','picture', 'slug'],
+        include: [
+            {
+                model: models.Tag,
+                as: 'tags',
+                required: false,
+                attributes: ['name'],
+                through: { attributes: [] }
+            },
+            { 
+                model: models.Category,
+                as: 'category',
+                where: { name },
+                attributes: ['name'],
+            }
+        ],    
+        order: [['name', 'ASC']]
+    })
+    .then( recipes => {
+        res.status(200).json({
+            'recipes': recipes
+        })
+    })
+    .catch( (err) => {
+        res.status(500).json(err)
+    })    
+}
+
+exports.getRecipesNames = (req, res) => {
+    const admin = jwt.checkAdmin(req.headers['authorization']) 
+    if(admin) {
+        models.Recipe.findAll({
+        where: { isDraft: false },
+        attributes: ['id', 'name'],
+        order:[['name', 'ASC']]
+        })
+        .then( recipes => {
+            res.status(200).json({ recipes })
+        })
+        .catch( () => {
+            res.status(500).json({ 'error': 'sorry, an error has occured' })
+        })   
+    } else {
+        res.status(403).json({
+            'error': 'not authorized path'
+        })
+    }   
+     
+}

@@ -17,6 +17,14 @@ router.post('/register', userController.register)
 router.post('/categories', params.addCategory)
 router.post('/tags', params.addTag)
 router.post('/difficulties', params.addDifficulty)
+router.post('/highlights', params.addHighlight)
+router.get('/highlights', params.getHighlights)
+router.delete('/highlights/:highlightId', params.deleteHighlight)
+router.put('/highlights/:highlightId', params.updateHighlight)
+router.get('/recipes', recipeController.getRecipesNames)
+router.get('/recipeHighlights', params.getRecipeHighlight)
+router.post('/recipeHighlights', params.addRecipeHighlight)
+
 
 //comments routes
 router.get('/slug', recipeController.getEmptySlugs)

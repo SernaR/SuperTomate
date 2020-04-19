@@ -131,3 +131,136 @@ exports.addDifficulty = (req, res) => {
         }    
     })   
 }
+
+
+exports.addHighlight = (req, res) => {
+    const userId = req.userId
+    const { title, content } = req.body
+   
+    const messages = adminUtils.highlightCheck( title, content )
+    if (messages.length > 0)
+        return res.status(422).json(messages)
+  
+    adminUtils.checkRoleAdmin(userId, admin => {
+        if (admin) {
+            models.Highlight.create({ title, content })
+            .then( (newHighlight) => {
+                res.status(201).json( newHighlight )
+            })    
+            .catch( (err) => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            })
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })   
+}
+
+exports.getHighlights = (req, res) => {
+    const userId = req.userId
+    adminUtils.checkRoleAdmin(userId, async admin => {
+        if (admin) {
+            try{
+                const highlights = await models.Highlight.findAll({ attributes: ['id', 'title', 'content'] })
+                res.status(200).json({ highlights })
+            } catch (err) {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            } 
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })   
+    
+}
+
+exports.deleteHighlight = (req, res) => {
+    const userId = req.userId
+    const id = req.params.highlightId
+
+    adminUtils.checkRoleAdmin(userId, async admin => {
+        if (admin) {
+            try{
+                const highlight = await models.Highlight.findByPk(id)
+                await highlight.destroy()
+                res.status(201).json({ 'message': 'highlight deleted' })
+            } catch (err) {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            } 
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })     
+}
+
+
+exports.updateHighlight = (req, res) => {
+    const userId = req.userId
+    const id = req.params.highlightId
+    const { title, content } = req.body
+
+    adminUtils.checkRoleAdmin(userId, async admin => {
+        if (admin) {
+            try{
+                const highlight = await models.Highlight.findByPk(id)
+                await highlight.update({ title, content })
+                res.status(201).json( highlight )
+            } catch (err) {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            } 
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })     
+}
+
+exports.getRecipeHighlight = (req, res) => {
+    const userId = req.userId
+    adminUtils.checkRoleAdmin(userId, async admin => {
+        if (admin) {
+            try{
+                const recipeHighlight = await models.RecipeHighlight.findAll({
+                    attributes: ['recipeId', 'highlightId'],
+                    order:[['id', 'DESC']],
+                    limit: 1
+                })
+                const recipe = await models.Recipe.findByPk(recipeHighlight[0].recipeId, { attributes: ['name'] })
+                recipeHighlight[0].dataValues.recipeName = recipe.name
+                
+                res.status(201).json( recipeHighlight[0] )
+            } catch (err) {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            } 
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })     
+}
+
+exports.addRecipeHighlight = (req, res) => {
+    const userId = req.userId
+    adminUtils.checkRoleAdmin(userId, admin => {
+        if (admin) {
+            models.RecipeHighlight.create({ ...req.body })
+            .then( (newRecipeHighlight) => {
+                res.status(201).json( newRecipeHighlight )
+            })    
+            .catch( (err) => {
+                res.status(500).json({ 'error': 'sorry, an error has occured' })
+            })
+        } else {
+            res.status(403).json({
+                'error': 'not authorized path'
+            })
+        }    
+    })   
+}

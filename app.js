@@ -48,6 +48,7 @@ app.use("/api",(req, res, next) => {
 })
 
 app.use('/api/user', userRoutes)
+//securiser les routes admin ?? ici ??***************************att
 app.use('/api/admin', adminRoutes)
 app.use("/api", errorController.pageNotFound)
 
