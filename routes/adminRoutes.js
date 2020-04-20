@@ -12,8 +12,6 @@ router.get('/user/:id', userController.setUserPamams)//?action=promote ou ?actio
 router.post('/register', userController.register)
 
 //params routes
-//router.post('/ingredient', params.addIngredient) // a supprimer
-//router.post('/unit', params.addUnit) // a supprimer
 router.post('/categories', params.addCategory)
 router.post('/tags', params.addTag)
 router.post('/difficulties', params.addDifficulty)
@@ -22,7 +20,7 @@ router.get('/highlights', params.getHighlights)
 router.delete('/highlights/:highlightId', params.deleteHighlight)
 router.put('/highlights/:highlightId', params.updateHighlight)
 router.get('/recipes', recipeController.getRecipesNames)
-router.get('/recipeHighlights', params.getRecipeHighlight)
+router.get('/recipeHighlights', params.getRecipeHighlight, recipeController.getRecipeName)
 router.post('/recipeHighlights', params.addRecipeHighlight)
 
 

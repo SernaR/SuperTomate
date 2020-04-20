@@ -6,7 +6,13 @@ function getHome() {
     return axios
         .get(API_URL)
         .then(response => response.data);
-};
+}
+
+function getHeadline() {
+    return axios
+        .get(API_URL + 'recipeHighlights')
+        .then(response => response.data);
+}
 
 function find(id) {
     return axios
@@ -76,4 +82,4 @@ function setSlug(id, slug) {
         .then(({data}) => data.recipeId)
 }
 
-export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save, update, getSlugs, setSlug }
+export default { findAll, findByUser, find, getHome, getParams, getCategories, getTags, save, update, getSlugs, setSlug, getHeadline }

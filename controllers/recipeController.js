@@ -229,34 +229,12 @@ exports.getRecipe = (req, res) => {
         })
     })
     .catch( (err) => {
-        console.log(err)
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     })    
 }
 
 exports.getHomepage = async (req,res) => {
     try {
-        const bestRecipes = await models.Like.findAll({
-            attributes: [
-                [sequelize.fn('AVG', sequelize.col('record')), 'Avg'],
-                'recipeId'
-            ],
-            include:[
-                {
-                    model: models.Recipe,
-                    attributes: ['name', 'slug', 'picture'],
-                    include: [{
-                        model: models.Category,
-                        as: 'category',
-                        attributes: ['name'],
-                    }]
-                }
-            ],
-            group: ['recipeId'],
-            order: [['record', 'DESC']],
-            limit: 5
-        })
-
         const newRecipes = await models.Recipe.findAll({
             attributes: ['id','name','picture', 'slug'],
             include: [
@@ -274,10 +252,7 @@ exports.getHomepage = async (req,res) => {
             limit: 8
         })
         
-        res.status(200).json({
-            'newRecipes': newRecipes,
-            'bestRecipes': bestRecipes
-        })
+        res.status(200).json({ newRecipes })
     } catch (err) {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     }   
@@ -309,10 +284,6 @@ exports.setSlug = async (req, res) => {
     const id = req.params.recipeId
     const { slug } = req.body
     const admin = jwt.checkAdmin(req.headers['authorization']) 
-
-    console.log(req.body)
-
-
     if ( !slug ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
@@ -390,4 +361,34 @@ exports.getRecipesNames = (req, res) => {
         })
     }   
      
+}
+
+exports.getHeadline = async (req, res) => {
+    const recipeHighlight = req.body
+
+    const recipe = await models.Recipe.findOne({
+        where: { id: recipeHighlight.recipeId},
+        attributes: ['id', 'name', 'slug', 'picture'],
+        include: [
+            { 
+                model: models.Category,
+                as: 'category',
+                attributes: ['id', 'name']
+            }
+        ]
+    })
+
+    const highlight = await models.Highlight.findOne({
+        where: { id: recipeHighlight.highlightId },
+        attributes: ['content']
+    })
+    res.status(200).json({ recipe, highlight })
+}
+
+exports.getRecipeName = async (req, res) => {
+    const recipeHighlight = req.body
+    const recipe = await models.Recipe.findByPk(recipeHighlight.recipeId, { attributes: ['name'] })
+
+    recipeHighlight.dataValues.recipeName = recipe.name
+    res.status(201).json( recipeHighlight )
 }

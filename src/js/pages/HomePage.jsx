@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import Cockpit from '../../components/Cockpit';
 import Footer from '../components/Footer';
 import Block from '../components/blocks/Block';
 
@@ -17,14 +16,16 @@ const HomePage = (props) => {
     }, []);
 
     const [newRecipes, setNewRecipes] = useState([])
-    const [bestRecipe, setBestRecipe] = useState({})
-    const randomIndex = Math.floor( Math.random() * 5 );
+    const [headline, setHeadline] = useState({})
     
     const fetchRecipes = async() => {
         try {
-            const { newRecipes, bestRecipes } = await recipesAPI.getHome()
+            const { newRecipes } = await recipesAPI.getHome() 
+            const {recipe, highlight } = await recipesAPI.getHeadline()
+
             setNewRecipes(newRecipes)
-            setBestRecipe(bestRecipes[randomIndex])
+            setHeadline({ recipe, highlight })
+            
         } catch(err) {
             toast.error("Oups, un problème est survenue")
         }
@@ -46,7 +47,7 @@ const HomePage = (props) => {
             <Block title="Les jeunes pousses" customH2="recipe">
                 <RecipeCards recipes={ newRecipes } col={3}/>
             </Block>
-            <Super bestRecipe={bestRecipe} />
+                <Super headline={ headline } />
             <Footer />
         </main>
     );

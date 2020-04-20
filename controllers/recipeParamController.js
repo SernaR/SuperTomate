@@ -221,28 +221,16 @@ exports.updateHighlight = (req, res) => {
     })     
 }
 
-exports.getRecipeHighlight = (req, res) => {
-    const userId = req.userId
-    adminUtils.checkRoleAdmin(userId, async admin => {
-        if (admin) {
-            try{
-                const recipeHighlight = await models.RecipeHighlight.findAll({
-                    attributes: ['recipeId', 'highlightId'],
-                    order:[['id', 'DESC']],
-                    limit: 1
-                })
-                const recipe = await models.Recipe.findByPk(recipeHighlight[0].recipeId, { attributes: ['name'] })
-                recipeHighlight[0].dataValues.recipeName = recipe.name
-                
-                res.status(201).json( recipeHighlight[0] )
-            } catch (err) {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            } 
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
+exports.getRecipeHighlight = (req, res, next) => { 
+    models.RecipeHighlight.findAll({
+        attributes: ['recipeId', 'highlightId'],
+        order:[['id', 'DESC']],
+        limit: 1
+    }).then( recipeHighlight => {
+        req.body = recipeHighlight[0]
+        next()
+    }).catch( (err) => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     })     
 }
 

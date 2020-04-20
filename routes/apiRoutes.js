@@ -3,6 +3,7 @@ const router = express.Router()
 
 const recipeController = require('../controllers/recipeController')
 const recipeParanController = require('../controllers/recipeParamController')
+const params = require('../controllers/recipeParamController')
 
 //homepage route
 router.get('/',recipeController.getHomepage)
@@ -12,6 +13,8 @@ router.get('/recipe/category/:categoryId', recipeController.getAllRecipes)
 router.get('/recipe/:recipeId', recipeController.getRecipe)
 router.get('/params/categories', recipeParanController.getCategories)
 router.get('/params/tags', recipeParanController.getTags)
+router.get('/recipeHighlights', params.getRecipeHighlight, recipeController.getHeadline)
+
 
 
 module.exports = router
