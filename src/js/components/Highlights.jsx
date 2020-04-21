@@ -6,7 +6,7 @@ import ClassicTextarea from './forms/ClassicTextarea';
 import toaster from '../services/toaster';
 
 //focus ?????
-//modifier la suppression metrre isSelected = false
+//modifier la suppression mettre isSelected = false
 
 const Highlights = ({highlights, onChange, headline}) => {
     

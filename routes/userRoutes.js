@@ -21,7 +21,7 @@ router.put('/password', userController.updatePassword)
 router.get('/recipe-params', recipeParamController.getRecipeParams)
 router.get('/recipe', recipeController.getUserRecipes)
 router.post('/recipe', upload.single('image'), recipeController.fileResize, recipeController.addRecipe)
-router.put('/recipe/:recipeId', upload.single('image'), recipeController.updateRecipe)
+router.put('/recipe/:recipeId', upload.single('image'), recipeController.fileResize, recipeController.updateRecipe)
 
 //comments routes
 router.get('/comment', commentController.getUnreadComments)

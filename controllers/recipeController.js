@@ -1,20 +1,23 @@
 const models = require('../models')
 const jwt = require('../utils/jwt')
 const recipeUtils = require('../utils/recipeUtils')
-const sequelize = require('sequelize')
 const sharp = require('sharp');
 
 exports.fileResize = async(req, res, next) => {
     const image = req.file
-    if(!image) {
-        res.status(422).json([{
-            propertyPath: 'picture',
-            message: "le fichier n'est pas une image valide"
-        }]) 
+    if( !image ) {
+        if(req.method === 'POST') {
+            res.status(422).json([{
+                propertyPath: 'picture',
+                message: "le fichier n'est pas une image valide"
+            }]) 
+        }else {
+            next()
+        } 
     }
 
     const imagePath = 'images/' + new Date().toDateString() + '-' + image.originalname
-    
+
     try{
         await sharp(image.buffer)
         .resize(640) 
@@ -58,7 +61,7 @@ exports.addRecipe = async (req, res) => {
 
 exports.updateRecipe = async (req, res) => {
     const recipeId = req.params.recipeId
-    const image = req.file
+    const picture = req.picture
     
     const { name, difficulty, serve, making, cook, wait, tags, steps, ingredients, category, isDraft } = req.body
     const userId = req.userId
@@ -76,8 +79,8 @@ exports.updateRecipe = async (req, res) => {
         if (recipeFound.userId === userId || admin) {
             let updatedRecipe
         
-            if(image) {
-                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, picture: image.path, isDraft }) 
+            if(picture) {
+                updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, picture, isDraft }) 
             } else {
                 updatedRecipe = await recipeFound.update({ name, difficultyId: difficulty, serve, making, cook, wait, categoryId: category, userId, isDraft }) 
             }

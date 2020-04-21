@@ -4,7 +4,7 @@ import { recipeUrl } from '../services/utils'
 
 const Super = ({ headline }) => {
     const{ recipe, highlight } = headline
-   console.log(recipe)
+   
     return ( 
         <section className="container pt-3">
             <h2 className="display-4 text-primary text-center pt-3 mb-4 recipe">La super-héroïne du potager</h2>
