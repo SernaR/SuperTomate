@@ -2,7 +2,6 @@ const models = require('../models')
 const Op = require('sequelize').Op
 const bcrypt = require('bcrypt')
 const jwt = require('../utils/jwt')
-const adminUtils = require('../utils/adminUtils')
 const authUtils = require('../utils/authUtils')
 
 
@@ -91,32 +90,22 @@ exports.getUserProfile = (req, res) => {
     })    
 }
 exports.getAllUsers = (req, res) => {
-    const userId = req.userId
-
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) {
-            models.User.findAll({
-                order: [['name', 'ASC']]
-            })
-            .then( users => {
-                res.status(200).json({
-                    'users': users
-                })
-            })
-            .catch( () => {
-                res.status(500).json({
-                    'error': 'sorry, an error has occured'
-                })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })   
+    models.User.findAll({
+        order: [['name', 'ASC']]
+    })
+    .then( users => {
+        res.status(200).json({
+            'users': users
+        })
+    })
+    .catch( () => {
+        res.status(500).json({
+            'error': 'sorry, an error has occured'
+        })
+    })  
 }
 
-exports.updateUserProfile = async (req, res) => {
+/* exports.updateUserProfile = async (req, res) => {
     const { name, email, password } = req.body
     const userId = req.userId
     const message = userConstraint( name, email, password )
@@ -158,7 +147,7 @@ exports.updateUserProfile = async (req, res) => {
     } catch (err) {
         res.status(500).json({ 'error': 'sorry, an error has occured' })
     }      
-}
+}*/
 
 exports.updatePassword = async (req,res) => {
     const userId = req.userId
@@ -185,32 +174,23 @@ exports.updatePassword = async (req,res) => {
 exports.setUserPamams = (req, res) => {
     const id = req.params.id
     const action = req.query.action
-    const userId = req.userId   
     
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) {
-            models.User.findOne({
-                where: { id }
-            })
-            .then( userFound => {
-                if (userFound && action === 'remove') {      
-                    return userFound.update({ isActive: 0})  
-                } else if (userFound && action === 'promote') {
-                    return userFound.update({ isAdmin: 1 })
-                }
-            })
-            .then( user => {
-                res.status(201).json({
-                    'userName': user.name
-                })
-            })
-            .catch ( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })   
+    models.User.findOne({
+        where: { id }
+    })
+    .then( userFound => {
+        if (userFound && action === 'remove') {      
+            return userFound.update({ isActive: 0})  
+        } else if (userFound && action === 'promote') {
+            return userFound.update({ isAdmin: 1 })
+        }
+    })
+    .then( user => {
+        res.status(201).json({
+            'userName': user.name
+        })
+    })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })
 }

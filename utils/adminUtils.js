@@ -1,6 +1,6 @@
-const models = require('../models')
+//const models = require('../models')
 
-exports.checkRoleAdmin = (id, cb) => {
+/*exports.checkRoleAdmin = (id, cb) => {
     models.User.findOne({
         attributes: [ 'isAdmin' ],
         where: { id }
@@ -11,7 +11,7 @@ exports.checkRoleAdmin = (id, cb) => {
     .catch( err => {
         console.log(err)
     })    
-}
+}*/
 
 exports.highlightCheck = ( title, content ) => {
     const messages = []

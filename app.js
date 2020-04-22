@@ -37,6 +37,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use("/api", apiRoutes)
 app.use("/api", authRoutes)
+
 app.use("/api",(req, res, next) => {
     const userId = jwt.getUserId(req.headers['authorization'])
     if (userId < 0)
@@ -48,7 +49,15 @@ app.use("/api",(req, res, next) => {
 })
 
 app.use('/api/user', userRoutes)
-//securiser les routes admin ?? ici ??***************************att
+
+app.use('/api/admin', (req, res, next) => {
+    const isAdmin = jwt.checkAdmin(req.headers['authorization'])
+    if(!isAdmin) {
+        return res.status(403).json({ 'error': 'forbibben, not authorized path'})
+    } else {
+        next()
+    }    
+}) 
 app.use('/api/admin', adminRoutes)
 app.use("/api", errorController.pageNotFound)
 

@@ -33,17 +33,17 @@ exports.getUserId = authorization => {
 }
 
 exports.checkAdmin = authorization => {
-    let admin = false
+    let isAdmin = false
     const token = module.exports.parseAuthorization(authorization)
     if(token) {
         try {
            const jwtToken = jwt.verify(token, JWT_SIGN_SECRET)
            if(jwtToken) {
-                admin = jwtToken.isAdmin
+            isAdmin = jwtToken.isAdmin
            }
         } catch (err) {
             console.log(err)
         }
-        return admin
+        return isAdmin
     }
 }

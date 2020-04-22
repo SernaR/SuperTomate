@@ -1,6 +1,4 @@
 const models = require('../models')
-const jwt = require('../utils/jwt')
-const adminUtils = require('../utils/adminUtils')
 const COMMENT_REGEX = /<(|\/|[^\/>][^>]+|\/[^>][^>]+)>/
 
 
@@ -30,69 +28,50 @@ exports.newComment = (req, res) => {
 }
 
 exports.getNewComments = (req, res) => {
-    const userId = req.userId
-        
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) {
-            models.Comment.findAll({
-                attributes: ['id', 'content'],
-                include: [
-                    {
-                        model:models.User,
-                        as: 'user',
-                        attributes: ['name']
-                    }
-                ],
-                where: { isChecked: 0 },
-                order: [['createdAt', 'ASC']]
-            })
-            .then( comments => {
-                res.status(200).json({ 'comments': comments})
-            })
-            .catch ( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })       
+    models.Comment.findAll({
+        attributes: ['id', 'content'],
+        include: [
+            {
+                model:models.User,
+                as: 'user',
+                attributes: ['name']
+            }
+        ],
+        where: { isChecked: 0 },
+        order: [['createdAt', 'ASC']]
+    })
+    .then( comments => {
+        res.status(200).json({ 'comments': comments})
+    })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })         
 }
 
 exports.setComment = (req, res) => {
     const action = req.query.action
     const id = req.params.commentId
-    const userId = req.userId
     let message
     
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) { 
-            models.Comment.findOne({
-                where: { id, isChecked: 0 }
-            })
-            .then( commentFound => {
-                if (action === 'add') {
-                    message = 'validé'
-                    return commentFound.update({ isChecked: 1 })
-                }
-                if (action === 'remove') {
-                    message = 'bloqué'
-                    return commentFound.update({ isChecked: 1, isBlocked: 1 })  
-                }  
-            })
-            .then( () => {
-                res.status(201).json(message)
-            })
-            .catch ( () => {
-                res.status(500).json(err)
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })          
+    models.Comment.findOne({
+        where: { id, isChecked: 0 }
+    })
+    .then( commentFound => {
+        if (action === 'add') {
+            message = 'validé'
+            return commentFound.update({ isChecked: 1 })
+        }
+        if (action === 'remove') {
+            message = 'bloqué'
+            return commentFound.update({ isChecked: 1, isBlocked: 1 })  
+        }  
+    })
+    .then( () => {
+        res.status(201).json(message)
+    })
+    .catch ( () => {
+        res.status(500).json(err)
+    })    
 }
 
 exports.newSubComment = (req, res) => {
@@ -121,69 +100,50 @@ exports.newSubComment = (req, res) => {
 }
 
 exports.getNewSubComments = (req, res) => {
-    const userId = req.userId
-        
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) {
-            models.SubComment.findAll({
-                attributes: ['content'],
-                include: [
-                    {
-                        model:models.User,
-                        attributes: ['name']
-                    }
-                ],
-                where: { isChecked: 0 },
-                order: [['createdAt', 'ASC']]
-            })
-            .then( comments => {
-                res.status(200).json({ 'comments': comments})
-            })
-            .catch ( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })     
+    models.SubComment.findAll({
+        attributes: ['content'],
+        include: [
+            {
+                model:models.User,
+                attributes: ['name']
+            }
+        ],
+        where: { isChecked: 0 },
+        order: [['createdAt', 'ASC']]
+    })
+    .then( comments => {
+        res.status(200).json({ 'comments': comments})
+    })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })    
 }
 
 exports.setSubComment = (req, res) => {
     const action = req.query.action
     const id = req.params.commentId
-    const userId = req.userId
     let message
     
-    adminUtils.checkRoleAdmin(userId, admin => {
-        if (admin) { 
-            models.SubComment.findOne({
-                where: { id, isChecked: 0 }
-            })
-            .then( commentFound => {
-                if (action === 'add') {
-                    message = 'validated'
-                    return commentFound.update({ isChecked: 1 })  
-                }
-                if (action === 'remove') {
-                    message = 'bloqued'
-                    return commentFound.update({ isChecked: 1, isBlocked: 1 })  
-                }
-                message = ': no action specified'    
-            })
-            .then( () => {
-                res.status(201).json({ 'success': 'comment '+ message })
-            })
-            .catch ( () => {
-                res.status(500).json({ 'error': 'sorry, an error has occured' })
-            })
-        } else {
-            res.status(403).json({
-                'error': 'not authorized path'
-            })
-        }    
-    })      
+    models.SubComment.findOne({
+        where: { id, isChecked: 0 }
+    })
+    .then( commentFound => {
+        if (action === 'add') {
+            message = 'validated'
+            return commentFound.update({ isChecked: 1 })  
+        }
+        if (action === 'remove') {
+            message = 'bloqued'
+            return commentFound.update({ isChecked: 1, isBlocked: 1 })  
+        }
+        message = ': no action specified'    
+    })
+    .then( () => {
+        res.status(201).json({ 'success': 'comment '+ message })
+    })
+    .catch ( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })  
 }
 
 exports.getUnreadComments = (req, res) => {

@@ -286,29 +286,22 @@ exports.getEmptySlugs = async (req, res) => {
 exports.setSlug = async (req, res) => {
     const id = req.params.recipeId
     const { slug } = req.body
-    const admin = jwt.checkAdmin(req.headers['authorization']) 
+    
     if ( !slug ) { 
         return res.status(400).json({ 'error': 'missing parameters' })
     }
 
-    if(admin){
-        try{
-            const recipeFound = await models.Recipe.findOne({
-                where: { id }
-            })
-
-            const updatedRecipe = await recipeFound.update({ slug })
-            res.status(201).json({
-                'recipeId': updatedRecipe.id
-            }) 
-
-        } catch (err) {
-            res.status(500).json({ 'error': 'sorry, an error has occured' })
-        }  
-    } else {
-        res.status(403).json({
-            'error': 'not authorized path'
+    try{
+        const recipeFound = await models.Recipe.findOne({
+            where: { id }
         })
+
+        const updatedRecipe = await recipeFound.update({ slug })
+        res.status(201).json({
+            'recipeId': updatedRecipe.id
+        }) 
+    } catch (err) {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
     }        
 }
 
@@ -345,25 +338,18 @@ exports.getAllRecipes = (req, res) => {
 }
 
 exports.getRecipesNames = (req, res) => {
-    const admin = jwt.checkAdmin(req.headers['authorization']) 
-    if(admin) {
-        models.Recipe.findAll({
-        where: { isDraft: false },
-        attributes: ['id', 'name'],
-        order:[['name', 'ASC']]
-        })
-        .then( recipes => {
-            res.status(200).json({ recipes })
-        })
-        .catch( () => {
-            res.status(500).json({ 'error': 'sorry, an error has occured' })
-        })   
-    } else {
-        res.status(403).json({
-            'error': 'not authorized path'
-        })
-    }   
-     
+
+    models.Recipe.findAll({
+    where: { isDraft: false },
+    attributes: ['id', 'name'],
+    order:[['name', 'ASC']]
+    })
+    .then( recipes => {
+        res.status(200).json({ recipes })
+    })
+    .catch( () => {
+        res.status(500).json({ 'error': 'sorry, an error has occured' })
+    })   
 }
 
 exports.getHeadline = async (req, res) => {
